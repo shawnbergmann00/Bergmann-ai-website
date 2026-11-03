@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>KI-Kundenassistenten & KI-Automatisierung | Bergmann AI</title>
+<meta name="description" content="Bergmann AI entwickelt individuelle KI-Kundenassistenten und Automatisierungen für Unternehmen.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f4f6fc;--bg2:#fff;--ink:#0a1020;--mute:#566079;--line:#e1e7f3;--acc:#2f5bea;--acc2:#7a4dff;--acc3:#12c2e9;--soft:#eaefff;--ok:#12805c;--okbg:#e3f6ee;--glass:rgba(255,255,255,.7);--sh:0 30px 70px -30px rgba(40,60,140,.45);
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#070b16;--bg2:#101830;--ink:#eef2ff;--mute:#9aa8c7;--line:#1f2a48;--acc:#7b9bff;--acc2:#a78bff;--acc3:#4fd8f5;--soft:#16214a;--ok:#4cd3a0;--okbg:#0f3228;--glass:rgba(16,24,48,.7);--sh:0 30px 70px -30px rgba(0,0,0,.8)}}
+:root[data-theme="dark"]{--bg:#070b16;--bg2:#101830;--ink:#eef2ff;--mute:#9aa8c7;--line:#1f2a48;--acc:#7b9bff;--acc2:#a78bff;--acc3:#4fd8f5;--soft:#16214a;--ok:#4cd3a0;--okbg:#0f3228;--glass:rgba(16,24,48,.7);--sh:0 30px 70px -30px rgba(0,0,0,.8)}
+*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:calc(80px + env(safe-area-inset-top,0px))}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.65 "Plus Jakarta Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+a{color:inherit}.w{max-width:1160px;margin:0 auto;padding:0 22px;position:relative}
+#bar{position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,var(--acc3),var(--acc),var(--acc2));z-index:60}
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:50;background:var(--glass);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid var(--line)}
+header .w{display:flex;align-items:center;gap:20px;height:70px}
+.logo{display:flex;align-items:center;gap:10px;font-weight:800;font-size:19px;text-decoration:none;letter-spacing:-.02em}.logo svg{width:44px;height:44px}.logo em{font-style:normal;color:var(--acc)}
+nav{display:flex;gap:6px;margin-left:auto;font-size:14.5px;font-weight:600}nav a{text-decoration:none;color:var(--mute);padding:8px 13px;border-radius:99px;transition:.2s}nav a:hover,nav a.on{color:var(--ink);background:var(--soft)}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:14px 24px;border-radius:14px;background:linear-gradient(135deg,var(--acc),var(--acc2));color:#fff;text-decoration:none;font-weight:700;font-size:15px;box-shadow:0 14px 30px -12px var(--acc);border:0;cursor:pointer;transition:.25s;font-family:inherit}
+.btn:hover{transform:translateY(-2px);box-shadow:0 20px 36px -12px var(--acc)}.btn.o{background:var(--bg2);color:var(--ink);border:1px solid var(--line);box-shadow:none}
+.eye{display:inline-block;color:var(--acc);font-weight:800;font-size:12.5px;letter-spacing:.1em;text-transform:uppercase}
+h1{font-size:clamp(38px,6.4vw,72px);line-height:1.02;margin:18px 0 20px;letter-spacing:-.04em;font-weight:800}
+h2{font-size:clamp(28px,4.2vw,48px);line-height:1.1;margin:10px 0 14px;letter-spacing:-.03em;font-weight:800}
+h3{margin:0 0 6px;font-size:18.5px;letter-spacing:-.01em}p{margin:0 0 12px;color:var(--mute)}
+.grad{background:linear-gradient(120deg,var(--acc3),var(--acc) 40%,var(--acc2));-webkit-background-clip:text;background-clip:text;color:transparent}
+section{padding:96px 0}
+.rv{opacity:0;transform:translateY(28px);transition:opacity .8s ease,transform .8s cubic-bezier(.2,.7,.2,1)}.rv.in{opacity:1;transform:none}
+/* HERO */
+.hero{position:relative;padding:76px 0 90px;overflow:hidden}
+.aur{position:absolute;inset:0;pointer-events:none}.aur i{position:absolute;border-radius:50%;filter:blur(80px);opacity:.5;animation:fl 16s ease-in-out infinite}
+.aur i:nth-child(1){width:520px;height:520px;background:var(--acc);left:-8%;top:-18%}.aur i:nth-child(2){width:460px;height:460px;background:var(--acc2);right:-6%;top:2%;animation-delay:-5s}.aur i:nth-child(3){width:380px;height:380px;background:var(--acc3);left:38%;top:42%;opacity:.28;animation-delay:-9s}
+@keyframes fl{50%{transform:translate(50px,36px) scale(1.12)}}
+.grid{position:absolute;inset:0;background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);background-size:54px 54px;-webkit-mask-image:radial-gradient(70% 60% at 50% 25%,#000,transparent);mask-image:radial-gradient(70% 60% at 50% 25%,#000,transparent);opacity:.7}
+.hg{position:relative;display:grid;grid-template-columns:1.05fr .95fr;gap:50px;align-items:center}
+.pill{display:inline-flex;gap:10px;align-items:center;border:1px solid var(--line);background:var(--glass);backdrop-filter:blur(10px);border-radius:99px;padding:7px 16px;font-size:13.5px;font-weight:700}
+.pill b{width:8px;height:8px;border-radius:50%;background:#26d07c;box-shadow:0 0 0 0 #26d07c;animation:pu 2s infinite}@keyframes pu{70%{box-shadow:0 0 0 9px transparent}}
+.lead{font-size:19px;max-width:560px}.row{display:flex;gap:12px;flex-wrap:wrap;margin-top:28px}
+.check{margin-top:24px;font-size:14.5px;color:var(--mute);display:flex;gap:8px}.check b{color:var(--ok)}
+.mock{position:relative;background:var(--glass);backdrop-filter:blur(16px);border:1px solid var(--line);border-radius:28px;box-shadow:var(--sh);padding:20px;min-height:430px}
+.mh{display:flex;align-items:center;gap:12px;padding-bottom:14px;border-bottom:1px solid var(--line);font-weight:700}.mh svg{width:34px;height:34px}.mh small{display:block;font-weight:600;color:var(--ok);font-size:12px}
+.m{padding:12px 16px;border-radius:18px;margin:12px 0;font-size:14.5px;max-width:86%;line-height:1.5;opacity:0;transform:translateY(12px) scale(.97);transition:.5s}.m.show{opacity:1;transform:none}
+.m.c{background:linear-gradient(135deg,var(--acc),var(--acc2));color:#fff;margin-left:auto;border-bottom-right-radius:6px}.m.a{background:var(--soft);color:var(--ink);border-bottom-left-radius:6px}
+.hand{background:var(--okbg);border:1px solid color-mix(in srgb,var(--ok) 40%,transparent);border-radius:16px;padding:13px 15px;font-size:13.5px;margin-top:14px;color:var(--ink);opacity:0;transform:translateY(12px);transition:.5s}.hand.show{opacity:1;transform:none}
+.hand b{color:var(--ok);font-size:11.5px;letter-spacing:.08em;display:block}
+.fc{position:absolute;background:var(--bg2);border:1px solid var(--line);box-shadow:var(--sh);border-radius:16px;padding:10px 14px;font-size:13px;font-weight:700;display:flex;gap:8px;align-items:center;animation:bob 6s ease-in-out infinite}
+.fc.a{right:-18px;top:90px}.fc.b{left:-26px;bottom:60px;animation-delay:-3s}@keyframes bob{50%{transform:translateY(-12px)}}
+.fc span{width:26px;height:26px;border-radius:8px;display:grid;place-items:center;background:var(--okbg);color:var(--ok)}
+/* MARQUEE */
+.mq{border-block:1px solid var(--line);background:var(--bg2);overflow:hidden;padding:20px 0}
+.mq div{display:flex;gap:50px;width:max-content;animation:mq 34s linear infinite}.mq span{font-weight:700;color:var(--mute);white-space:nowrap;display:flex;gap:50px;align-items:center}.mq span::after{content:"✦";color:var(--acc)}
+@keyframes mq{to{transform:translateX(-50%)}}
+/* CARDS */
+.g2,.g3{display:grid;gap:18px;margin-top:38px}.g2{grid-template-columns:repeat(auto-fit,minmax(320px,1fr))}.g3{grid-template-columns:repeat(auto-fit,minmax(250px,1fr))}
+.card{position:relative;background:var(--bg2);border:1px solid var(--line);border-radius:24px;padding:28px;overflow:hidden;transition:.3s}
+.spot::after{content:"";position:absolute;inset:0;background:radial-gradient(380px circle at var(--x,50%) var(--y,0),color-mix(in srgb,var(--acc) 18%,transparent),transparent 60%);opacity:0;transition:.3s;pointer-events:none}.spot:hover::after{opacity:1}.card:hover{border-color:color-mix(in srgb,var(--acc) 50%,var(--line));transform:translateY(-4px)}
+.ic{width:50px;height:50px;border-radius:16px;background:linear-gradient(135deg,var(--soft),transparent);border:1px solid var(--line);display:grid;place-items:center;margin-bottom:16px;color:var(--acc)}.ic svg{width:25px;height:25px}
+.big{padding:38px}.big::before{content:"";position:absolute;inset:0 0 auto 0;height:5px;background:linear-gradient(90deg,var(--acc3),var(--acc),var(--acc2))}
+.tag{display:inline-block;background:var(--soft);color:var(--acc);border-radius:99px;padding:5px 15px;font-size:12.5px;font-weight:800;margin-bottom:14px}
+ul.c{list-style:none;padding:0;margin:14px 0 22px}ul.c li{padding:8px 0 8px 32px;position:relative;color:var(--ink);font-size:15px}
+ul.c li::before{content:"✓";position:absolute;left:0;top:8px;width:21px;height:21px;border-radius:50%;background:var(--okbg);color:var(--ok);font-size:12px;font-weight:800;display:grid;place-items:center}
+.two{display:grid;grid-template-columns:.9fr 1.1fr;gap:56px;align-items:start}
+.pain{display:flex;gap:16px;padding:22px 0;border-bottom:1px solid var(--line)}.pain:last-child{border:0}
+.num{flex:none;width:44px;height:44px;border-radius:14px;background:var(--soft);color:var(--acc);font-weight:800;display:grid;place-items:center}
+/* DARK */
+.dark{background:#070b16;color:#eef2ff;border-radius:40px;margin:0 16px;position:relative;overflow:hidden}.dark::before{content:"";position:absolute;width:600px;height:600px;border-radius:50%;background:#2f5bea;filter:blur(120px);opacity:.28;right:-160px;top:-200px}
+.dark p{color:#a9b6d6}.dark h2,.dark h3{color:#fff}.dark .eye{color:#9db4ff}.dark .card{background:#0f1730;border-color:#222f58}.dark .ic{background:#18235a;border-color:#2a3a78;color:#9db4ff}
+.flow{display:flex;gap:12px;align-items:stretch;margin:34px 0 8px;flex-wrap:wrap;position:relative}
+.flow div{flex:1 1 170px;background:#0f1730;border:1px solid #2a3a78;border-radius:18px;padding:18px;font-size:14px;color:#eef2ff;position:relative}
+.flow b{display:block;color:#9db4ff;font-size:12px;letter-spacing:.09em;margin-bottom:6px}
+.flow div::after{content:"";position:absolute;right:-13px;top:50%;width:12px;height:2px;background:#4a63c0}.flow div:last-child::after{display:none}
+.flow div::before{content:"";position:absolute;top:-1px;left:0;height:2px;width:0;background:linear-gradient(90deg,#4fd8f5,#7a4dff);animation:sc 8s infinite}
+.flow div:nth-child(2)::before{animation-delay:2s}.flow div:nth-child(3)::before{animation-delay:4s}.flow div:nth-child(4)::before{animation-delay:6s}
+@keyframes sc{0%{width:0}12%,22%{width:100%}30%,100%{width:0}}
+/* TABS */
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin:30px 0 22px}.tb{border:1px solid var(--line);background:var(--bg2);color:var(--ink);border-radius:99px;padding:10px 20px;font:700 14.5px inherit;font-family:inherit;cursor:pointer;transition:.2s}
+.tb.on{background:linear-gradient(135deg,var(--acc),var(--acc2));color:#fff;border-color:transparent}
+.tp{display:none;grid-template-columns:1fr 1fr;gap:30px;align-items:center}.tp.on{display:grid;animation:fi .5s}@keyframes fi{from{opacity:0;transform:translateY(10px)}}
+.tp .m{opacity:1;transform:none;max-width:92%}
+/* STEPS */
+.steps{display:grid;position:relative}.step{display:flex;gap:20px;padding-bottom:32px;position:relative}.step:last-child{padding-bottom:0}
+.step::before{content:"";position:absolute;left:21px;top:48px;bottom:0;width:2px;background:linear-gradient(var(--acc),var(--line))}.step:last-child::before{display:none}
+details{background:var(--bg2);border:1px solid var(--line);border-radius:18px;padding:20px 24px;margin-top:12px;transition:.2s}details[open]{border-color:color-mix(in srgb,var(--acc) 45%,var(--line))}
+summary{cursor:pointer;font-weight:700;list-style:none;display:flex;justify-content:space-between;gap:14px}summary::-webkit-details-marker{display:none}summary::after{content:"+";color:var(--acc);font-size:24px;line-height:1}details[open] summary::after{content:"–"}details p{margin:12px 0 0}
+.cta{position:relative;overflow:hidden;background:linear-gradient(135deg,#2f5bea,#7a4dff);border-radius:40px;padding:78px 28px;text-align:center;color:#fff}
+.cta::before{content:"";position:absolute;width:420px;height:420px;border-radius:50%;background:#4fd8f5;filter:blur(100px);opacity:.4;left:-100px;bottom:-200px}
+.cta>*{position:relative}.cta h2{color:#fff}.cta p{color:#e6ebff;max-width:580px;margin:0 auto 14px}.cta .eye{color:#d3ddff}
+.cta .btn{background:#fff;color:#1b2f8f;box-shadow:none}.cta .btn.o{background:transparent;color:#fff;border:1px solid #ffffff90}
+footer{padding:50px 0 34px;font-size:14px;color:var(--mute)}footer .w{display:flex;gap:24px;flex-wrap:wrap;justify-content:space-between;border-top:1px solid var(--line);padding-top:32px}
+@media(max-width:880px){.hg,.two,.tp{grid-template-columns:1fr}nav{display:none}section{padding:68px 0}.dark{margin:0 8px;border-radius:28px}.fc{display:none}.mock{min-height:0}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.rv,.m,.hand{opacity:1;transform:none}html{scroll-behavior:auto}}
+
+.dg{display:grid;grid-template-columns:.9fr 1.25fr;gap:18px;margin-top:38px}.dg .card{margin:0}
+.consent{background:var(--soft);border:1px solid var(--line);border-radius:16px;padding:18px;margin-top:14px}.consent p{font-size:13px;margin:6px 0 14px}.consent b{font-size:14px}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}.chips .tb{padding:8px 16px;font-size:13.5px}
+.sim{display:grid;gap:10px}.sx{display:grid;grid-template-columns:34px 1fr;gap:12px;background:var(--bg);border:1px solid var(--line);border-radius:16px;padding:14px;opacity:0;transform:translateY(10px);transition:.5s}.sx.show{opacity:1;transform:none}
+.sx i{width:34px;height:34px;border-radius:11px;background:linear-gradient(135deg,var(--acc),var(--acc2));color:#fff;display:grid;place-items:center;font-style:normal;font-weight:800;font-size:14px}
+.sx b{display:block;font-size:12px;letter-spacing:.08em;color:var(--acc);margin-bottom:3px}.sx div{font-size:14px;color:var(--ink);line-height:1.5}
+.sx dl{margin:6px 0 0;display:grid;grid-template-columns:auto 1fr;gap:3px 12px;font-size:13.5px}.sx dt{color:var(--mute)}.sx dd{margin:0;font-weight:600}
+@media(max-width:880px){.dg{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div id="bar"></div>
+<svg width="0" height="0" style="position:absolute"><defs>
+<linearGradient id="lg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2f5bea"/><stop offset="1" stop-color="#7a4dff"/></linearGradient>
+<symbol id="brand" viewBox="0 0 40 40"><image href="logo.webp" width="40" height="40" preserveAspectRatio="xMidYMid meet"/></symbol></defs></svg>
+
+<header><div class="w"><a class="logo" href="#top" aria-label="Bergmann AI"><svg><use href="#brand"/></svg>Bergmann <em>AI</em></a>
+<nav id="nav"><a href="#bereiche">Leistungen</a><a href="#assistent">Assistent</a><a href="#automatisierung">Automatisierung</a><a href="#branchen">Branchen</a><a href="#demo">Demo</a><a href="#faq">FAQ</a></nav>
+<a class="btn" href="mailto:shawnbergmann00@gmail.com" style="padding:11px 20px">Kontakt</a></div></header>
+
+<main id="top">
+<div class="hero"><div class="aur"><i></i><i></i><i></i></div><div class="grid"></div>
+<div class="w hg">
+<div class="rv"><span class="pill"><b></b>KI-Kundenassistenten &amp; Automatisierung</span>
+<h1>Kundenfragen klären. <span class="grad">Abläufe automatisieren.</span> Ihr Team entlasten.</h1>
+<p class="lead">Bergmann AI entwickelt individuelle KI-Kundenassistenten für Ihre Website und Automatisierungen für E-Mail, Anfragen, Termine und Dokumente sowie Websites mit Chatbot für lokale Betriebe. Individuell eingerichtet für Ihr Unternehmen.</p>
+<div class="row"><a class="btn" href="#demo">KI-Assistent testen →</a><a class="btn o" href="mailto:shawnbergmann00@gmail.com">Kontakt per E-Mail</a></div>
+<div class="check"><b>✓</b>Ihre Informationen. Ihre Abläufe. Ein klarer nächster Schritt.</div></div>
+<div class="rv" style="transition-delay:.15s"><div class="mock" id="mock">
+<div class="fc a"><span>✓</span>Anfrage erfasst</div><div class="fc b"><span>📅</span>Terminwunsch gesendet</div>
+<div class="mh"><svg><use href="#brand"/></svg><div>Ihr Kundenassistent<small>● online, rund um die Uhr</small></div></div>
+<div class="m c">Ist morgen noch ein Termin für eine Inspektion frei?</div>
+<div class="m a">Ich nehme Ihren Terminwunsch gern auf. Um welches Fahrzeug geht es und wie erreicht Sie das Werkstattteam?</div>
+<div class="m c">Ein Golf. Am besten per E-Mail.</div>
+<div class="hand"><b>ÜBERGABE AN IHR TEAM</b>Terminwunsch · Inspektion · VW Golf<br>Verfügbarkeit durch die Werkstatt bestätigen lassen.</div>
+</div></div></div></div>
+
+<div class="mq" aria-hidden="true"><div><span>Autohäuser</span><span>Werkstätten</span><span>Immobilienmakler</span><span>Friseure &amp; Salons</span><span>Lokale Dienstleister</span><span>E-Mail-Automatisierung</span><span>Lead-Erfassung</span><span>CRM-Pflege</span><span>Terminverwaltung</span><span>Dokumentenverarbeitung</span>
+<span>Autohäuser</span><span>Werkstätten</span><span>Immobilienmakler</span><span>Friseure &amp; Salons</span><span>Lokale Dienstleister</span><span>E-Mail-Automatisierung</span><span>Lead-Erfassung</span><span>CRM-Pflege</span><span>Terminverwaltung</span><span>Dokumentenverarbeitung</span></div></div>
+
+<section id="bereiche"><div class="w"><div class="rv"><span class="eye">Drei Leistungsbereiche</span><h2>Ein Partner für Kundenkontakt, interne Abläufe <span class="grad">und</span> Ihren Webauftritt.</h2></div>
+<div class="g3">
+<div class="card big spot rv"><span class="tag">Bereich 1</span><h3 style="font-size:26px">KI-Kundenassistenten</h3><p>Ein digitaler Ansprechpartner auf Ihrer Website, der freigegebene Fragen beantwortet und Anliegen aufnimmt.</p>
+<ul class="c"><li>Wiederkehrende Fragen direkt klären</li><li>Anfragen strukturiert aufnehmen</li><li>Weg zum Termin vereinfachen</li><li>Übergabe an Ihr Team</li></ul><a class="btn" href="#assistent">Mehr erfahren</a></div>
+<div class="card big spot rv" style="transition-delay:.12s"><span class="tag">Bereich 2</span><h3 style="font-size:26px">KI-Automatisierung</h3><p>Individuelle Abläufe im Hintergrund, die Zeit sparen und Fehler vermeiden.</p>
+<ul class="c"><li>E-Mail-Verarbeitung und Kommunikation</li><li>Lead-Erfassung und CRM-Pflege</li><li>Termine, Angebote und Dokumente</li><li>Follow-ups und interne Abläufe</li></ul><a class="btn" href="#automatisierung">Mehr erfahren</a></div>
+<div class="card big spot rv" style="transition-delay:.24s"><span class="tag">Bereich 3</span><h3 style="font-size:26px">Website + Chatbot für lokale Betriebe</h3><p>Eine klare Website für Autohäuser, Werkstätten, Makler, Friseure und Dienstleister, auf Wunsch mit KI-Chatbot.</p>
+<ul class="c"><li>Einseitige Website mit klarem Kontaktweg</li><li>Optional KI-Chatbot mit abgestimmten Antworten</li><li>Impressum und Datenschutz als Entwurf zur Prüfung</li><li>Online-Stellung und Pflege auf Wunsch</li></ul><a class="btn" href="mailto:shawnbergmann00@gmail.com?subject=Website%20und%20Chatbot">Anfrage senden</a></div>
+</div></div></section>
+
+<section id="assistent" style="padding-top:20px"><div class="w two">
+<div class="rv"><span class="eye">Der Alltag im Kundenkontakt</span><h2>Eine neue Anfrage wartet nicht auf einen freien Moment.</h2><p>Das Telefon klingelt, eine Nachricht geht ein, ein Kunde steht vor Ihnen. Dazwischen dieselben Fragen: Öffnungszeiten, Leistungen, Preise, Termine.</p></div>
+<div class="rv"><div class="pain"><div class="num">01</div><div><h3>Ständige Unterbrechungen</h3><p>Wiederkehrende Auskünfte unterbrechen die laufende Arbeit.</p></div></div>
+<div class="pain"><div class="num">02</div><div><h3>Anfragen bleiben liegen</h3><p>Außerhalb der Öffnungszeiten wartet eine Anfrage zunächst.</p></div></div>
+<div class="pain"><div class="num">03</div><div><h3>Wichtige Angaben fehlen</h3><p>Für eine gute Rückmeldung fehlen oft die wichtigsten Informationen.</p></div></div></div></div>
+<div class="w"><div class="g3">
+<div class="card spot rv"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg></div><h3>Verstehen</h3><p>Leistung, Termin oder Rückfrage: Das Anliegen wird eingeordnet.</p></div>
+<div class="card spot rv" style="transition-delay:.1s"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z"/></svg></div><h3>Weiterhelfen</h3><p>Antworten orientieren sich an den Inhalten, die Sie freigeben.</p></div>
+<div class="card spot rv" style="transition-delay:.2s"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div><h3>Übergeben</h3><p>Kontakt aufnehmen, Buchungsweg zeigen oder strukturierte Anfrage weitergeben.</p></div>
+</div></div></section>
+
+<section id="automatisierung" class="dark"><div class="w"><div class="rv"><span class="eye">KI-Automatisierung</span><h2>Weniger Handarbeit im Büroalltag.</h2>
+<p style="max-width:640px">Wir bauen Automatisierungen, die zu Ihren Abläufen passen. Jeder Kunde erhält eine eigene Konfiguration mit getrennten Daten und Zugängen.</p></div>
+<div class="flow rv"><div><b>1 · EINGANG</b>Anfrage per Formular oder E-Mail</div><div><b>2 · KI</b>Anliegen einordnen und prüfen</div><div><b>3 · SYSTEM</b>Eintrag im CRM oder Kalender</div><div><b>4 · TEAM</b>Meldung und Antwortentwurf</div></div>
+<div class="g3">
+<div class="card spot rv"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg></div><h3>E-Mail &amp; Kommunikation</h3><p>Mails sortieren, auswerten und Antworten als Entwurf vorbereiten.</p></div>
+<div class="card spot rv"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0M17 11l2 2 3-4"/></svg></div><h3>Leads &amp; CRM</h3><p>Anfragen erfassen, qualifizieren und sauber ablegen.</p></div>
+<div class="card spot rv"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 2v4M16 2v4"/></svg></div><h3>Termine &amp; Anfragen</h3><p>Terminwünsche zentral verwalten und nachfassen.</p></div>
+<div class="card spot rv"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h4"/></svg></div><h3>Angebote &amp; Dokumente</h3><p>Dokumente verarbeiten und Angebote vorbereiten.</p></div>
+<div class="card spot rv"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h11l-3-3M17 17H6l3 3"/></svg></div><h3>Datenübertragung</h3><p>Daten zwischen Ihren Systemen automatisch abgleichen.</p></div>
+<div class="card spot rv"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></div><h3>Follow-ups</h3><p>Erinnerungen und interne Abläufe zuverlässig im Hintergrund.</p></div>
+</div></div></section>
+
+<section id="branchen"><div class="w"><div class="rv"><span class="eye">Branchen</span><h2>Andere Branche. Dieselbe erste Frage.</h2><p style="max-width:620px">„Können Sie mir kurz weiterhelfen?“ Wie die Antwort aussieht, hängt von Ihrem Unternehmen ab. Wählen Sie eine Branche:</p></div>
+<div class="tabs rv" role="tablist"><button class="tb on" data-t="0">Autohaus</button><button class="tb" data-t="1">Werkstatt</button><button class="tb" data-t="2">Immobilien</button><button class="tb" data-t="3">Friseur</button><button class="tb" data-t="4">Dienstleister</button></div>
+<div class="card rv" style="padding:34px">
+<div class="tp on"><div><h3>Autohäuser</h3><p>Fahrzeugfragen einordnen, Probefahrtwünsche aufnehmen und Interessenten zum Verkaufsteam führen.</p></div><div><div class="m c">Haben Sie den Kombi noch in Schwarz?</div><div class="m a">Zur Verfügbarkeit gebe ich Ihre Anfrage an das Verkaufsteam weiter. Möchten Sie auch eine Probefahrt?</div></div></div>
+<div class="tp"><div><h3>Werkstätten</h3><p>Leistungen erklären, Fahrzeug und Anliegen erfassen und einen Terminwunsch zur Prüfung weitergeben.</p></div><div><div class="m c">Was kostet ein Ölwechsel?</div><div class="m a">Zu freigegebenen Preisen informiere ich Sie gern. Für welches Fahrzeug brauchen Sie den Service?</div></div></div>
+<div class="tp"><div><h3>Immobilienmakler</h3><p>Suchkriterien aufnehmen, erste Objektfragen beantworten und Besichtigungsinteresse strukturiert erfassen.</p></div><div><div class="m c">Ich suche eine 3-Zimmer-Wohnung.</div><div class="m a">Gern. In welcher Gegend und bis zu welchem Budget soll die Suche laufen?</div></div></div>
+<div class="tp"><div><h3>Friseure &amp; Salons</h3><p>Über freigegebene Leistungen informieren und zur bestehenden Terminbuchung weiterleiten.</p></div><div><div class="m c">Kann ich diese Woche noch einen Termin bekommen?</div><div class="m a">Sehr gern. Hier gelangen Sie direkt zur Online-Terminbuchung.</div></div></div>
+<div class="tp"><div><h3>Lokale Dienstleister</h3><p>Leistungsgebiet und Ablauf erklären, Rückrufwünsche aufnehmen und Anfragen vorbereiten.</p></div><div><div class="m c">Kommen Sie auch nach Halle?</div><div class="m a">Zu Ihrem Einsatzort gebe ich die Anfrage weiter. Wie dürfen wir Sie zurückrufen?</div></div></div>
+</div><p style="font-size:13px;margin-top:14px">Beispielgespräche zur Illustration. Antworten werden für jedes Unternehmen individuell abgestimmt.</p></div></section>
+
+<section id="demo" style="padding-top:20px"><div class="w"><div class="rv"><span class="eye">Demos</span><h2>Ausprobieren statt nur lesen.</h2><p style="max-width:620px">Eine Frage sagt mehr als eine Produktbeschreibung. Testen Sie den echten Assistenten und sehen Sie, wie eine Automatisierung eine Anfrage verarbeitet.</p></div>
+<div class="dg">
+<div class="card big spot rv"><span class="tag">Demo 1 · KI-Kundenassistent</span><h3 style="font-size:23px">Der echte Assistent</h3>
+<p>Fragen Sie zum Beispiel: Welche Leistungen bietet Bergmann AI an? Wie kann ich einen Termin vereinbaren? Kann ich eine Anfrage hinterlassen?</p>
+<div class="consent"><b>Optionaler KI-Chat</b><p>Mit Ihrer Zustimmung wird der externe Chatdienst Tidio geladen. Dabei erhält Tidio technische Daten wie Ihre IP-Adresse und Geräteinformationen sowie Ihre Chatnachrichten. Cookies bzw. lokaler Speicher können verwendet werden. Eine Verarbeitung in den USA ist möglich. Die Einwilligung ist freiwillig. Bitte keine vertraulichen Daten eingeben.</p>
+<button class="btn" id="tidioBtn" type="button">Zustimmen &amp; Chat öffnen</button></div>
+<p style="font-size:13px;margin-top:12px">E-Mail und Terminbuchung bleiben auch ohne Chat verfügbar.</p></div>
+<div class="card big rv" style="transition-delay:.12s"><span class="tag">Demo 2 · Automatisierung (Simulation)</span><h3 style="font-size:23px">So verarbeitet eine Automatisierung eine Anfrage</h3>
+<p>Wählen Sie eine Beispielanfrage und sehen Sie die vier Schritte.</p>
+<div class="chips" id="simChips"><button class="tb on" data-s="0" type="button">Terminanfrage</button><button class="tb" data-s="1" type="button">Wohnungssuche</button><button class="tb" data-s="2" type="button">Rechnungsfrage</button></div>
+<div class="sim" id="sim" aria-live="polite"></div>
+<p style="font-size:13px;margin-top:12px">Simulation mit Beispieldaten zur Veranschaulichung. Echte Antworten werden vor dem Versand von Ihrem Team geprüft.</p></div>
+</div></div></section>
+
+<section id="ablauf" style="padding-top:20px"><div class="w two"><div class="rv"><span class="eye">Ablauf</span><h2>Gemeinsam festlegen. Gründlich testen. Gezielt einsetzen.</h2><p>Eine gute Lösung beginnt mit klaren Aufgaben und verlässlichen Informationen.</p>
+<ul class="c"><li>Ein klarer Aufgabenbereich vor dem Start</li><li>Ihre Inhalte als Grundlage</li><li>Ihr Team bleibt eingebunden</li></ul></div>
+<div class="steps rv">
+<div class="step"><div class="num">1</div><div><h3>Bedarf verstehen</h3><p>Welche Fragen und Aufgaben kosten Zeit? Wir definieren einen sinnvollen Umfang.</p></div></div>
+<div class="step"><div class="num">2</div><div><h3>Lösung konfigurieren</h3><p>Assistent oder Automatisierung wird auf Ihre Abläufe abgestimmt.</p></div></div>
+<div class="step"><div class="num">3</div><div><h3>Inhalte abstimmen</h3><p>Sie geben Informationen und Formulierungen frei.</p></div></div>
+<div class="step"><div class="num">4</div><div><h3>Testen und freigeben</h3><p>Typische Fälle und Ausnahmen werden geprüft, bevor es startet.</p></div></div>
+<div class="step"><div class="num">5</div><div><h3>Starten und weiterentwickeln</h3><p>Einbindung in Website oder Systeme. Neue Inhalte und Abläufe lassen sich später ergänzen.</p></div></div>
+</div></div></section>
+
+<section id="faq" style="padding-top:20px"><div class="w" style="max-width:840px"><div class="rv"><span class="eye">Häufige Fragen</span><h2>Vor dem ersten Gespräch gut informiert.</h2></div>
+<details class="rv"><summary>Was ist ein KI-Kundenassistent?</summary><p>Ein digitaler Ansprechpartner auf Ihrer Website. Er beantwortet Fragen zu freigegebenen Informationen, nimmt Anliegen auf und führt zum passenden nächsten Schritt.</p></details>
+<details class="rv"><summary>Was ist eine KI-Automatisierung?</summary><p>Ein Ablauf, der Aufgaben wie E-Mail-Verarbeitung, Lead-Erfassung oder Dokumentenverarbeitung im Hintergrund erledigt, individuell für Ihr Unternehmen eingerichtet.</p></details>
+<details class="rv"><summary>Bauen Sie auch Websites für lokale Betriebe?</summary><p>Ja. Für Autohäuser, Werkstätten, Makler, Friseure und andere Dienstleister entsteht eine einseitige Website mit Kontaktweg, auf Wunsch mit KI-Chatbot. Impressum und Datenschutz liefern wir als Entwurf, die rechtliche Prüfung liegt beim Betrieb.</p></details>
+<details class="rv"><summary>Wird alles an mein Unternehmen angepasst?</summary><p>Ja. Inhalte, Tonalität, Aufgaben und Übergaben richten sich nach Ihnen. Der Umfang wird vorab gemeinsam festgelegt.</p></details>
+<details class="rv"><summary>Kann der Assistent Termine vereinbaren?</summary><p>Er kann Terminwünsche aufnehmen oder zur bestehenden Buchung führen. Eine verbindliche Buchung ist nur mit einem angebundenen System möglich.</p></details>
+<details class="rv"><summary>Was passiert bei falschen oder unklaren Antworten?</summary><p>KI kann Fehler machen. Deshalb testen wir typische Fragen vor dem Start, legen Grenzen fest und sehen Kontaktwege für persönliche Hilfe vor.</p></details>
+<details class="rv"><summary>Was kostet es und wie lange dauert es?</summary><p>Das hängt vom Umfang ab. Nach Abstimmung Ihrer Anforderungen erhalten Sie einen konkreten Vorschlag. Es gibt keine automatische Bestellung über diese Website.</p></details>
+</div></section>
+
+<section style="padding-top:20px"><div class="w"><div class="cta rv"><span class="eye">Der nächste Schritt</span><h2>Wie könnte Ihre Lösung aussehen?</h2>
+<p>Testen Sie die Demo oder schreiben Sie uns, welche Anfragen oder Aufgaben in Ihrem Unternehmen immer wieder auftauchen.</p>
+<div class="row" style="justify-content:center"><a class="btn" href="https://bergmann-ai-kundenassistent.vivid-moose-7317.chatgpt.site/#demo" target="_blank" rel="noopener">KI-Assistent testen ↗</a><a class="btn o" href="mailto:shawnbergmann00@gmail.com">Kontakt per E-Mail</a><a class="btn o" href="https://calendly.com/shawnhunter2501/30min" target="_blank" rel="noopener">Termin buchen ↗</a></div></div></div></section>
+</main>
+
+<footer><div class="w"><div><a class="logo" href="#top"><svg><use href="#brand"/></svg>Bergmann <em>AI</em></a><p style="margin-top:10px">KI-gestützte Kundenkommunikation und Automatisierung.<br>© 2026 Bergmann AI · Shawn Bergmann · Halle (Westf.)</p></div>
+<div><a href="https://bergmann-ai-kundenassistent.vivid-moose-7317.chatgpt.site/impressum/" target="_blank" rel="noopener">Impressum</a> · <a href="https://bergmann-ai-kundenassistent.vivid-moose-7317.chatgpt.site/datenschutz/" target="_blank" rel="noopener">Datenschutz</a></div></div></footer>
+
+<script>
+(function(){
+var rm=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}})},{threshold:.12});
+document.querySelectorAll('.rv').forEach(function(el){io.observe(el)});
+// Chat-Animation im Hero
+var seq=document.querySelectorAll('#mock .m,#mock .hand'),i=0;
+function nx(){if(i<seq.length){seq[i].classList.add('show');i++;setTimeout(nx,rm?0:1100)}}
+setTimeout(nx,rm?0:700);
+// Spotlight
+document.querySelectorAll('.spot').forEach(function(c){c.addEventListener('mousemove',function(e){var r=c.getBoundingClientRect();c.style.setProperty('--x',(e.clientX-r.left)+'px');c.style.setProperty('--y',(e.clientY-r.top)+'px')})});
+// Tabs
+var tb=document.querySelectorAll('.tabs .tb'),tp=document.querySelectorAll('.tp');
+tb.forEach(function(b){b.addEventListener('click',function(){tb.forEach(function(x){x.classList.remove('on')});tp.forEach(function(x){x.classList.remove('on')});b.classList.add('on');tp[+b.dataset.t].classList.add('on')})});
+// Scrollbalken + aktive Navigation
+var bar=document.getElementById('bar'),links=document.querySelectorAll('#nav a');
+function sc(){var h=document.documentElement;bar.style.width=(h.scrollTop/(h.scrollHeight-h.clientHeight)*100)+'%';
+var cur='';links.forEach(function(a){var s=document.querySelector(a.getAttribute('href'));if(s&&s.getBoundingClientRect().top<160)cur=a.getAttribute('href')});
+links.forEach(function(a){a.classList.toggle('on',a.getAttribute('href')===cur)})}
+addEventListener('scroll',sc,{passive:true});sc();
+})();
+</script>
+<script>
+(function(){
+var TIDIO_KEY='sfoicz4obievoq3qgseb8uc9zelzjomr'; /* HIER Tidio-Kennung eintragen, z. B. abc123xyz (Teil zwischen code.tidio.co/ und .js) */
+var DEMO_FALLBACK='https://bergmann-ai-kundenassistent.vivid-moose-7317.chatgpt.site/#demo';
+var btn=document.getElementById('tidioBtn');
+if(btn)btn.addEventListener('click',function(){
+ if(!TIDIO_KEY){window.open(DEMO_FALLBACK,'_blank','noopener');return}
+ if(document.getElementById('tidio-s')){if(window.tidioChatApi)window.tidioChatApi.open();return}
+ document.addEventListener('tidioChat-ready',function(){window.tidioChatApi.show();window.tidioChatApi.open()});
+ var t=document.createElement('script');t.id='tidio-s';t.async=true;t.src='//code.tidio.co/'+TIDIO_KEY+'.js';document.body.appendChild(t);
+ btn.textContent='Chat wird geladen …';
+});
+var D=[
+{mail:'„Hallo, mein Golf braucht eine Inspektion. Geht das nächste Woche am Dienstag? Erreichbar bin ich per Telefon.“',
+ ki:[['Kategorie','Terminanfrage'],['Fahrzeug','VW Golf'],['Wunschzeit','Dienstag nächste Woche'],['Kontaktweg','Telefon'],['Dringlichkeit','normal']],
+ crm:[['Kontakt','neu angelegt'],['Status','Neue Anfrage'],['Aufgabe','Termin prüfen']],
+ re:'Guten Tag, vielen Dank für Ihre Anfrage. Wir prüfen den Dienstag und melden uns telefonisch mit einem Terminvorschlag.'},
+{mail:'„Wir suchen eine 3-Zimmer-Wohnung in Halle, Budget bis 1.200 € warm, Einzug ab Januar.“',
+ ki:[['Kategorie','Suchprofil'],['Ort','Halle'],['Zimmer','3'],['Budget','bis 1.200 € warm'],['Einzug','ab Januar']],
+ crm:[['Interessent','neu angelegt'],['Suchprofil','gespeichert'],['Aufgabe','passende Objekte senden']],
+ re:'Guten Tag, vielen Dank für Ihr Suchprofil. Wir senden Ihnen passende Objekte aus Halle, sobald wir sie geprüft haben.'},
+{mail:'„Die Rechnung vom letzten Monat stimmt nicht. Bitte um Korrektur.“',
+ ki:[['Kategorie','Rechnungsfrage'],['Dringlichkeit','hoch'],['Übergabe','an Mitarbeiter'],['Zusage','keine automatische']],
+ crm:[['Ticket','angelegt'],['Priorität','hoch'],['Aufgabe','Rechnung prüfen']],
+ re:'Guten Tag, vielen Dank für Ihre Nachricht. Wir prüfen die Rechnung und melden uns persönlich bei Ihnen.'}];
+var box=document.getElementById('sim'),chips=document.querySelectorAll('#simChips .tb'),tm=[];
+var rm=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+function dl(a){return '<dl>'+a.map(function(r){return '<dt>'+r[0]+'</dt><dd>'+r[1]+'</dd>'}).join('')+'</dl>'}
+function run(k){
+ tm.forEach(clearTimeout);tm=[];var d=D[k];
+ var st=[['1','EINGANG','<div>'+d.mail+'</div>'],['2','KI-EINORDNUNG',dl(d.ki)],['3','CRM-EINTRAG',dl(d.crm)],['4','ANTWORTENTWURF','<div>'+d.re+'</div><div style="font-size:12.5px;color:var(--mute);margin-top:6px">Entwurf. Versand erst nach Prüfung durch Ihr Team.</div>']];
+ box.innerHTML=st.map(function(x){return '<div class="sx"><i>'+x[0]+'</i><div><b>'+x[1]+'</b>'+x[2]+'</div></div>'}).join('');
+ box.querySelectorAll('.sx').forEach(function(el,i){tm.push(setTimeout(function(){el.classList.add('show')},rm?0:i*850+150))});
+}
+chips.forEach(function(c){c.addEventListener('click',function(){chips.forEach(function(x){x.classList.remove('on')});c.classList.add('on');run(+c.dataset.s)})});
+var ob=new IntersectionObserver(function(e){if(e[0].isIntersecting){run(0);ob.disconnect()}},{threshold:.25});
+if(box)ob.observe(box);
+})();
+</script>
+</body>
+</html>
