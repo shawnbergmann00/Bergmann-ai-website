@@ -230,6 +230,39 @@ main > section.ground-inverse { background: linear-gradient(180deg, rgb(7 18 25 
 .trade__live.is-swapping { opacity: 0; filter: blur(4px); }
 #branchen .grid { align-items: stretch; }
 
+/* ---------- request form ---------- */
+.ask { width: min(560px, calc(100vw - 24px)); max-height: calc(100dvh - 24px); padding: 0; border: 1px solid rgb(143 227 255 / .35); border-radius: 20px; background: #0c1f29; color: #e6f2f7; box-shadow: 0 30px 80px -20px rgb(0 0 0 / .7), 0 0 60px -20px rgb(143 227 255 / .35); overflow: auto; }
+.ask::backdrop { background: rgb(3 9 12 / .72); backdrop-filter: blur(4px); }
+.ask[open] { animation: askin 220ms var(--ease-out); }
+@keyframes askin { from { opacity: 0; transform: translateY(10px) scale(.98); } }
+.ask__form { position: relative; padding: 28px; }
+.ask__x { position: absolute; top: 14px; right: 14px; width: 36px; height: 36px; border-radius: 10px; border: 1px solid #24485a; background: transparent; display: grid; place-items: center; cursor: pointer; }
+.ask__x svg { width: 16px; height: 16px; fill: none; stroke: #c3d8e2; stroke-width: 2; stroke-linecap: round; }
+.ask__body { display: grid; gap: 14px; }
+.ask h2 { font: 700 26px/1.15 var(--font-display); letter-spacing: -0.02em; color: #fff; padding-right: 44px; }
+.ask__intro { color: #b5ccd7; font-size: 15px; line-height: 1.55; }
+.ask__two { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.ask__f { display: grid; gap: 6px; font-size: 13.5px; color: #b5ccd7; }
+.ask__f input, .ask__f select, .ask__f textarea { width: 100%; font: 400 16px/1.4 var(--font-text); color: #fff; background: #08161d; border: 1px solid #24485a; border-radius: 10px; padding: 11px 12px; }
+.ask__f textarea { resize: vertical; min-height: 110px; }
+.ask__f select { appearance: none; background-image: linear-gradient(45deg, transparent 50%, #8fe3ff 50%), linear-gradient(135deg, #8fe3ff 50%, transparent 50%); background-position: calc(100% - 18px) 50%, calc(100% - 13px) 50%; background-size: 5px 5px; background-repeat: no-repeat; padding-right: 36px; }
+.ask__f :focus-visible { outline: 2px solid #8fe3ff; outline-offset: 1px; border-color: #8fe3ff; }
+.ask__f [aria-invalid="true"] { border-color: #ff8a7a; }
+.ask__hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+.ask__err { color: #ffb0a5; font-size: 14px; }
+.ask__row { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 16px; margin-top: 4px; }
+.ask__send[disabled] { opacity: .6; cursor: progress; }
+.ask__note { font-size: 13px; color: #8eaab8; flex: 1 1 200px; }
+.ask__alt { padding-top: 14px; border-top: 1px solid #1d3a49; font-size: 14px; color: #b5ccd7; display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; }
+.ask__alt span { color: #fff; user-select: all; }
+.ask__copy { font: 500 13px var(--font-text); color: #8fe3ff; background: transparent; border: 1px solid #2f5668; border-radius: 8px; padding: 6px 10px; cursor: pointer; }
+.ask__done { display: grid; justify-items: start; gap: 12px; padding: 12px 0 4px; }
+.ask__done[hidden] { display: none; }
+.ask__done p { color: #b5ccd7; }
+.ask__check { width: 48px; height: 48px; border-radius: 14px; display: grid; place-items: center; background: rgb(111 220 156 / .12); border: 1px solid rgb(111 220 156 / .5); }
+.ask__check svg { width: 26px; height: 26px; fill: none; stroke: #6fdc9c; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
+@media (max-width: 539px) { .ask__form { padding: 22px 18px; } .ask__two { grid-template-columns: 1fr; } .ask h2 { font-size: 22px; } }
+@media (prefers-reduced-motion: reduce) { .ask[open] { animation: none; } }
 /* ---------- JARVIS cockpit ---------- */
 .cockpit { --ck-line: #1b3644; --ck-tile: #0f2530; --ck-ink: #e6f2f7; --ck-mut: #8eaab8; position: relative; border: 1px solid rgb(143 227 255 / .35); border-radius: var(--r-lg); overflow: hidden; background: linear-gradient(180deg, #0c1f29, #081820); display: grid; grid-template-rows: 52px 1fr; color: var(--ck-ink); box-shadow: 0 0 0 1px rgb(143 227 255 / .06), 0 30px 80px -30px rgb(143 227 255 / .35), 0 0 60px -20px rgb(143 227 255 / .25); }
 .ck-top { display: flex; align-items: center; gap: 14px; padding: 0 16px; border-bottom: 1px solid var(--ck-line); background: rgb(8 22 30 / .7); font-size: 13px; }
@@ -369,9 +402,10 @@ main > section.ground-inverse { background: linear-gradient(180deg, rgb(7 18 25 
 
 
 /* ---------- problem ---------- */
-.prob { align-items: center; row-gap: var(--s-7); }
-.prob__lead { margin-top: var(--s-5); color: #c5d6de; }
-.prob__board { padding: var(--s-6); display: grid; gap: var(--s-3); }
+.prob__board { padding: var(--s-6); display: grid; gap: var(--s-5); }
+.prob__rows { display: grid; gap: var(--s-3); }
+@media (min-width: 1024px) { .prob__rows { grid-template-columns: repeat(3, minmax(0, 1fr)); } .prob__board { padding: var(--s-7); } }
+.prob__lead { color: #e6f2f7; max-width: 46ch; }
 .prob__row { display: grid; grid-template-columns: 44px 1fr; gap: var(--s-4); align-items: center; padding: var(--s-4); border-radius: 14px; background: #0c1c25; border: 1px dashed #5a4630; }
 .prob__row p { color: #e6f2f7; font-size: 16.5px; }
 .prob__ic { width: 44px; height: 44px; border-radius: 12px; display: grid; place-items: center; background: rgb(255 177 92 / .12); border: 1px solid rgb(255 177 92 / .4); }
@@ -638,24 +672,24 @@ main > section#buero, main > section#ki { height: auto !important; }
       <p class="t-lead">Ich richte Ihnen einen KI-Chatbot, automatische Abläufe oder eine neue Website ein. Persönlich, verständlich und nur mit Werkzeugen, die Ihnen wirklich Arbeit abnehmen.</p>
       <div class="btn-row">
         <a class="btn btn--primary" href="#demo" data-demo>Chatbot-Demo testen<svg class="m-arrow" viewBox="0 0 12 12" aria-hidden="true"><path class="m-arrow__stem" d="M1 6h8"/><path class="m-arrow__head" d="M4.5 2.5 8 6l-3.5 3.5"/></svg></a>
-        <a class="btn btn--secondary" href="mailto:shawnbergmann00@gmail.com?subject=Anfrage%20Bergmann%20AI">E-Mail schreiben</a>
+        <a data-anfrage="Allgemeine Anfrage" class="btn btn--secondary" href="mailto:shawnbergmann00@gmail.com?subject=Anfrage%20Bergmann%20AI">Nachricht schreiben</a>
       </div>
     </div>
   </section>
 
   <section class="section" id="problem" aria-labelledby="problem-h">
     <div class="wrap">
-      <div class="grid prob">
-        <div class="span-5" data-reveal>
-          <h2 id="problem-h">Kommt Ihnen das bekannt vor?</h2>
-          <p class="t-lead prob__lead">Das muss nicht so bleiben. Vieles davon kann ein System für Sie vorbereiten, und Sie entscheiden nur noch.</p>
-        </div>
-        <div class="span-7 board prob__board" data-reveal style="--d:100ms">
+      <div class="section-head" data-reveal>
+        <h2 id="problem-h">Kommt Ihnen das bekannt vor?</h2>
+      </div>
+      <div class="board prob__board" data-reveal style="--d:100ms">
+        <div class="prob__rows">
           <div class="prob__row"><span class="prob__ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 13l2.5-7h13L21 13v5H3z"/><path d="M3 13h5l1.5 2.5h5L16 13h5"/></svg></span><p>Anfragen kommen per Mail, Telefon und Website, und manche gehen unter.</p></div>
           <div class="prob__row"><span class="prob__ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/></svg></span><p>Abends beantworten Sie noch Fragen, die eigentlich immer gleich sind.</p></div>
           <div class="prob__row"><span class="prob__ic" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span><p>Angebote, Erinnerungen und Belege kosten Stunden, die Ihnen im Betrieb fehlen.</p></div>
-          <div class="prob__fix"><span class="prob__line" aria-hidden="true"></span><p>Mit einem eingerichteten Ablauf landet jede Anfrage an einer Stelle, und Antworten liegen schon als Entwurf bereit.</p></div>
         </div>
+        <p class="t-lead prob__lead">Das muss nicht so bleiben. Vieles davon kann ein System für Sie vorbereiten, und Sie entscheiden nur noch.</p>
+          <div class="prob__fix"><span class="prob__line" aria-hidden="true"></span><p>Mit einem eingerichteten Ablauf landet jede Anfrage an einer Stelle, und Antworten liegen schon als Entwurf bereit.</p></div>
       </div>
     </div>
   </section>
@@ -787,7 +821,7 @@ main > section#buero, main > section#ki { height: auto !important; }
             <li style="--c: var(--l-office)"><span>Auf Wunsch mit Chatbot, der auch nach Feierabend antwortet.</span></li>
             <li style="--c: var(--l-chat)"><span>Änderungen an Texten und Öffnungszeiten übernehme ich für Sie.</span></li>
           </ul>
-          <a class="btn btn--secondary" href="mailto:shawnbergmann00@gmail.com?subject=Website%20anfragen">Website anfragen</a>
+          <a data-anfrage="Website für lokale Betriebe" class="btn btn--secondary" href="mailto:shawnbergmann00@gmail.com?subject=Website%20anfragen">Website anfragen</a>
         </div>
         <div class="span-7 stage-dev" data-reveal style="--d:120ms" role="img" aria-label="Schematische Beispiel-Websites für einen Blumenladen, ein Café und eine Fahrradwerkstatt auf Laptop und Handy">
           <div class="laptop" aria-hidden="true"><div class="laptop__screen"><div class="viewport" data-demos></div></div><div class="laptop__base"></div></div>
@@ -953,12 +987,12 @@ main > section#buero, main > section#ki { height: auto !important; }
         <h2 id="preise-h">Angebote und Preise. <span class="muted">Feste Preise, keine Überraschungen. Einmalig für die Einrichtung, monatlich für Betreuung und Anpassungen.</span></h2>
       </div>
       <ul class="offers" data-reveal>
-        <li class="offer" style="--c: var(--l-office)"><span class="dot" aria-hidden="true"></span><h3>n8n-Workflow</h3><p>Ein Ablauf, der Ihnen jede Woche Arbeit abnimmt.</p><div class="pr-setup"><span class="price-label">Einrichtung</span><span class="price-amount">ab 249,99 €</span></div><div class="pr-month"><span class="price-label">pro Monat</span><span class="price-amount">19,99 €</span></div><a class="offer__btn btn btn--secondary" href="mailto:shawnbergmann00@gmail.com?subject=Angebot%20anfragen:%20n8n-Workflow">Angebot anfragen</a></li>
-        <li class="offer" style="--c: var(--l-chat)"><span class="dot" aria-hidden="true"></span><h3>KI-Chatbot</h3><p>Beantwortet Fragen und nimmt Anfragen auf, rund um die Uhr.</p><div class="pr-setup"><span class="price-label">Einrichtung</span><span class="price-amount">ab 389,99 €</span></div><div class="pr-month"><span class="price-label">pro Monat</span><span class="price-amount">39,99 €</span></div><a class="offer__btn btn btn--secondary" href="mailto:shawnbergmann00@gmail.com?subject=Angebot%20anfragen:%20KI-Chatbot">Angebot anfragen</a></li>
-        <li class="offer" style="--c: var(--l-mail)"><span class="dot" aria-hidden="true"></span><h3>Website für lokale Betriebe</h3><p>Modern, schnell und fürs Handy gemacht.</p><div class="pr-setup"><span class="price-label">Einrichtung</span><span class="price-amount">ab 789,99 €</span></div><div class="pr-month"><span class="price-label">pro Monat</span><span class="price-amount">24,99 €</span></div><a class="offer__btn btn btn--secondary" href="mailto:shawnbergmann00@gmail.com?subject=Angebot%20anfragen:%20Website%20für%20lokale%20Betriebe">Angebot anfragen</a></li>
-        <li class="offer offer--feature" style="--c: var(--l-chat)"><span class="dot" aria-hidden="true"></span><h3>Website mit Chatbot <span class="badge-line">Paket</span></h3><p>Ihr Auftritt, der Anfragen selbst beantwortet.</p><div class="pr-setup"><span class="price-label">Einrichtung</span><span class="price-amount">999,99 €</span></div><div class="pr-month"><span class="price-label">pro Monat</span><span class="price-amount">49,99 €</span></div><a class="offer__btn btn btn--secondary" href="mailto:shawnbergmann00@gmail.com?subject=Angebot%20anfragen:%20Website%20mit%20Chatbot">Angebot anfragen</a></li>
-        <li class="offer" style="--c: var(--l-office)"><span class="dot" aria-hidden="true"></span><h3>Büro-Automatisierung komplett</h3><p>Anfragen, E-Mails, Angebote, Erinnerungen und Belege, alles aufeinander abgestimmt.</p><div class="pr-setup"><span class="price-label">Einrichtung</span><span class="price-amount">1.200 €</span></div><div class="pr-month"><span class="price-label">pro Monat</span><span class="price-amount">79,99 €</span></div><a class="offer__btn btn btn--secondary" href="mailto:shawnbergmann00@gmail.com?subject=Angebot%20anfragen:%20Büro-Automatisierung%20komplett">Angebot anfragen</a></li>
-        <li class="offer" style="--c: var(--l-chat)"><span class="dot" aria-hidden="true"></span><h3>KI-Assistent JARVIS</h3><p>Ihr eigener KI-Assistent mit Cockpit, angepasst an Ihren Betrieb.</p><div class="pr-setup"><span class="price-label">Einrichtung</span><span class="price-amount">499,99 €</span></div><div class="pr-month"><span class="price-label">pro Monat</span><span class="price-amount">19,99 €</span></div><a class="offer__btn btn btn--secondary" href="mailto:shawnbergmann00@gmail.com?subject=Angebot%20anfragen:%20KI-Assistent%20JARVIS">Angebot anfragen</a></li>
+        <li class="offer" style="--c: var(--l-office)"><span class="dot" aria-hidden="true"></span><h3>n8n-Workflow</h3><p>Ein Ablauf, der Ihnen jede Woche Arbeit abnimmt.</p><div class="pr-setup"><span class="price-label">Einrichtung</span><span class="price-amount">ab 249,99 €</span></div><div class="pr-month"><span class="price-label">pro Monat</span><span class="price-amount">19,99 €</span></div><a data-anfrage="n8n-Workflow" class="offer__btn btn btn--secondary" href="mailto:shawnbergmann00@gmail.com?subject=Angebot%20anfragen:%20n8n-Workflow">Angebot anfragen</a></li>
+        <li class="offer" style="--c: var(--l-chat)"><span class="dot" aria-hidden="true"></span><h3>KI-Chatbot</h3><p>Beantwortet Fragen und nimmt Anfragen auf, rund um die Uhr.</p><div class="pr-setup"><span class="price-label">Einrichtung</span><span class="price-amount">ab 389,99 €</span></div><div class="pr-month"><span class="price-label">pro Monat</span><span class="price-amount">39,99 €</span></div><a data-anfrage="KI-Chatbot" class="offer__btn btn btn--secondary" href="mailto:shawnbergmann00@gmail.com?subject=Angebot%20anfragen:%20KI-Chatbot">Angebot anfragen</a></li>
+        <li class="offer" style="--c: var(--l-mail)"><span class="dot" aria-hidden="true"></span><h3>Website für lokale Betriebe</h3><p>Modern, schnell und fürs Handy gemacht.</p><div class="pr-setup"><span class="price-label">Einrichtung</span><span class="price-amount">ab 789,99 €</span></div><div class="pr-month"><span class="price-label">pro Monat</span><span class="price-amount">24,99 €</span></div><a data-anfrage="Website für lokale Betriebe" class="offer__btn btn btn--secondary" href="mailto:shawnbergmann00@gmail.com?subject=Angebot%20anfragen:%20Website%20für%20lokale%20Betriebe">Angebot anfragen</a></li>
+        <li class="offer offer--feature" style="--c: var(--l-chat)"><span class="dot" aria-hidden="true"></span><h3>Website mit Chatbot <span class="badge-line">Paket</span></h3><p>Ihr Auftritt, der Anfragen selbst beantwortet.</p><div class="pr-setup"><span class="price-label">Einrichtung</span><span class="price-amount">999,99 €</span></div><div class="pr-month"><span class="price-label">pro Monat</span><span class="price-amount">49,99 €</span></div><a data-anfrage="Website mit Chatbot" class="offer__btn btn btn--secondary" href="mailto:shawnbergmann00@gmail.com?subject=Angebot%20anfragen:%20Website%20mit%20Chatbot">Angebot anfragen</a></li>
+        <li class="offer" style="--c: var(--l-office)"><span class="dot" aria-hidden="true"></span><h3>Büro-Automatisierung komplett</h3><p>Anfragen, E-Mails, Angebote, Erinnerungen und Belege, alles aufeinander abgestimmt.</p><div class="pr-setup"><span class="price-label">Einrichtung</span><span class="price-amount">1.200 €</span></div><div class="pr-month"><span class="price-label">pro Monat</span><span class="price-amount">79,99 €</span></div><a data-anfrage="Büro-Automatisierung komplett" class="offer__btn btn btn--secondary" href="mailto:shawnbergmann00@gmail.com?subject=Angebot%20anfragen:%20Büro-Automatisierung%20komplett">Angebot anfragen</a></li>
+        <li class="offer" style="--c: var(--l-chat)"><span class="dot" aria-hidden="true"></span><h3>KI-Assistent JARVIS</h3><p>Ihr eigener KI-Assistent mit Cockpit, angepasst an Ihren Betrieb.</p><div class="pr-setup"><span class="price-label">Einrichtung</span><span class="price-amount">499,99 €</span></div><div class="pr-month"><span class="price-label">pro Monat</span><span class="price-amount">19,99 €</span></div><a data-anfrage="KI-Assistent JARVIS" class="offer__btn btn btn--secondary" href="mailto:shawnbergmann00@gmail.com?subject=Angebot%20anfragen:%20KI-Assistent%20JARVIS">Angebot anfragen</a></li>
       </ul>
       <div class="price-foot">
         <p>Alle Preise netto zzgl. 19 % MwSt.</p>
@@ -989,7 +1023,7 @@ main > section#buero, main > section#ki { height: auto !important; }
       <div class="section-head--split">
         <div><h2 id="close-h">Finden wir heraus, wo Sie Zeit sparen</h2><p class="t-lead">Schreiben Sie mir kurz, was Sie im Alltag aufhält. Ich melde mich mit einer ehrlichen Einschätzung, auch wenn die Antwort „lohnt sich nicht“ ist.</p></div>
         <div class="btn-row">
-          <a class="btn btn--primary" href="mailto:shawnbergmann00@gmail.com?subject=Anfrage%20Bergmann%20AI">E-Mail schreiben<svg class="m-arrow" viewBox="0 0 12 12" aria-hidden="true"><path class="m-arrow__stem" d="M1 6h8"/><path class="m-arrow__head" d="M4.5 2.5 8 6l-3.5 3.5"/></svg></a>
+          <a data-anfrage="Allgemeine Anfrage" class="btn btn--primary" href="mailto:shawnbergmann00@gmail.com?subject=Anfrage%20Bergmann%20AI">Nachricht schreiben<svg class="m-arrow" viewBox="0 0 12 12" aria-hidden="true"><path class="m-arrow__stem" d="M1 6h8"/><path class="m-arrow__head" d="M4.5 2.5 8 6l-3.5 3.5"/></svg></a>
           <a class="btn btn--secondary" href="#demo" data-demo>Chatbot-Demo testen</a>
         </div>
       </div>
@@ -1013,6 +1047,34 @@ main > section#buero, main > section#ki { height: auto !important; }
   </div>
 </footer>
 
+<dialog class="ask" id="anfrage" aria-labelledby="ask-h">
+  <form class="ask__form" method="dialog" novalidate>
+    <button class="ask__x" type="submit" value="close" aria-label="Schließen" formnovalidate><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M5 5l10 10M15 5L5 15"/></svg></button>
+    <div class="ask__body">
+      <h2 id="ask-h">Anfrage senden</h2>
+      <p class="ask__intro">Sie brauchen dafür kein bestimmtes E-Mail-Konto. Ihre Nachricht kommt direkt bei mir an, und ich melde mich bei Ihnen.</p>
+      <label class="ask__f"><span>Worum geht es?</span><select name="angebot"><option>Allgemeine Anfrage</option><option>n8n-Workflow</option><option>KI-Chatbot</option><option>Website für lokale Betriebe</option><option>Website mit Chatbot</option><option>Büro-Automatisierung komplett</option><option>KI-Assistent JARVIS</option></select></label>
+      <div class="ask__two">
+        <label class="ask__f"><span>Ihr Name</span><input name="name" autocomplete="name" maxlength="200"></label>
+        <label class="ask__f"><span>E-Mail oder Telefon *</span><input name="kontakt" required autocomplete="email" maxlength="200"></label>
+      </div>
+      <label class="ask__f"><span>Ihre Nachricht *</span><textarea name="nachricht" required rows="4" maxlength="4000" placeholder="Zum Beispiel: Ich habe eine Werkstatt und bekomme viele gleiche Fragen per Mail."></textarea></label>
+      <label class="ask__hp" aria-hidden="true">Website<input name="website" tabindex="-1" autocomplete="off"></label>
+      <p class="ask__err" role="alert" hidden></p>
+      <div class="ask__row">
+        <button class="btn btn--primary ask__send" type="submit" value="send">Anfrage senden</button>
+        <p class="ask__note">Ihre Angaben nutze ich nur, um Ihre Anfrage zu beantworten.</p>
+      </div>
+      <p class="ask__alt">Lieber selbst schreiben? <span>shawnbergmann00@gmail.com</span> <button type="button" class="ask__copy" formnovalidate>Adresse kopieren</button></p>
+    </div>
+    <div class="ask__done" hidden>
+      <span class="ask__check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span>
+      <h2 tabindex="-1">Danke, Ihre Anfrage ist angekommen.</h2>
+      <p>Ich lese sie persönlich und melde mich bei Ihnen.</p>
+      <button class="btn btn--secondary" type="submit" value="close" formnovalidate>Schließen</button>
+    </div>
+  </form>
+</dialog>
 <aside class="consent" id="demo" role="dialog" aria-labelledby="consent-h" hidden>
   <h2 id="consent-h">Chatbot-Demo starten</h2>
   <p>Mit Ihrer Zustimmung wird der externe Chatdienst Tidio geladen. Dabei erhält Tidio technische Daten wie Ihre IP-Adresse und Geräteinformationen sowie Ihre Chatnachrichten; Cookies oder lokaler Speicher können verwendet werden, eine Verarbeitung in den USA ist möglich. Die Einwilligung ist freiwillig. Bitte keine vertraulichen Daten eingeben.</p>
@@ -1328,6 +1390,58 @@ main > section#buero, main > section#ki { height: auto !important; }
     s.onerror = function () { btn.textContent = 'Chat konnte nicht laden'; };
     document.body.appendChild(s);
     btn.textContent = 'Chat wird geladen …'; btn.disabled = true;
+  });
+})();
+</script>
+<script>
+(function () {
+  var dlg = document.getElementById('anfrage');
+  if (!dlg || typeof dlg.showModal !== 'function') return;
+  var URL_HOOK = 'https://bergmannai.app.n8n.cloud/webhook/bergmann-anfrage';
+  var form = dlg.querySelector('form'), body = dlg.querySelector('.ask__body'), done = dlg.querySelector('.ask__done');
+  var err = dlg.querySelector('.ask__err'), send = dlg.querySelector('.ask__send'), sel = form.elements.angebot;
+  var opener = null;
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest('[data-anfrage]');
+    if (!a) return;
+    e.preventDefault();
+    opener = a;
+    body.hidden = false; done.hidden = true; err.hidden = true;
+    sel.value = a.getAttribute('data-anfrage');
+    if (sel.selectedIndex < 0) sel.selectedIndex = 0;
+    dlg.showModal();
+    (form.elements.name.value ? form.elements.nachricht : form.elements.name).focus();
+  });
+  dlg.addEventListener('close', function () { if (opener) opener.focus(); });
+  dlg.addEventListener('click', function (e) { if (e.target === dlg) dlg.close(); });
+  dlg.querySelector('.ask__copy').addEventListener('click', function () {
+    var b = this, t = 'shawnbergmann00@gmail.com';
+    var ok = function () { b.textContent = 'Kopiert'; setTimeout(function () { b.textContent = 'Adresse kopieren'; }, 1800); };
+    if (navigator.clipboard) navigator.clipboard.writeText(t).then(ok, function () {}); 
+  });
+  form.addEventListener('submit', function (e) {
+    if (e.submitter && e.submitter.value === 'close') return;
+    e.preventDefault();
+    var bad = null;
+    ['kontakt', 'nachricht'].forEach(function (n) {
+      var f = form.elements[n], empty = !f.value.trim();
+      f.setAttribute('aria-invalid', empty ? 'true' : 'false');
+      if (empty && !bad) bad = f;
+    });
+    if (bad) { err.textContent = 'Bitte geben Sie eine E-Mail-Adresse oder Telefonnummer und Ihre Nachricht an.'; err.hidden = false; bad.focus(); return; }
+    err.hidden = true; send.disabled = true; send.textContent = 'Wird gesendet …';
+    var data = new URLSearchParams(new FormData(form));
+    fetch(URL_HOOK, { method: 'POST', body: data })
+      .then(function (r) { if (!r.ok) throw new Error(r.status); })
+      .then(function () {
+        form.reset(); body.hidden = true; done.hidden = false;
+        done.querySelector('h2').focus();
+      })
+      .catch(function () {
+        err.textContent = 'Das hat leider nicht geklappt. Schreiben Sie mir bitte direkt an shawnbergmann00@gmail.com.';
+        err.hidden = false;
+      })
+      .then(function () { send.disabled = false; send.textContent = 'Anfrage senden'; });
   });
 })();
 </script>
