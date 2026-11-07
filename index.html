@@ -170,6 +170,28 @@ main > section.ground-inverse { background: linear-gradient(180deg, rgb(7 18 25 
 .flow .ns { font: 400 12px var(--font-mono); fill: var(--board-muted); }
 .flow .wire { fill: none; stroke: var(--l-mail); stroke-width: 3; stroke-linecap: round; }
 .flow .pulse { fill: #fff; }
+.flow--big { position: static; padding: var(--s-6) var(--s-5); }
+#leistungen .panel--auto { min-height: 0; }
+.flow--big svg { max-width: 1080px; }
+.flow--big .flow-tall { display: none; }
+.flow .hd { font: 500 11px var(--font-mono); letter-spacing: .12em; fill: var(--board-muted); }
+.flow .nt--big { font: 700 17px var(--font-display); fill: #fff; }
+.flow .node--out { stroke: rgb(111 220 156 / .45); }
+.flow .hub { fill: #0c1c25; stroke: #ffb15c; stroke-width: 1.5; filter: drop-shadow(0 0 14px rgb(255 177 92 / .25)); }
+.flow .ok { fill: rgb(111 220 156 / .1); stroke: #6fdc9c; stroke-width: 1.5; filter: drop-shadow(0 0 14px rgb(111 220 156 / .3)); }
+.flow .warn { fill: rgb(255 177 92 / .06); stroke: #ffb15c; stroke-width: 1.3; stroke-dasharray: 5 4; }
+.flow .num { fill: #ffb15c; }
+.flow .numt { font: 700 12px var(--font-text); fill: #04121a; text-anchor: middle; }
+.flow .step-line { stroke: rgb(255 177 92 / .4); stroke-width: 1.5; }
+.flow .wire--in { stroke: rgb(143 227 255 / .5); stroke-width: 2; }
+.flow .wire--out { stroke: #ffb15c; stroke-width: 2; opacity: .75; }
+.flow .wire--ok { stroke: #6fdc9c; stroke-width: 1.6; opacity: .55; }
+.flow .wire--warn { stroke: #ffb15c; stroke-width: 1.5; stroke-dasharray: 4 4; opacity: .6; }
+.flow .pulse--ok { fill: #6fdc9c; }
+@media (max-width: 899px) {
+  .flow--big .flow-wide { display: none; }
+  .flow--big .flow-tall { display: block; max-width: 460px; margin: 0 auto; }
+}
 .mini-chat { position: absolute; left: 50%; top: var(--s-6); width: min(330px, calc(100% - 48px)); transform: translateX(-50%); }
 .mini-chat.chat-card { right: auto; bottom: auto; }
 .site-mock { position: absolute; left: var(--s-6); right: var(--s-6); top: var(--s-6); bottom: -12px; background: #fff; border-radius: 12px 12px 0 0; overflow: hidden; color: #1d2a22; box-shadow: 0 20px 40px -18px rgb(0 0 0 / .6); }
@@ -209,33 +231,83 @@ main > section.ground-inverse { background: linear-gradient(180deg, rgb(7 18 25 
 #branchen .grid { align-items: stretch; }
 
 /* ---------- JARVIS cockpit ---------- */
-.cockpit { border: 1px solid #24485a; border-radius: var(--r-lg); overflow: hidden; background: #0b1c25; display: grid; grid-template-rows: 44px 1fr; min-height: 600px; }
-.cockpit__bar { display: flex; align-items: center; gap: 8px; padding: 0 16px; border-bottom: 1px solid #1d3a49; font-size: 13px; color: var(--board-muted); }
-.cockpit__bar i { width: 10px; height: 10px; border-radius: 50%; background: #2b4b5b; }
-.cockpit__bar span { margin-left: 10px; }
-.cockpit__bar em { margin-left: auto; font-style: normal; color: #6fdc9c; }
-.cockpit__body { display: grid; grid-template-columns: 200px minmax(0, 1fr) 300px; min-height: 0; }
-.ck-side { border-right: 1px solid #1d3a49; padding: 16px 12px; display: grid; align-content: start; gap: 4px; font-size: 14px; color: var(--board-muted); }
-.ck-side span { padding: 8px 10px; border-radius: 8px; display: flex; justify-content: space-between; }
-.ck-side .on { background: #13394a; color: #e6f6fd; }
-.ck-side b { font: 400 12px var(--font-mono); color: #8fe3ff; }
-.ck-main { padding: 22px 26px; display: grid; align-content: start; gap: 12px; }
-.ck-msg { max-width: 80%; padding: 12px 15px; border-radius: 14px; font-size: 15px; line-height: 1.5; }
+.cockpit { --ck-line: #1b3644; --ck-tile: #0f2530; --ck-ink: #e6f2f7; --ck-mut: #8eaab8; position: relative; border: 1px solid rgb(143 227 255 / .35); border-radius: var(--r-lg); overflow: hidden; background: linear-gradient(180deg, #0c1f29, #081820); display: grid; grid-template-rows: 52px 1fr; color: var(--ck-ink); box-shadow: 0 0 0 1px rgb(143 227 255 / .06), 0 30px 80px -30px rgb(143 227 255 / .35), 0 0 60px -20px rgb(143 227 255 / .25); }
+.ck-top { display: flex; align-items: center; gap: 14px; padding: 0 16px; border-bottom: 1px solid var(--ck-line); background: rgb(8 22 30 / .7); font-size: 13px; }
+.ck-dots { display: flex; gap: 6px; } .ck-dots i { width: 10px; height: 10px; border-radius: 50%; background: #23404e; }
+.ck-brand { display: flex; align-items: center; gap: 9px; font: 700 14px var(--font-display); letter-spacing: .02em; }
+.ck-logo { width: 24px; height: 24px; border-radius: 7px; display: grid; place-items: center; background: radial-gradient(circle at 50% 40%, #bff0ff, #8fe3ff 45%, #2a7fa3); color: #04121a; font: 700 13px var(--font-display); box-shadow: 0 0 16px rgb(143 227 255 / .6); }
+.ck-brand small { font: 400 12px var(--font-text); color: var(--ck-mut); }
+.ck-search { flex: 1; max-width: 360px; margin-left: 12px; height: 32px; display: flex; align-items: center; gap: 8px; padding: 0 10px; border-radius: 8px; border: 1px solid var(--ck-line); background: #0a1b23; color: #6f8d9b; }
+.ck-search svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 2; }
+.ck-search kbd { margin-left: auto; font: 400 11px var(--font-mono); padding: 2px 6px; border-radius: 5px; border: 1px solid var(--ck-line); color: var(--ck-mut); }
+.ck-live { margin-left: auto; white-space: nowrap; display: flex; align-items: center; gap: 7px; padding: 5px 10px; border-radius: 99px; background: rgb(111 220 156 / .1); border: 1px solid rgb(111 220 156 / .35); color: #9be8bb; font-size: 12.5px; }
+.ck-live i, .ck-dot { width: 7px; height: 7px; border-radius: 50%; background: #6fdc9c; box-shadow: 0 0 0 0 rgb(111 220 156 / .6); animation: ckping 2.2s ease-out infinite; }
+@keyframes ckping { 70% { box-shadow: 0 0 0 7px rgb(111 220 156 / 0); } 100% { box-shadow: 0 0 0 0 rgb(111 220 156 / 0); } }
+.ck-date { font: 400 12px var(--font-mono); color: var(--ck-mut); }
+.ck-av { width: 28px; height: 28px; border-radius: 50%; display: grid; place-items: center; background: #163847; border: 1px solid #2f5668; font: 700 11px var(--font-text); color: #cfeaf5; }
+.cockpit__body { display: grid; grid-template-columns: 196px minmax(0, 1fr) 300px; min-height: 0; }
+.ck-side { border-right: 1px solid var(--ck-line); padding: 14px 10px; display: flex; flex-direction: column; gap: 2px; font-size: 13.5px; color: var(--ck-mut); }
+.ck-side span { padding: 8px 10px; border-radius: 8px; display: flex; align-items: center; gap: 10px; }
+.ck-side svg { width: 15px; height: 15px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; flex: none; }
+.ck-side .on { background: linear-gradient(90deg, rgb(143 227 255 / .16), rgb(143 227 255 / .04)); color: #fff; box-shadow: inset 2px 0 0 #8fe3ff; }
+.ck-side b { margin-left: auto; min-width: 20px; padding: 1px 6px; border-radius: 99px; text-align: center; font: 500 11px var(--font-mono); color: #04121a; background: #8fe3ff; }
+.ck-side b.w { background: #ffb15c; }
+.ck-side .ck-lbl { margin-top: 14px; padding: 6px 10px; font: 500 10.5px var(--font-mono); letter-spacing: .12em; color: #5f7d8b; }
+.ck-side .sub { font-size: 12.5px; padding: 6px 10px; }
+.ck-side .sub i { width: 7px; height: 7px; border-radius: 50%; background: #6fdc9c; flex: none; }
+.ck-main { padding: 18px 20px; display: grid; gap: 14px; align-content: start; min-width: 0; }
+.ck-kpis { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
+.ck-kpi { padding: 12px 14px; border-radius: 12px; background: var(--ck-tile); border: 1px solid var(--ck-line); display: grid; gap: 2px; }
+.ck-kpi small { font-size: 12px; color: var(--ck-mut); }
+.ck-kpi b { font: 700 26px/1.1 var(--font-display); letter-spacing: -0.02em; color: #fff; }
+.ck-kpi em { font: 400 11.5px var(--font-mono); font-style: normal; color: #6fdc9c; }
+.ck-kpi em.w { color: #ffb15c; } .ck-kpi em.n { color: var(--ck-mut); }
+.ck-grid { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr); gap: 14px; }
+.ck-box { border-radius: 12px; background: var(--ck-tile); border: 1px solid var(--ck-line); padding: 14px; display: grid; gap: 10px; align-content: start; min-width: 0; }
+.ck-h { display: flex; align-items: center; justify-content: space-between; font: 500 10.5px var(--font-mono); letter-spacing: .12em; text-transform: uppercase; color: #6f8d9b; }
+.ck-h span { letter-spacing: 0; text-transform: none; color: var(--ck-mut); }
+.ck-msg { max-width: 88%; padding: 10px 13px; border-radius: 12px; font-size: 13.5px; line-height: 1.45; }
 .ck-msg--me { justify-self: end; background: #8fe3ff; color: #0d2230; border-bottom-right-radius: 4px; }
-.ck-msg--j { background: #132f3d; color: #e6f2f7; border-bottom-left-radius: 4px; }
-.ck-msg--j ul { margin: 8px 0 0; padding-left: 18px; color: #c3d8e2; }
-.ck-input { margin-top: 8px; padding: 12px 14px; border: 1px solid #24485a; border-radius: 10px; color: #8eaab8; font-size: 14px; }
-.ck-right { border-left: 1px solid #1d3a49; padding: 18px 16px; display: grid; align-content: start; gap: 12px; }
-.ck-right .ck-h { font: 500 13px var(--font-text); color: var(--board-muted); }
-.ck-card { background: #132f3d; border: 1px solid #1f4152; border-radius: 12px; padding: 12px 14px; display: grid; gap: 8px; font-size: 14px; color: #e6f2f7; }
-.ck-card small { color: #9fb9c6; font-size: 13px; }
+.ck-msg--j { background: #15323f; color: var(--ck-ink); border-bottom-left-radius: 4px; }
+.ck-msg--j ul { margin: 6px 0 0; padding-left: 16px; color: #c3d8e2; }
+.ck-steps { display: grid; gap: 4px; padding: 8px 10px; border-radius: 10px; border: 1px dashed #24485a; font: 400 11.5px var(--font-mono); color: var(--ck-mut); }
+.ck-steps span::before { content: "✓ "; color: #6fdc9c; }
+.ck-type { display: inline-flex; gap: 4px; padding: 10px 13px; border-radius: 12px; background: #15323f; justify-self: start; }
+.ck-type i { width: 6px; height: 6px; border-radius: 50%; background: #8fe3ff; animation: cktype 1.2s ease-in-out infinite; }
+.ck-type i:nth-child(2) { animation-delay: .15s; } .ck-type i:nth-child(3) { animation-delay: .3s; }
+@keyframes cktype { 0%, 60%, 100% { opacity: .3; transform: none; } 30% { opacity: 1; transform: translateY(-3px); } }
+.ck-input { display: flex; align-items: center; padding: 9px 10px 9px 12px; border: 1px solid #24485a; border-radius: 10px; color: #7894a2; font-size: 13px; background: #0a1b23; }
+.ck-input b { margin-left: auto; width: 26px; height: 26px; border-radius: 7px; display: grid; place-items: center; background: #8fe3ff; box-shadow: 0 0 14px -2px rgb(143 227 255 / .7); }
+.ck-input svg { width: 13px; height: 13px; fill: none; stroke: #04121a; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+.ck-cal { display: grid; gap: 6px; }
+.ck-ev { display: grid; grid-template-columns: 44px 1fr; gap: 10px; align-items: center; font-size: 13px; }
+.ck-ev time { font: 400 11.5px var(--font-mono); color: var(--ck-mut); }
+.ck-ev div { padding: 7px 10px; border-radius: 8px; border-left: 3px solid var(--c, #8fe3ff); background: rgb(143 227 255 / .05); }
+.ck-ev small { display: block; color: var(--ck-mut); font-size: 11.5px; }
+.ck-now { position: relative; height: 1px; margin: 2px 0 2px 44px; background: #ff7a7a; }
+.ck-now::before { content: ""; position: absolute; left: -4px; top: -3px; width: 7px; height: 7px; border-radius: 50%; background: #ff7a7a; }
+.ck-todo { display: grid; gap: 7px; font-size: 13px; color: #c3d8e2; }
+.ck-todo span { display: flex; align-items: center; gap: 9px; }
+.ck-todo span::before { content: ""; width: 13px; height: 13px; border-radius: 4px; border: 1.5px solid #3b6476; flex: none; }
+.ck-todo .done { color: #6f8d9b; text-decoration: line-through; }
+.ck-todo .done::before { background: #6fdc9c; border-color: #6fdc9c; }
+.ck-right { border-left: 1px solid var(--ck-line); padding: 18px 16px; display: grid; align-content: start; gap: 12px; background: rgb(6 18 24 / .4); }
+.ck-card { background: #12303d; border: 1px solid rgb(255 177 92 / .45); border-radius: 12px; padding: 12px 13px; display: grid; gap: 8px; font-size: 13.5px; box-shadow: 0 0 24px -12px rgb(255 177 92 / .5); }
+.ck-card small { color: #9fb9c6; font-size: 12px; }
+.ck-mail { padding: 9px 10px; border-radius: 8px; background: #0a1b23; border: 1px solid var(--ck-line); font-size: 12px; color: #b5ccd7; line-height: 1.45; }
+.ck-mail b { display: block; color: #fff; font-size: 12px; margin-bottom: 3px; }
 .ck-btns { display: flex; gap: 6px; }
-.ck-btns span { flex: 1; text-align: center; padding: 7px 0; border-radius: 8px; font-size: 13px; background: #8fe3ff; color: #0d2230; font-weight: 700; }
+.ck-btns span { flex: 1; text-align: center; padding: 7px 0; border-radius: 8px; font-size: 12.5px; background: #8fe3ff; color: #0d2230; font-weight: 700; }
 .ck-btns span + span { background: transparent; border: 1px solid #2f5668; color: #c3d8e2; font-weight: 400; }
-.ck-flow { display: flex; align-items: center; gap: 8px; font-size: 13px; color: #c3d8e2; }
-.ck-flow i { width: 8px; height: 8px; border-radius: 50%; background: #6fdc9c; flex: none; }
-.ck-flow i.wait { background: #ffb15c; }
-.ck-flow time { margin-left: auto; font: 400 12px var(--font-mono); color: #8eaab8; }
+.ck-flows { display: grid; gap: 9px; }
+.ck-flow { display: grid; grid-template-columns: 8px 1fr auto; gap: 4px 9px; align-items: center; font-size: 12.5px; color: #c3d8e2; }
+.ck-flow i { width: 8px; height: 8px; border-radius: 50%; background: #6fdc9c; }
+.ck-flow i.wait { background: #ffb15c; } .ck-flow i.plan { background: #3b6476; }
+.ck-flow time { font: 400 11px var(--font-mono); color: var(--ck-mut); }
+.ck-flow u { grid-column: 2 / -1; height: 3px; border-radius: 3px; background: #183644; text-decoration: none; overflow: hidden; }
+.ck-flow u::after { content: ""; display: block; height: 100%; width: var(--p, 100%); border-radius: 3px; background: var(--c, #6fdc9c); }
+.ck-log { display: grid; gap: 5px; font: 400 11px/1.4 var(--font-mono); color: #7f9cab; }
+.ck-log span b { color: #8fe3ff; font-weight: 400; margin-right: 6px; }
 .jarvis-points { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--s-6); margin-top: var(--s-7); }
 .jarvis-points h3 { font: 700 19px/1.25 var(--font-display); margin-bottom: 6px; }
 .jarvis-points p { color: var(--muted); font-size: 16px; }
@@ -448,7 +520,7 @@ main > section#buero, main > section#ki { height: auto !important; }
 @media (prefers-reduced-motion: reduce) {
   .js [data-reveal], .js .route li, .js .route li .stop, .js .hero__text > *, .js .hero-map .stations, .js .hero-map .labels { opacity: 1 !important; transform: none !important; animation: none !important; transition: none !important; }
   .js .hero-map .ln { animation: none; stroke-dashoffset: 0; }
-  .dm-chat, .gl-core-ring, .gl-orbit, .demo.is-on .wf > * { animation: none !important; }
+  .dm-chat, .gl-core-ring, .gl-orbit, .demo.is-on .wf > *, .ck-live i, .ck-type i { animation: none !important; }
 }
 @media (max-width: 1023px) {
   .stage-dev { min-height: 480px; margin-top: var(--s-7); }
@@ -467,16 +539,24 @@ main > section#buero, main > section#ki { height: auto !important; }
   .route__train, .hero-map .train { animation: none !important; display: none; }
   .chat-card [data-step], .trade__live, .consent { transition: none !important; }
 }
+@media (max-width: 1279px) {
+  .cockpit__body { grid-template-columns: 172px minmax(0, 1fr) 270px; }
+  .ck-grid { grid-template-columns: 1fr; }
+  .ck-search, .ck-date { display: none; }
+}
 @media (max-width: 1023px) {
-  .cockpit__body { grid-template-columns: minmax(0, 1fr) 280px; }
+  .cockpit__body { grid-template-columns: minmax(0, 1fr) 270px; }
   .ck-side { display: none; }
+  .ck-kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .jarvis-points { grid-template-columns: 1fr; gap: var(--s-4); }
 }
 @media (max-width: 639px) {
   .cockpit { min-height: 0; }
   .cockpit__body { grid-template-columns: 1fr; }
   .ck-right { border-left: 0; border-top: 1px solid #1d3a49; }
-  .ck-right .ck-card:nth-of-type(n+2), .ck-right .ck-flow:nth-child(n+5) { display: none; }
+  .ck-box--cal, .ck-log, .ck-h--log, .ck-brand small { display: none; }
+  .ck-main { padding: 14px; }
+  .ck-kpi b { font-size: 22px; }
   .map-key { left: var(--s-4); top: var(--s-4); }
   .map-key button span { display: none; }
   .trade { padding: var(--s-6); }
@@ -586,7 +666,14 @@ main > section#buero, main > section#ki { height: auto !important; }
         <h2 id="leistungen-h">Was ich für Sie einrichte. <span class="muted">Jedes Angebot funktioniert für sich und lässt sich später kombinieren.</span></h2>
       </div>
       <div class="grid">
-        <article class="card card--open span-4" data-reveal>
+        <article class="card card--open span-12" data-reveal>
+          <h3>Automatisierung fürs Büro</h3>
+          <p>Anfragen sammeln, E-Mails sortieren, Angebote vorbereiten, an Termine erinnern, Belege ordnen: Was sich jede Woche wiederholt, läuft automatisch. So sieht der Weg einer Aufgabe aus, vom Eingang bis zu Ihrer Freigabe.</p>
+          <div class="panel panel--auto" role="img" aria-label="Schaubild: E-Mails, Kontaktformulare, Belege, erledigte Aufträge und anstehende Termine gehen in einen KI-Ablauf. Er liest, erkennt Thema und Dringlichkeit, holt Preisliste und Listen dazu und schreibt Entwürfe oder legt ab. Heraus kommen Antwort- und Angebotsentwürfe, eine Anfragenliste, abgelegte Belege, Erinnerungen und Bewertungsanfragen. Verschickt wird erst nach Ihrer Freigabe. Hakt etwas, gibt es einen Fehler-Alarm.">
+            <div class="flow flow--big"><svg class="flow-wide" viewBox="0 0 1080 430"><text class="hd" x="20" y="26">1 · ES KOMMT REIN</text><text class="hd" x="300" y="26">2 · DAS SYSTEM ARBEITET</text><text class="hd" x="650" y="26">3 · LIEGT BEREIT</text><text class="hd" x="935" y="26">4 · SIE</text><path class="wire wire--in" d="M210 74 C255 74 255 142 300 142"/><path class="wire wire--in" d="M210 144 C255 144 255 180 300 180"/><path class="wire wire--in" d="M210 214 C255 214 255 218 300 218"/><path class="wire wire--in" d="M210 284 C255 284 255 256 300 256"/><path class="wire wire--in" d="M210 354 C255 354 255 294 300 294"/><path class="wire wire--out" d="M570 132 C610 132 610 67 650 67"/><path class="wire wire--ok" d="M880 67 C908 67 908 205 935 205"/><path class="wire wire--out" d="M570 166 C610 166 610 125 650 125"/><path class="wire wire--ok" d="M880 125 C908 125 908 205 935 205"/><path class="wire wire--out" d="M570 200 C610 200 610 183 650 183"/><path class="wire wire--ok" d="M880 183 C908 183 908 205 935 205"/><path class="wire wire--out" d="M570 234 C610 234 610 241 650 241"/><path class="wire wire--ok" d="M880 241 C908 241 908 205 935 205"/><path class="wire wire--out" d="M570 268 C610 268 610 299 650 299"/><path class="wire wire--ok" d="M880 299 C908 299 908 205 935 205"/><path class="wire wire--out" d="M570 302 C610 302 610 357 650 357"/><path class="wire wire--ok" d="M880 357 C908 357 908 205 935 205"/><rect class="node" x="20" y="48" width="190" height="52" rx="11"/><text class="nt" x="34" y="71">Neue E-Mail</text><text class="ns" x="34" y="88">Gmail-Postfach</text><rect class="node" x="20" y="118" width="190" height="52" rx="11"/><text class="nt" x="34" y="141">Kontaktformular</text><text class="ns" x="34" y="158">auf Ihrer Website</text><rect class="node" x="20" y="188" width="190" height="52" rx="11"/><text class="nt" x="34" y="211">Rechnung, Beleg</text><text class="ns" x="34" y="228">PDF oder Foto</text><rect class="node" x="20" y="258" width="190" height="52" rx="11"/><text class="nt" x="34" y="281">Auftrag erledigt</text><text class="ns" x="34" y="298">Eintrag in der Liste</text><rect class="node" x="20" y="328" width="190" height="52" rx="11"/><text class="nt" x="34" y="351">Termin steht an</text><text class="ns" x="34" y="368">Terminliste</text><rect class="node node--out" x="650" y="44" width="230" height="46" rx="11"/><text class="nt" x="664" y="64">Antwort-Entwurf</text><text class="ns" x="664" y="81">nach Dringlichkeit sortiert</text><rect class="node node--out" x="650" y="102" width="230" height="46" rx="11"/><text class="nt" x="664" y="122">Angebots-Entwurf</text><text class="ns" x="664" y="139">aus Ihrer Preisliste</text><rect class="node node--out" x="650" y="160" width="230" height="46" rx="11"/><text class="nt" x="664" y="180">Anfrage in der Liste</text><text class="ns" x="664" y="197">alles an einer Stelle</text><rect class="node node--out" x="650" y="218" width="230" height="46" rx="11"/><text class="nt" x="664" y="238">Beleg im Ordner</text><text class="ns" x="664" y="255">sinnvoll benannt</text><rect class="node node--out" x="650" y="276" width="230" height="46" rx="11"/><text class="nt" x="664" y="296">Erinnerung an Kunden</text><text class="ns" x="664" y="313">Termine, offene Angebote</text><rect class="node node--out" x="650" y="334" width="230" height="46" rx="11"/><text class="nt" x="664" y="354">Bewertungs-Anfrage</text><text class="ns" x="664" y="371">nur mit Einwilligung</text><rect class="hub" x="300" y="92" width="270" height="250" rx="16"/><text class="nt nt--big" x="320" y="124">KI-Ablauf</text><text class="ns" x="320" y="144">läuft rund um die Uhr</text><circle class="num" cx="332" cy="180" r="11"/><text class="numt" x="332" y="184">1</text><text class="nt" x="352" y="185">Liest Inhalt und Anhang</text><path class="step-line" d="M332 191 V209"/><circle class="num" cx="332" cy="220" r="11"/><text class="numt" x="332" y="224">2</text><text class="nt" x="352" y="225">Erkennt Thema und Dringlichkeit</text><path class="step-line" d="M332 231 V249"/><circle class="num" cx="332" cy="260" r="11"/><text class="numt" x="332" y="264">3</text><text class="nt" x="352" y="265">Holt Preisliste und Listen dazu</text><path class="step-line" d="M332 271 V289"/><circle class="num" cx="332" cy="300" r="11"/><text class="numt" x="332" y="304">4</text><text class="nt" x="352" y="305">Schreibt Entwurf oder legt ab</text><rect class="ok" x="935" y="150" width="130" height="110" rx="14"/><text class="nt nt--big" x="951" y="185">Sie geben</text><text class="nt nt--big" x="951" y="207">frei</text><text class="ns" x="951" y="230">erst dann geht</text><text class="ns" x="951" y="246">etwas raus</text><rect class="warn" x="300" y="370" width="270" height="46" rx="11"/><text class="nt" x="316" y="390">Fehler-Alarm</text><text class="ns" x="316" y="406">hakt etwas, wissen Sie es sofort</text><path class="wire wire--warn" d="M435.0 342 V370"/><circle class="pulse" r="4"><animateMotion dur="2.4s" begin="0.00s" repeatCount="indefinite" path="M210 74 C255 74 255 142 300 142"/></circle><circle class="pulse" r="4"><animateMotion dur="2.4s" begin="0.50s" repeatCount="indefinite" path="M210 144 C255 144 255 180 300 180"/></circle><circle class="pulse" r="4"><animateMotion dur="2.4s" begin="1.00s" repeatCount="indefinite" path="M210 214 C255 214 255 218 300 218"/></circle><circle class="pulse" r="4"><animateMotion dur="2.4s" begin="1.50s" repeatCount="indefinite" path="M210 284 C255 284 255 256 300 256"/></circle><circle class="pulse" r="4"><animateMotion dur="2.4s" begin="2.00s" repeatCount="indefinite" path="M210 354 C255 354 255 294 300 294"/></circle><circle class="pulse pulse--ok" r="4"><animateMotion dur="2.2s" begin="1.20s" repeatCount="indefinite" path="M570 132 C610 132 610 67 650 67"/></circle><circle class="pulse pulse--ok" r="4"><animateMotion dur="2.2s" begin="1.65s" repeatCount="indefinite" path="M570 166 C610 166 610 125 650 125"/></circle><circle class="pulse pulse--ok" r="4"><animateMotion dur="2.2s" begin="2.10s" repeatCount="indefinite" path="M570 200 C610 200 610 183 650 183"/></circle><circle class="pulse pulse--ok" r="4"><animateMotion dur="2.2s" begin="2.55s" repeatCount="indefinite" path="M570 234 C610 234 610 241 650 241"/></circle><circle class="pulse pulse--ok" r="4"><animateMotion dur="2.2s" begin="3.00s" repeatCount="indefinite" path="M570 268 C610 268 610 299 650 299"/></circle><circle class="pulse pulse--ok" r="4"><animateMotion dur="2.2s" begin="3.45s" repeatCount="indefinite" path="M570 302 C610 302 610 357 650 357"/></circle></svg><svg class="flow-tall" viewBox="0 0 360 812"><text class="hd" x="10" y="18">1 · ES KOMMT REIN</text><rect class="node" x="10" y="30" width="165" height="46" rx="11"/><text class="nt" x="24" y="50">Neue E-Mail</text><text class="ns" x="24" y="67">Gmail</text><rect class="node" x="185" y="30" width="165" height="46" rx="11"/><text class="nt" x="199" y="50">Kontaktformular</text><text class="ns" x="199" y="67">Website</text><rect class="node" x="10" y="84" width="165" height="46" rx="11"/><text class="nt" x="24" y="104">Rechnung, Beleg</text><text class="ns" x="24" y="121">PDF, Foto</text><rect class="node" x="185" y="84" width="165" height="46" rx="11"/><text class="nt" x="199" y="104">Auftrag erledigt</text><text class="ns" x="199" y="121">Liste</text><rect class="node" x="97" y="138" width="165" height="46" rx="11"/><text class="nt" x="111" y="158">Termin steht an</text><text class="ns" x="111" y="175">Terminliste</text><path class="wire wire--in" d="M180 186 V212"/><circle class="pulse" r="4"><animateMotion dur="1.4s" repeatCount="indefinite" path="M180 186 V212"/></circle><text class="hd" x="10" y="232">2 · DAS SYSTEM ARBEITET</text><rect class="hub" x="10" y="244" width="340" height="208" rx="16"/><text class="nt nt--big" x="28" y="274">KI-Ablauf</text><text class="ns" x="28" y="293">rund um die Uhr</text><circle class="num" cx="38" cy="322" r="11"/><text class="numt" x="38" y="326">1</text><text class="nt" x="58" y="327">Liest Inhalt und Anhang</text><path class="step-line" d="M38 333 V347"/><circle class="num" cx="38" cy="358" r="11"/><text class="numt" x="38" y="362">2</text><text class="nt" x="58" y="363">Erkennt Thema und Dringlichkeit</text><path class="step-line" d="M38 369 V383"/><circle class="num" cx="38" cy="394" r="11"/><text class="numt" x="38" y="398">3</text><text class="nt" x="58" y="399">Holt Preisliste und Listen dazu</text><path class="step-line" d="M38 405 V419"/><circle class="num" cx="38" cy="430" r="11"/><text class="numt" x="38" y="434">4</text><text class="nt" x="58" y="435">Schreibt Entwurf oder legt ab</text><path class="wire wire--out" d="M180 452 V478"/><circle class="pulse pulse--ok" r="4"><animateMotion dur="1.4s" begin=".7s" repeatCount="indefinite" path="M180 452 V478"/></circle><text class="hd" x="10" y="498">3 · LIEGT BEREIT</text><rect class="node node--out" x="10" y="510" width="165" height="46" rx="11"/><text class="nt" x="24" y="530">Antwort-Entwurf</text><text class="ns" x="24" y="547">sortiert</text><rect class="node node--out" x="185" y="510" width="165" height="46" rx="11"/><text class="nt" x="199" y="530">Angebots-Entwurf</text><text class="ns" x="199" y="547">aus Preisliste</text><rect class="node node--out" x="10" y="564" width="165" height="46" rx="11"/><text class="nt" x="24" y="584">Anfrage-Liste</text><text class="ns" x="24" y="601">an einer Stelle</text><rect class="node node--out" x="185" y="564" width="165" height="46" rx="11"/><text class="nt" x="199" y="584">Beleg im Ordner</text><text class="ns" x="199" y="601">sinnvoll benannt</text><rect class="node node--out" x="10" y="618" width="165" height="46" rx="11"/><text class="nt" x="24" y="638">Erinnerung</text><text class="ns" x="24" y="655">Termine, Angebote</text><rect class="node node--out" x="185" y="618" width="165" height="46" rx="11"/><text class="nt" x="199" y="638">Bewertung</text><text class="ns" x="199" y="655">mit Einwilligung</text><path class="wire wire--ok" d="M180 668 V694"/><rect class="ok" x="10" y="694" width="340" height="52" rx="14"/><text class="nt nt--big" x="28" y="718">Sie geben frei</text><text class="ns" x="28" y="736">erst dann geht etwas raus</text><rect class="warn" x="10" y="760" width="340" height="46" rx="11"/><text class="nt" x="26" y="780">Fehler-Alarm</text><text class="ns" x="26" y="796">hakt etwas, wissen Sie es sofort</text></svg></div>
+          </div>
+        </article>
+        <article class="card card--open span-6" data-reveal>
           <h3>KI-Chatbot für Ihre Website</h3>
           <p>Beantwortet häufige Fragen rund um die Uhr, nimmt Anfragen und Terminwünsche auf und übergibt an Sie, wenn ein Mensch gefragt ist.</p>
           <div class="panel" aria-hidden="true">
@@ -600,27 +687,7 @@ main > section#buero, main > section#ki { height: auto !important; }
             </div>
           </div>
         </article>
-        <article class="card card--open span-4" data-reveal>
-          <h3>Automatisierung fürs Büro</h3>
-          <p>Anfragen sammeln, E-Mails sortieren, Angebote vorbereiten, an Termine erinnern, Belege ordnen: Was sich jede Woche wiederholt, läuft automatisch.</p>
-          <div class="panel" aria-hidden="true">
-            <div class="flow">
-              <svg viewBox="0 0 440 250">
-                <path class="wire" id="w1" d="M118 125 H162"/>
-                <path class="wire" d="M278 125 C300 125 300 60 322 60"/>
-                <path class="wire" d="M278 125 H322"/>
-                <path class="wire" d="M278 125 C300 125 300 190 322 190"/>
-                <rect class="node" x="10" y="95" width="108" height="60" rx="12"/><text class="nt" x="26" y="122">Neue E-Mail</text><text class="ns" x="26" y="141">Auslöser</text>
-                <rect class="node" x="162" y="95" width="116" height="60" rx="12" style="stroke:#ffb15c"/><text class="nt" x="178" y="122">KI sortiert</text><text class="ns" x="178" y="141">Kategorie</text>
-                <rect class="node" x="322" y="35" width="108" height="50" rx="12"/><text class="nt" x="336" y="65">Termin</text>
-                <rect class="node" x="322" y="100" width="108" height="50" rx="12"/><text class="nt" x="336" y="130">Entwurf</text>
-                <rect class="node" x="322" y="165" width="108" height="50" rx="12"/><text class="nt" x="336" y="195">Ablage</text>
-                <circle class="pulse" r="5"><animateMotion dur="2.8s" repeatCount="indefinite" path="M118 125 H162 M278 125 H322"/></circle>
-              </svg>
-            </div>
-          </div>
-        </article>
-        <article class="card card--open span-4" data-reveal>
+        <article class="card card--open span-6" data-reveal>
           <h3>Website für lokale Betriebe</h3>
           <p>Eine moderne, schnelle Website, die auf dem Handy gut aussieht und aus Besuchern Anfragen macht. Auf Wunsch direkt mit Chatbot.</p>
           <div class="panel" aria-hidden="true">
@@ -804,29 +871,71 @@ main > section#buero, main > section#ki { height: auto !important; }
         <h2 id="jarvis-h">So arbeite ich selbst: JARVIS</h2>
         <p>JARVIS ist mein eigener KI-Assistent. Er sortiert jeden Morgen neue Projektanfragen, schreibt Entwürfe, führt Kalender und Aufgaben und erledigt geplante Arbeiten selbstständig. Mit denselben Bausteinen baue ich Lösungen für Ihren Betrieb.</p>
       </div>
-      <div class="cockpit" data-reveal role="img" aria-label="Das JARVIS-Cockpit: links die Bereiche, in der Mitte ein Gespräch mit JARVIS über neue Anfragen, rechts eine offene Freigabe und laufende Abläufe">
-        <div class="cockpit__bar" aria-hidden="true"><i></i><i></i><i></i><span>JARVIS · Cockpit</span><em>● alle Abläufe aktiv</em></div>
+      <div class="cockpit" data-reveal role="img" aria-label="Beispielansicht des JARVIS-Cockpits: Kennzahlen zu neuen Anfragen, Entwürfen und Aufgaben, ein Gespräch mit JARVIS über neue Anfragen samt erledigter Arbeitsschritte, der Tagesplan, eine offene Freigabe mit E-Mail-Vorschau, laufende Abläufe und ein Aktivitätsprotokoll">
+        <div class="ck-top" aria-hidden="true">
+          <div class="ck-dots"><i></i><i></i><i></i></div>
+          <div class="ck-brand"><span class="ck-logo">J</span>JARVIS <small>· Cockpit</small></div>
+          <div class="ck-search"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6"/><path d="M20 20l-4.5-4.5"/></svg>Suchen oder Befehl eingeben<kbd>Strg K</kbd></div>
+          <span class="ck-live"><i></i>4 Abläufe aktiv</span>
+          <span class="ck-date">Mo · 09:41</span>
+          <span class="ck-av">SB</span>
+        </div>
         <div class="cockpit__body" aria-hidden="true">
-          <div class="ck-side">
-            <span class="on">Gespräch</span><span>Aufgaben <b>4</b></span><span>Freigaben <b>1</b></span><span>Posteingang</span><span>Abläufe</span><span>Wissen</span>
-          </div>
+          <div class="ck-side"><span class="on"><svg viewBox="0 0 24 24"><path d="M4 11l8-7 8 7v9h-5v-6h-6v6H4z"/></svg>Übersicht</span><span><svg viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4z"/></svg>Gespräch</span><span><svg viewBox="0 0 24 24"><path d="M5 12l4 4 10-10"/></svg>Aufgaben<b>4</b></span><span><svg viewBox="0 0 24 24"><path d="M12 3l8 4v5c0 5-3.5 8-8 9-4.5-1-8-4-8-9V7z"/></svg>Freigaben<b class="w">1</b></span><span><svg viewBox="0 0 24 24"><path d="M3 6h18v12H3zM3 7l9 6 9-6"/></svg>Posteingang<b>3</b></span><span><svg viewBox="0 0 24 24"><path d="M4 6h16v14H4zM4 10h16M8 3v4M16 3v4"/></svg>Kalender</span><span><svg viewBox="0 0 24 24"><path d="M6 6h4v4H6zM14 14h4v4h-4zM10 8h2a2 2 0 0 1 2 2v4"/></svg>Abläufe</span><span><svg viewBox="0 0 24 24"><path d="M5 4h10a3 3 0 0 1 3 3v13H8a3 3 0 0 1-3-3z"/></svg>Wissen</span><span class="ck-lbl">UNTERABLÄUFE</span><span class="sub"><i></i>E-Mail</span><span class="sub"><i></i>Aufgaben</span><span class="sub"><i></i>Ablage</span><span class="sub"><i></i>Kalender</span></div>
           <div class="ck-main">
-            <div class="ck-msg ck-msg--me">Was ist heute reingekommen?</div>
-            <div class="ck-msg ck-msg--j">Drei neue Anfragen seit heute Morgen:
-              <ul><li>Werkstatt fragt nach einem Chatbot</li><li>Makler möchte E-Mails sortieren lassen</li><li>Rückfrage zu einem Angebot</li></ul>
+            <div class="ck-kpis">
+              <div class="ck-kpi"><small>Neue Anfragen</small><b>3</b><em>seit 07:00</em></div>
+              <div class="ck-kpi"><small>Entwürfe bereit</small><b>3</b><em class="w">1 wartet auf Sie</em></div>
+              <div class="ck-kpi"><small>Offene Aufgaben</small><b>4</b><em class="n">2 davon heute</em></div>
+              <div class="ck-kpi"><small>Heute erledigt</small><b>12</b><em>Schritte automatisch</em></div>
             </div>
-            <div class="ck-msg ck-msg--me">Bereite für alle drei eine Antwort vor.</div>
-            <div class="ck-msg ck-msg--j">Drei Entwürfe liegen in Gmail. Der erste wartet auf Ihre Freigabe.</div>
-            <div class="ck-input">Nachricht an JARVIS …</div>
+            <div class="ck-grid">
+              <div class="ck-box">
+                <p class="ck-h">Gespräch <span>mit JARVIS</span></p>
+                <div class="ck-msg ck-msg--me">Was ist heute reingekommen?</div>
+                <div class="ck-msg ck-msg--j">Drei neue Anfragen seit heute Morgen:
+                  <ul><li>Werkstatt fragt nach einem Chatbot</li><li>Makler möchte E-Mails sortieren lassen</li><li>Rückfrage zu einem Angebot</li></ul>
+                </div>
+                <div class="ck-msg ck-msg--me">Bereite für alle drei eine Antwort vor.</div>
+                <div class="ck-steps"><span>Gmail gelesen, 3 Anfragen</span><span>Preisliste und Kundenliste geprüft</span><span>3 Entwürfe in Gmail angelegt</span></div>
+                <div class="ck-msg ck-msg--j">Drei Entwürfe liegen in Gmail. Der erste wartet auf Ihre Freigabe.</div>
+                <div class="ck-type"><i></i><i></i><i></i></div>
+                <div class="ck-input">Nachricht an JARVIS …<b><svg viewBox="0 0 24 24"><path d="M5 12h13M13 6l6 6-6 6"/></svg></b></div>
+              </div>
+              <div class="ck-box ck-box--cal">
+                <p class="ck-h">Heute <span>Kalender</span></p>
+                <div class="ck-cal">
+                  <div class="ck-ev"><time>08:30</time><div style="--c:#6fdc9c">Tageszusammenfassung<small>automatisch versendet</small></div></div>
+                  <div class="ck-now"></div>
+                  <div class="ck-ev"><time>10:00</time><div>Rückruf Werkstatt<small>Chatbot-Anfrage</small></div></div>
+                  <div class="ck-ev"><time>13:30</time><div style="--c:#ffb15c">Angebot Makler fertig machen<small>Entwurf liegt bereit</small></div></div>
+                  <div class="ck-ev"><time>16:00</time><div>Kundentermin<small>Erinnerung geht 1 h vorher raus</small></div></div>
+                </div>
+                <p class="ck-h">Aufgaben <span>4 offen</span></p>
+                <div class="ck-todo"><span class="done">Belege vom Freitag ablegen</span><span>Antwort an Werkstatt freigeben</span><span>Angebot Makler prüfen</span><span>Rückfrage zum Angebot klären</span><span>Website-Texte für Kunde senden</span></div>
+              </div>
+            </div>
           </div>
           <div class="ck-right">
-            <p class="ck-h">Wartet auf Freigabe</p>
-            <div class="ck-card"><b>Antwort an Werkstatt senden?</b><small>Entwurf mit Demo-Link und Terminvorschlag</small><div class="ck-btns"><span>Freigeben</span><span>Ändern</span></div></div>
-            <p class="ck-h">Abläufe</p>
-            <div class="ck-flow"><i></i>Posteingang sortieren<time>07:41</time></div>
-            <div class="ck-flow"><i></i>Tägliche Zusammenfassung<time>08:00</time></div>
-            <div class="ck-flow"><i class="wait"></i>Antwortentwürfe<time>09:22</time></div>
-            <div class="ck-flow"><i></i>Dokumente ablegen<time>12:00</time></div>
+            <p class="ck-h">Wartet auf Freigabe <span>1</span></p>
+            <div class="ck-card"><b>Antwort an Werkstatt senden?</b>
+              <div class="ck-mail"><b>Re: Chatbot für unsere Website</b>Guten Tag, danke für Ihre Anfrage. Hier ist ein Demo-Link zum Ausprobieren. Passt Ihnen Donnerstag um 10 Uhr für ein kurzes Telefonat?</div>
+              <small>Entwurf mit Demo-Link und Terminvorschlag</small>
+              <div class="ck-btns"><span>Freigeben</span><span>Ändern</span></div></div>
+            <p class="ck-h">Abläufe <span>heute</span></p>
+            <div class="ck-flows">
+              <div class="ck-flow"><i></i>Posteingang sortieren<time>07:41</time><u></u></div>
+              <div class="ck-flow"><i></i>Tägliche Zusammenfassung<time>08:30</time><u></u></div>
+              <div class="ck-flow"><i class="wait"></i>Antwortentwürfe<time>09:22</time><u style="--p:66%;--c:#ffb15c"></u></div>
+              <div class="ck-flow"><i class="plan"></i>Dokumente ablegen<time>12:00</time><u style="--p:0%"></u></div>
+            </div>
+            <p class="ck-h ck-h--log">Aktivität</p>
+            <div class="ck-log">
+              <span><b>09:22</b>Entwurf wartet auf Freigabe</span>
+              <span><b>09:21</b>3 Entwürfe in Gmail angelegt</span>
+              <span><b>08:30</b>Zusammenfassung gesendet</span>
+              <span><b>07:41</b>3 neue Anfragen sortiert</span>
+            </div>
           </div>
         </div>
       </div>
