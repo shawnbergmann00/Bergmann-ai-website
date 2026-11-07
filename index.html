@@ -259,8 +259,8 @@ main > section.ground-inverse { background: linear-gradient(180deg, rgb(7 18 25 
 .ask__done { display: grid; justify-items: start; gap: 12px; padding: 12px 0 4px; }
 .ask__done[hidden] { display: none; }
 .ask__done p { color: #b5ccd7; }
-.ask__check { width: 48px; height: 48px; border-radius: 14px; display: grid; place-items: center; background: rgb(111 220 156 / .12); border: 1px solid rgb(111 220 156 / .5); }
-.ask__check svg { width: 26px; height: 26px; fill: none; stroke: #6fdc9c; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
+.ask__done h2 { display: flex; align-items: flex-start; gap: 10px; }
+.ask__check { flex: none; width: 28px; height: 28px; margin-top: 2px; fill: none; stroke: #6fdc9c; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
 @media (max-width: 539px) { .ask__form { padding: 22px 18px; } .ask__two { grid-template-columns: 1fr; } .ask h2 { font-size: 22px; } }
 @media (prefers-reduced-motion: reduce) { .ask[open] { animation: none; } }
 /* ---------- JARVIS cockpit ---------- */
@@ -1068,8 +1068,7 @@ main > section#buero, main > section#ki { height: auto !important; }
       <p class="ask__alt">Lieber selbst schreiben? <span>shawnbergmann00@gmail.com</span> <button type="button" class="ask__copy" formnovalidate>Adresse kopieren</button></p>
     </div>
     <div class="ask__done" hidden>
-      <span class="ask__check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span>
-      <h2 tabindex="-1">Danke, Ihre Anfrage ist angekommen.</h2>
+      <h2 tabindex="-1"><svg class="ask__check" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Danke, Ihre Anfrage ist angekommen.</h2>
       <p>Ich lese sie persönlich und melde mich bei Ihnen.</p>
       <button class="btn btn--secondary" type="submit" value="close" formnovalidate>Schließen</button>
     </div>
