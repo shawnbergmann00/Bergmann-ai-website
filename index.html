@@ -459,13 +459,21 @@ main > section#problem, main > section#vertrauen, main > section#preise, main > 
 .of-rule { display: flex; gap: var(--s-4); align-items: center; padding: var(--s-5) var(--s-6); border-radius: var(--r-lg); border: 1px solid #1f3d4c; background: rgb(143 227 255 / .05); }
 .of-rule p { font-size: 16px; color: #c5d6de; }
 .of-rule b { color: var(--ink); }
-.of-more { margin-top: var(--s-8); padding-top: var(--s-6); border-top: 1px solid #16303c; }
-.of-more h3 { font: 700 22px/1.2 var(--font-display); margin-bottom: var(--s-5); }
-.of-more ul { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--s-4) var(--s-6); }
-.of-more li { position: relative; padding-left: 22px; font-size: 15.5px; line-height: 1.5; color: #a9bfca; }
-.of-more li::before { content: ""; position: absolute; left: 0; top: 7px; width: 10px; height: 10px; border-radius: 50%; border: 2px dashed #5f8293; }
-@media (max-width: 1023px) { .of-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } .of-more ul { grid-template-columns: 1fr 1fr; } }
-@media (max-width: 639px) { .of-grid, .of-rules, .of-more ul { grid-template-columns: 1fr; } .of-item { grid-template-columns: 44px 1fr; padding: var(--s-5); } .of-item::before { left: var(--s-5); right: var(--s-5); } }
+.of-more { margin-top: var(--s-7); }
+.of-more__head { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px; margin-bottom: var(--s-4); }
+.of-more__head h3 { font: 700 22px/1.2 var(--font-display); }
+.of-more__tag { padding: 4px 11px; border-radius: 99px; border: 1px dashed rgb(143 227 255 / .45); color: #8fe3ff; font: 500 12.5px var(--font-text); }
+.of-xgrid { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--s-3); }
+.of-x { position: relative; display: grid; grid-template-columns: 34px 1fr; gap: var(--s-3); align-items: start; padding: var(--s-4); border-radius: 14px; background: linear-gradient(180deg, #0b1a22, #08141a); border: 1px dashed color-mix(in oklab, var(--c) 40%, #16303c); transition: border-color 200ms var(--ease-out), transform 200ms var(--ease-out); }
+.of-x h4 { font: 700 15.5px/1.25 var(--font-display); color: #fff; margin-bottom: 4px; }
+.of-x p { font-size: 14px; line-height: 1.45; color: #a9bfca; }
+.of-ic--sm { width: 34px; height: 34px; border-radius: 10px; }
+.of-ic--sm svg { width: 18px; height: 18px; }
+@media (hover: hover) and (pointer: fine) { .of-x:hover { border-style: solid; border-color: color-mix(in oklab, var(--c) 60%, #16303c); transform: translateY(-2px); } }
+@media (max-width: 1023px) { .of-xgrid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 539px) { .of-xgrid { grid-template-columns: 1fr; gap: 8px; } .of-x { padding: 12px; } .of-x p { font-size: 13.5px; } }
+@media (max-width: 1023px) { .of-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 639px) { .of-grid, .of-rules { grid-template-columns: 1fr; } .of-item { grid-template-columns: 44px 1fr; padding: var(--s-5); } .of-item::before { left: var(--s-5); right: var(--s-5); } }
 main > section#buero, main > section#ki { height: auto !important; }
 
 /* ---------- glowing assistant illustration ---------- */
@@ -754,8 +762,8 @@ main > section#buero, main > section#ki { height: auto !important; }
         <div class="of-rule"><span class="of-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="4"/><path d="M8 12.5l3 3 5-6"/></svg></span><p><b>Sie haben das letzte Wort.</b> Alles wird als Entwurf vorbereitet. Verschickt wird nur, was Sie freigeben.</p></div>
       </div>
       <div class="of-more" data-reveal>
-        <h3>Auf Wunsch erweiterbar</h3>
-        <ul><li>Monats-Paket für den Steuerberater: alle Belege des Monats gesammelt, umbenannt, mit Übersichtsliste</li><li>Offene Rechnungen im Blick: Erinnerung bei unbezahlter Rechnung, mit Entwurf für die Zahlungserinnerung</li><li>Rechnungs-Entwurf in lexoffice oder sevDesk nach erledigtem Auftrag</li><li>Wochenbericht jeden Montag: neue Anfragen, Angebote, offene Rechnungen, Termine</li><li>Online-Terminbuchung mit automatischer Bestätigung und Erinnerung am Vortag</li><li>Rückruf-Aufgaben: verpasster Anruf oder Anfrage wird zur Aufgabe für den richtigen Mitarbeiter</li><li>Kundenliste (einfaches CRM), die sich von selbst füllt</li><li>Nachbestell-Erinnerung für Material oder Ware</li><li>Social-Media-Entwürfe: aus Foto und Stichworten wird ein fertiger Post zum Freigeben</li></ul>
+        <div class="of-more__head"><h3>Auf Wunsch erweiterbar</h3><span class="of-more__tag">Zusatzbausteine auf Anfrage</span></div>
+        <ul class="of-xgrid"><li class="of-x" style="--c:#6fdc9c"><span class="of-ic of-ic--sm" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 8l9-5 9 5v8l-9 5-9-5z"/><path d="M3 8l9 5 9-5M12 13v8"/></svg></span><div><h4>Monats-Paket für den Steuerberater</h4><p>Alle Belege des Monats gesammelt, umbenannt, mit Übersichtsliste.</p></div></li><li class="of-x" style="--c:#ffb15c"><span class="of-ic of-ic--sm" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 3h9l4 4v14H6z"/><path d="M15 3v4h4"/><path d="M12 11v4M12 18v.5"/></svg></span><div><h4>Offene Rechnungen im Blick</h4><p>Erinnerung bei unbezahlter Rechnung, mit Entwurf für die Zahlungserinnerung.</p></div></li><li class="of-x" style="--c:#8fe3ff"><span class="of-ic of-ic--sm" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 3h9l4 4v14H6z"/><path d="M15 3v4h4M9 12h7M9 16h4"/></svg></span><div><h4>Rechnungs-Entwurf</h4><p>Nach erledigtem Auftrag direkt in lexoffice oder sevDesk.</p></div></li><li class="of-x" style="--c:#6fdc9c"><span class="of-ic of-ic--sm" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 20V4M4 20h16"/><path d="M8 16v-4M12 16V8M16 16v-6"/></svg></span><div><h4>Wochenbericht jeden Montag</h4><p>Neue Anfragen, Angebote, offene Rechnungen und Termine auf einen Blick.</p></div></li></ul>
       </div>
     </div>
   </section>
