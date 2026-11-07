@@ -241,8 +241,7 @@ main > section.ground-inverse { background: linear-gradient(180deg, rgb(7 18 25 
 .ck-search svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 2; }
 .ck-search kbd { margin-left: auto; font: 400 11px var(--font-mono); padding: 2px 6px; border-radius: 5px; border: 1px solid var(--ck-line); color: var(--ck-mut); }
 .ck-live { margin-left: auto; white-space: nowrap; display: flex; align-items: center; gap: 7px; padding: 5px 10px; border-radius: 99px; background: rgb(111 220 156 / .1); border: 1px solid rgb(111 220 156 / .35); color: #9be8bb; font-size: 12.5px; }
-.ck-live i, .ck-dot { width: 7px; height: 7px; border-radius: 50%; background: #6fdc9c; box-shadow: 0 0 0 0 rgb(111 220 156 / .6); animation: ckping 2.2s ease-out infinite; }
-@keyframes ckping { 70% { box-shadow: 0 0 0 7px rgb(111 220 156 / 0); } 100% { box-shadow: 0 0 0 0 rgb(111 220 156 / 0); } }
+.ck-live i { width: 7px; height: 7px; border-radius: 50%; background: #6fdc9c; }
 .ck-date { font: 400 12px var(--font-mono); color: var(--ck-mut); }
 .ck-av { width: 28px; height: 28px; border-radius: 50%; display: grid; place-items: center; background: #163847; border: 1px solid #2f5668; font: 700 11px var(--font-text); color: #cfeaf5; }
 .cockpit__body { display: grid; grid-template-columns: 196px minmax(0, 1fr) 300px; min-height: 0; }
@@ -282,7 +281,8 @@ main > section.ground-inverse { background: linear-gradient(180deg, rgb(7 18 25 
 .ck-cal { display: grid; gap: 6px; }
 .ck-ev { display: grid; grid-template-columns: 44px 1fr; gap: 10px; align-items: center; font-size: 13px; }
 .ck-ev time { font: 400 11.5px var(--font-mono); color: var(--ck-mut); }
-.ck-ev div { padding: 7px 10px; border-radius: 8px; border-left: 3px solid var(--c, #8fe3ff); background: rgb(143 227 255 / .05); }
+.ck-ev div { position: relative; padding: 7px 10px 7px 24px; border-radius: 8px; border: 1px solid var(--ck-line); background: rgb(143 227 255 / .04); }
+.ck-ev div::before { content: ""; position: absolute; left: 10px; top: 13px; width: 7px; height: 7px; border-radius: 50%; background: var(--c, #8fe3ff); }
 .ck-ev small { display: block; color: var(--ck-mut); font-size: 11.5px; }
 .ck-now { position: relative; height: 1px; margin: 2px 0 2px 44px; background: #ff7a7a; }
 .ck-now::before { content: ""; position: absolute; left: -4px; top: -3px; width: 7px; height: 7px; border-radius: 50%; background: #ff7a7a; }
