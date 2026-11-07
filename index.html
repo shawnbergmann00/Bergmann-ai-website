@@ -406,8 +406,11 @@ main > section.ground-inverse { background: linear-gradient(180deg, rgb(7 18 25 
 .prob__rows { display: grid; gap: var(--s-3); }
 @media (min-width: 1024px) { .prob__rows { grid-template-columns: repeat(3, minmax(0, 1fr)); } .prob__board { padding: var(--s-7); } }
 .prob__lead { color: #e6f2f7; max-width: 46ch; }
+@media (max-width: 639px) { .prob__board { padding: var(--s-4); } .prob__row, .prob__fix { grid-template-columns: 36px 1fr !important; gap: var(--s-3) !important; padding: var(--s-4) var(--s-3) !important; } .prob__ic { width: 36px !important; height: 36px !important; } .prob__line { width: 36px !important; } .prob__lead { padding: 0 var(--s-2); } }
 .prob__row { display: grid; grid-template-columns: 44px 1fr; gap: var(--s-4); align-items: center; padding: var(--s-4); border-radius: 14px; background: #0c1c25; border: 1px dashed #5a4630; }
-.prob__row p { color: #e6f2f7; font-size: 16.5px; }
+.prob__row p { color: #b5ccd7; font-size: 15.5px; line-height: 1.55; }
+.prob__row p b { display: block; margin-bottom: 4px; font: 700 17px/1.3 var(--font-display); color: #fff; }
+.prob__row { align-items: start !important; }
 .prob__ic { width: 44px; height: 44px; border-radius: 12px; display: grid; place-items: center; background: rgb(255 177 92 / .12); border: 1px solid rgb(255 177 92 / .4); }
 .prob__ic svg { width: 22px; height: 22px; fill: none; stroke: #ffb15c; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
 .prob__fix { display: grid; grid-template-columns: 44px 1fr; gap: var(--s-4); align-items: center; padding: var(--s-4); margin-top: var(--s-2); border-radius: 14px; background: rgb(111 220 156 / .07); border: 1px solid rgb(111 220 156 / .35); }
@@ -684,12 +687,15 @@ main > section#buero, main > section#ki { height: auto !important; }
       </div>
       <div class="board prob__board" data-reveal style="--d:100ms">
         <div class="prob__rows">
-          <div class="prob__row"><span class="prob__ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 13l2.5-7h13L21 13v5H3z"/><path d="M3 13h5l1.5 2.5h5L16 13h5"/></svg></span><p>Anfragen kommen per Mail, Telefon und Website, und manche gehen unter.</p></div>
-          <div class="prob__row"><span class="prob__ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/></svg></span><p>Abends beantworten Sie noch Fragen, die eigentlich immer gleich sind.</p></div>
-          <div class="prob__row"><span class="prob__ic" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span><p>Angebote, Erinnerungen und Belege kosten Stunden, die Ihnen im Betrieb fehlen.</p></div>
+          <div class="prob__row"><span class="prob__ic" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span><p><b>Büroarbeit frisst den Feierabend.</b>Angebote schreiben, Belege sortieren, Kunden erinnern: Tagsüber läuft der Betrieb, also bleibt das für abends und das Wochenende.</p></div>
+          <div class="prob__row"><span class="prob__ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 13l2.5-7h13L21 13v5H3z"/><path d="M3 13h5l1.5 2.5h5L16 13h5"/></svg></span><p><b>Das Postfach läuft über.</b>Anfragen, Rechnungen und Werbung kommen durcheinander. Bis alles sortiert ist, ist die erste Stunde des Tages weg.</p></div>
+          <div class="prob__row"><span class="prob__ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/></svg></span><p><b>Die Anfrage kommt abends, der Kunde ist morgens weg.</b>Wer nicht schnell eine Antwort bekommt, fragt beim Nächsten an. Und oft bekommt der den Auftrag, der zuerst antwortet.</p></div>
+          <div class="prob__row"><span class="prob__ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 3h8l4 4v6"/><path d="M14 3v4h4"/><path d="M6 3v18h7"/><path d="M15 18h6M18.5 15.5 21 18l-2.5 2.5"/></svg></span><p><b>Angebot raus, dann Funkstille.</b>Stunden stecken in einem Angebot. Zum Nachfassen kommt im Alltag aber kaum jemand, und der Auftrag geht woanders hin.</p></div>
+          <div class="prob__row"><span class="prob__ic" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="7" y="2.5" width="10" height="19" rx="2.5"/><path d="M11 18.5h2"/></svg></span><p><b>Die Website schreckt eher ab.</b>Neue Kunden schauen zuerst auf dem Handy. Lädt die Seite langsam oder wirkt sie veraltet, rufen sie gar nicht erst an.</p></div>
+          <div class="prob__row"><span class="prob__ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8-5.2-2.7-5.2 2.7 1-5.8L3.5 9.7l5.9-.9z"/></svg></span><p><b>Zufriedene Kunden, aber kaum Bewertungen.</b>Die meisten Kunden bewerten nur, wenn man sie darum bittet. Neue Kunden lesen aber genau diese Bewertungen, bevor sie sich melden.</p></div>
         </div>
         <p class="t-lead prob__lead">Das muss nicht so bleiben. Vieles davon kann ein System für Sie vorbereiten, und Sie entscheiden nur noch.</p>
-          <div class="prob__fix"><span class="prob__line" aria-hidden="true"></span><p>Mit einem eingerichteten Ablauf landet jede Anfrage an einer Stelle, und Antworten liegen schon als Entwurf bereit.</p></div>
+          <div class="prob__fix"><span class="prob__line" aria-hidden="true"></span><p>Mit eingerichteten Abläufen landet jede Anfrage an einer Stelle, Antworten und Nachfass-Mails liegen schon als Entwurf bereit, und zufriedene Kunden werden nach dem Auftrag um eine Bewertung gebeten.</p></div>
       </div>
     </div>
   </section>
