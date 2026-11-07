@@ -1,283 +1,1229 @@
-<!DOCTYPE html>
-<html lang="de">
+<!doctype html>
+<html lang="de" data-type="software" data-radius="soft" data-buttons="solid" data-motion>
 <head>
-<meta charset="UTF-8">
+<meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>KI-Kundenassistenten & KI-Automatisierung | Bergmann AI</title>
-<meta name="description" content="Bergmann AI entwickelt individuelle KI-Kundenassistenten und Automatisierungen für Unternehmen.">
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<title>Bergmann AI: KI-Chatbots, Automatisierungen und Websites für Betriebe</title>
+<meta name="description" content="Shawn Bergmann aus Halle (Westf.) richtet Betrieben KI-Chatbots, automatische Abläufe und Websites ein. Mit festen Preisen und einem festen Ansprechpartner.">
+<meta name="site-kind" content="software">
+<meta name="page-type" content="software">
+<script>document.documentElement.classList.add('js')</script>
+<link rel="icon" href="logo.webp" type="image/webp">
+<link rel="preload" href="fonts/BricolageGrotesque-Bold.ttf" as="font" type="font/ttf" crossorigin>
+<link rel="stylesheet" href="assets/system.css">
+<link rel="stylesheet" href="assets/ui/cards.css">
+<link rel="stylesheet" href="assets/motion/motion.css">
+<link rel="stylesheet" href="assets/layout/layout.css">
 <style>
-:root{--bg:#f4f6fc;--bg2:#fff;--ink:#0a1020;--mute:#566079;--line:#e1e7f3;--acc:#2f5bea;--acc2:#7a4dff;--acc3:#12c2e9;--soft:#eaefff;--ok:#12805c;--okbg:#e3f6ee;--glass:rgba(255,255,255,.7);--sh:0 30px 70px -30px rgba(40,60,140,.45);
-box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#070b16;--bg2:#101830;--ink:#eef2ff;--mute:#9aa8c7;--line:#1f2a48;--acc:#7b9bff;--acc2:#a78bff;--acc3:#4fd8f5;--soft:#16214a;--ok:#4cd3a0;--okbg:#0f3228;--glass:rgba(16,24,48,.7);--sh:0 30px 70px -30px rgba(0,0,0,.8)}}
-:root[data-theme="dark"]{--bg:#070b16;--bg2:#101830;--ink:#eef2ff;--mute:#9aa8c7;--line:#1f2a48;--acc:#7b9bff;--acc2:#a78bff;--acc3:#4fd8f5;--soft:#16214a;--ok:#4cd3a0;--okbg:#0f3228;--glass:rgba(16,24,48,.7);--sh:0 30px 70px -30px rgba(0,0,0,.8)}
-*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:calc(80px + env(safe-area-inset-top,0px))}
-body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.65 "Plus Jakarta Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;-webkit-font-smoothing:antialiased;overflow-x:hidden}
-a{color:inherit}.w{max-width:1160px;margin:0 auto;padding:0 22px;position:relative}
-#bar{position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,var(--acc3),var(--acc),var(--acc2));z-index:60}
-header{position:sticky;top:env(safe-area-inset-top,0px);z-index:50;background:var(--glass);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid var(--line)}
-header .w{display:flex;align-items:center;gap:20px;height:70px}
-.logo{display:flex;align-items:center;gap:10px;font-weight:800;font-size:19px;text-decoration:none;letter-spacing:-.02em}.logo svg{width:44px;height:44px}.logo em{font-style:normal;color:var(--acc)}
-nav{display:flex;gap:6px;margin-left:auto;font-size:14.5px;font-weight:600}nav a{text-decoration:none;color:var(--mute);padding:8px 13px;border-radius:99px;transition:.2s}nav a:hover,nav a.on{color:var(--ink);background:var(--soft)}
-.btn{display:inline-flex;align-items:center;gap:8px;padding:14px 24px;border-radius:14px;background:linear-gradient(135deg,var(--acc),var(--acc2));color:#fff;text-decoration:none;font-weight:700;font-size:15px;box-shadow:0 14px 30px -12px var(--acc);border:0;cursor:pointer;transition:.25s;font-family:inherit}
-.btn:hover{transform:translateY(-2px);box-shadow:0 20px 36px -12px var(--acc)}.btn.o{background:var(--bg2);color:var(--ink);border:1px solid var(--line);box-shadow:none}
-.eye{display:inline-block;color:var(--acc);font-weight:800;font-size:12.5px;letter-spacing:.1em;text-transform:uppercase}
-h1{font-size:clamp(38px,6.4vw,72px);line-height:1.02;margin:18px 0 20px;letter-spacing:-.04em;font-weight:800}
-h2{font-size:clamp(28px,4.2vw,48px);line-height:1.1;margin:10px 0 14px;letter-spacing:-.03em;font-weight:800}
-h3{margin:0 0 6px;font-size:18.5px;letter-spacing:-.01em}p{margin:0 0 12px;color:var(--mute)}
-.grad{background:linear-gradient(120deg,var(--acc3),var(--acc) 40%,var(--acc2));-webkit-background-clip:text;background-clip:text;color:transparent}
-section{padding:96px 0}
-.rv{opacity:0;transform:translateY(28px);transition:opacity .8s ease,transform .8s cubic-bezier(.2,.7,.2,1)}.rv.in{opacity:1;transform:none}
-/* HERO */
-.hero{position:relative;padding:76px 0 90px;overflow:hidden}
-.aur{position:absolute;inset:0;pointer-events:none}.aur i{position:absolute;border-radius:50%;filter:blur(80px);opacity:.5;animation:fl 16s ease-in-out infinite}
-.aur i:nth-child(1){width:520px;height:520px;background:var(--acc);left:-8%;top:-18%}.aur i:nth-child(2){width:460px;height:460px;background:var(--acc2);right:-6%;top:2%;animation-delay:-5s}.aur i:nth-child(3){width:380px;height:380px;background:var(--acc3);left:38%;top:42%;opacity:.28;animation-delay:-9s}
-@keyframes fl{50%{transform:translate(50px,36px) scale(1.12)}}
-.grid{position:absolute;inset:0;background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);background-size:54px 54px;-webkit-mask-image:radial-gradient(70% 60% at 50% 25%,#000,transparent);mask-image:radial-gradient(70% 60% at 50% 25%,#000,transparent);opacity:.7}
-.hg{position:relative;display:grid;grid-template-columns:1.05fr .95fr;gap:50px;align-items:center}
-.pill{display:inline-flex;gap:10px;align-items:center;border:1px solid var(--line);background:var(--glass);backdrop-filter:blur(10px);border-radius:99px;padding:7px 16px;font-size:13.5px;font-weight:700}
-.pill b{width:8px;height:8px;border-radius:50%;background:#26d07c;box-shadow:0 0 0 0 #26d07c;animation:pu 2s infinite}@keyframes pu{70%{box-shadow:0 0 0 9px transparent}}
-.lead{font-size:19px;max-width:560px}.row{display:flex;gap:12px;flex-wrap:wrap;margin-top:28px}
-.check{margin-top:24px;font-size:14.5px;color:var(--mute);display:flex;gap:8px}.check b{color:var(--ok)}
-.mock{position:relative;background:var(--glass);backdrop-filter:blur(16px);border:1px solid var(--line);border-radius:28px;box-shadow:var(--sh);padding:20px;min-height:430px}
-.mh{display:flex;align-items:center;gap:12px;padding-bottom:14px;border-bottom:1px solid var(--line);font-weight:700}.mh svg{width:34px;height:34px}.mh small{display:block;font-weight:600;color:var(--ok);font-size:12px}
-.m{padding:12px 16px;border-radius:18px;margin:12px 0;font-size:14.5px;max-width:86%;line-height:1.5;opacity:0;transform:translateY(12px) scale(.97);transition:.5s}.m.show{opacity:1;transform:none}
-.m.c{background:linear-gradient(135deg,var(--acc),var(--acc2));color:#fff;margin-left:auto;border-bottom-right-radius:6px}.m.a{background:var(--soft);color:var(--ink);border-bottom-left-radius:6px}
-.hand{background:var(--okbg);border:1px solid color-mix(in srgb,var(--ok) 40%,transparent);border-radius:16px;padding:13px 15px;font-size:13.5px;margin-top:14px;color:var(--ink);opacity:0;transform:translateY(12px);transition:.5s}.hand.show{opacity:1;transform:none}
-.hand b{color:var(--ok);font-size:11.5px;letter-spacing:.08em;display:block}
-.fc{position:absolute;background:var(--bg2);border:1px solid var(--line);box-shadow:var(--sh);border-radius:16px;padding:10px 14px;font-size:13px;font-weight:700;display:flex;gap:8px;align-items:center;animation:bob 6s ease-in-out infinite}
-.fc.a{right:-18px;top:90px}.fc.b{left:-26px;bottom:60px;animation-delay:-3s}@keyframes bob{50%{transform:translateY(-12px)}}
-.fc span{width:26px;height:26px;border-radius:8px;display:grid;place-items:center;background:var(--okbg);color:var(--ok)}
-/* MARQUEE */
-.mq{border-block:1px solid var(--line);background:var(--bg2);overflow:hidden;padding:20px 0}
-.mq div{display:flex;gap:50px;width:max-content;animation:mq 34s linear infinite}.mq span{font-weight:700;color:var(--mute);white-space:nowrap;display:flex;gap:50px;align-items:center}.mq span::after{content:"✦";color:var(--acc)}
-@keyframes mq{to{transform:translateX(-50%)}}
-/* CARDS */
-.g2,.g3{display:grid;gap:18px;margin-top:38px}.g2{grid-template-columns:repeat(auto-fit,minmax(320px,1fr))}.g3{grid-template-columns:repeat(auto-fit,minmax(250px,1fr))}
-.card{position:relative;background:var(--bg2);border:1px solid var(--line);border-radius:24px;padding:28px;overflow:hidden;transition:.3s}
-.spot::after{content:"";position:absolute;inset:0;background:radial-gradient(380px circle at var(--x,50%) var(--y,0),color-mix(in srgb,var(--acc) 18%,transparent),transparent 60%);opacity:0;transition:.3s;pointer-events:none}.spot:hover::after{opacity:1}.card:hover{border-color:color-mix(in srgb,var(--acc) 50%,var(--line));transform:translateY(-4px)}
-.ic{width:50px;height:50px;border-radius:16px;background:linear-gradient(135deg,var(--soft),transparent);border:1px solid var(--line);display:grid;place-items:center;margin-bottom:16px;color:var(--acc)}.ic svg{width:25px;height:25px}
-.big{padding:38px}.big::before{content:"";position:absolute;inset:0 0 auto 0;height:5px;background:linear-gradient(90deg,var(--acc3),var(--acc),var(--acc2))}
-.tag{display:inline-block;background:var(--soft);color:var(--acc);border-radius:99px;padding:5px 15px;font-size:12.5px;font-weight:800;margin-bottom:14px}
-ul.c{list-style:none;padding:0;margin:14px 0 22px}ul.c li{padding:8px 0 8px 32px;position:relative;color:var(--ink);font-size:15px}
-ul.c li::before{content:"✓";position:absolute;left:0;top:8px;width:21px;height:21px;border-radius:50%;background:var(--okbg);color:var(--ok);font-size:12px;font-weight:800;display:grid;place-items:center}
-.two{display:grid;grid-template-columns:.9fr 1.1fr;gap:56px;align-items:start}
-.pain{display:flex;gap:16px;padding:22px 0;border-bottom:1px solid var(--line)}.pain:last-child{border:0}
-.num{flex:none;width:44px;height:44px;border-radius:14px;background:var(--soft);color:var(--acc);font-weight:800;display:grid;place-items:center}
-/* DARK */
-.dark{background:#070b16;color:#eef2ff;border-radius:40px;margin:0 16px;position:relative;overflow:hidden}.dark::before{content:"";position:absolute;width:600px;height:600px;border-radius:50%;background:#2f5bea;filter:blur(120px);opacity:.28;right:-160px;top:-200px}
-.dark p{color:#a9b6d6}.dark h2,.dark h3{color:#fff}.dark .eye{color:#9db4ff}.dark .card{background:#0f1730;border-color:#222f58}.dark .ic{background:#18235a;border-color:#2a3a78;color:#9db4ff}
-.flow{display:flex;gap:12px;align-items:stretch;margin:34px 0 8px;flex-wrap:wrap;position:relative}
-.flow div{flex:1 1 170px;background:#0f1730;border:1px solid #2a3a78;border-radius:18px;padding:18px;font-size:14px;color:#eef2ff;position:relative}
-.flow b{display:block;color:#9db4ff;font-size:12px;letter-spacing:.09em;margin-bottom:6px}
-.flow div::after{content:"";position:absolute;right:-13px;top:50%;width:12px;height:2px;background:#4a63c0}.flow div:last-child::after{display:none}
-.flow div::before{content:"";position:absolute;top:-1px;left:0;height:2px;width:0;background:linear-gradient(90deg,#4fd8f5,#7a4dff);animation:sc 8s infinite}
-.flow div:nth-child(2)::before{animation-delay:2s}.flow div:nth-child(3)::before{animation-delay:4s}.flow div:nth-child(4)::before{animation-delay:6s}
-@keyframes sc{0%{width:0}12%,22%{width:100%}30%,100%{width:0}}
-/* TABS */
-.tabs{display:flex;gap:8px;flex-wrap:wrap;margin:30px 0 22px}.tb{border:1px solid var(--line);background:var(--bg2);color:var(--ink);border-radius:99px;padding:10px 20px;font:700 14.5px inherit;font-family:inherit;cursor:pointer;transition:.2s}
-.tb.on{background:linear-gradient(135deg,var(--acc),var(--acc2));color:#fff;border-color:transparent}
-.tp{display:none;grid-template-columns:1fr 1fr;gap:30px;align-items:center}.tp.on{display:grid;animation:fi .5s}@keyframes fi{from{opacity:0;transform:translateY(10px)}}
-.tp .m{opacity:1;transform:none;max-width:92%}
-/* STEPS */
-.steps{display:grid;position:relative}.step{display:flex;gap:20px;padding-bottom:32px;position:relative}.step:last-child{padding-bottom:0}
-.step::before{content:"";position:absolute;left:21px;top:48px;bottom:0;width:2px;background:linear-gradient(var(--acc),var(--line))}.step:last-child::before{display:none}
-details{background:var(--bg2);border:1px solid var(--line);border-radius:18px;padding:20px 24px;margin-top:12px;transition:.2s}details[open]{border-color:color-mix(in srgb,var(--acc) 45%,var(--line))}
-summary{cursor:pointer;font-weight:700;list-style:none;display:flex;justify-content:space-between;gap:14px}summary::-webkit-details-marker{display:none}summary::after{content:"+";color:var(--acc);font-size:24px;line-height:1}details[open] summary::after{content:"–"}details p{margin:12px 0 0}
-.cta{position:relative;overflow:hidden;background:linear-gradient(135deg,#2f5bea,#7a4dff);border-radius:40px;padding:78px 28px;text-align:center;color:#fff}
-.cta::before{content:"";position:absolute;width:420px;height:420px;border-radius:50%;background:#4fd8f5;filter:blur(100px);opacity:.4;left:-100px;bottom:-200px}
-.cta>*{position:relative}.cta h2{color:#fff}.cta p{color:#e6ebff;max-width:580px;margin:0 auto 14px}.cta .eye{color:#d3ddff}
-.cta .btn{background:#fff;color:#1b2f8f;box-shadow:none}.cta .btn.o{background:transparent;color:#fff;border:1px solid #ffffff90}
-footer{padding:50px 0 34px;font-size:14px;color:var(--mute)}footer .w{display:flex;gap:24px;flex-wrap:wrap;justify-content:space-between;border-top:1px solid var(--line);padding-top:32px}
-@media(max-width:880px){.hg,.two,.tp{grid-template-columns:1fr}nav{display:none}section{padding:68px 0}.dark{margin:0 8px;border-radius:28px}.fc{display:none}.mock{min-height:0}}
-@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.rv,.m,.hand{opacity:1;transform:none}html{scroll-behavior:auto}}
+@font-face { font-family: "Bricolage"; src: url(fonts/BricolageGrotesque-Regular.ttf) format("truetype"); font-weight: 400; font-display: swap; }
+@font-face { font-family: "Bricolage"; src: url(fonts/BricolageGrotesque-Bold.ttf) format("truetype"); font-weight: 700; font-display: swap; }
+@font-face { font-family: "Work"; src: url(fonts/WorkSans-Regular.ttf) format("truetype"); font-weight: 400; font-display: swap; }
+@font-face { font-family: "Work"; src: url(fonts/WorkSans-Bold.ttf) format("truetype"); font-weight: 700; font-display: swap; }
+@font-face { font-family: "GMono"; src: url(fonts/GeistMono-Regular.ttf) format("truetype"); font-weight: 400; font-display: swap; }
+:root {
+  --p-bg: #05090c; --p-surface: #0c161c; --p-ink: #eef6fa; --p-muted: #9db4c0;
+  --p-accent: #8fe3ff; --p-accent-ink: #04121a; --p-action: #8fe3ff; --p-action-ink: #04121a;
+  --p-inv-bg: #071219; --p-inv-surface: #0e1f28; --p-inv-ink: #eef6fa; --p-inv-muted: #a6bfcc;
+  --p-inv-accent: #8fe3ff; --p-inv-accent-ink: #04121a; --p-inv-action: #8fe3ff; --p-inv-action-ink: #04121a;
+  --font-display: "Bricolage", system-ui, sans-serif;
+  --font-text: "Work", system-ui, sans-serif;
+  --font-mono: "GMono", ui-monospace, Menlo, Consolas, monospace;
+  --display-weight: 700; --display-tracking: -0.03em; --display-tracking-xl: -0.035em;
+  --ly-scale: 0.96;
+  /* the network: the dark board and its three lines */
+  --board: #0a161d; --board-2: #10232d; --board-line: #1f3d4c; --board-ink: #e6f2f7; --board-muted: #9fb9c6;
+  --l-chat: #8fe3ff; --l-mail: #ffb15c; --l-office: #6fdc9c;
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+}
+::selection { background: #8fe3ff; color: #04121a; }
+.ground-inverse ::selection, .board ::selection { background: #8fe3ff; color: #0d2230; }
+html { scrollbar-color: #2b4b5a #05090c; accent-color: #8fe3ff; }
+:focus-visible { outline: 2px solid #8fe3ff; outline-offset: 3px; }
+.ground-inverse :focus-visible, .board :focus-visible { outline-color: #8fe3ff; }
+h1, h2, h3 { text-wrap: balance; }
+.hl { color: var(--p-accent); }
+.num, .rows__value, .price-amount { font-variant-numeric: tabular-nums; }
 
-.dg{display:grid;grid-template-columns:.9fr 1.25fr;gap:18px;margin-top:38px}.dg .card{margin:0}
-.consent{background:var(--soft);border:1px solid var(--line);border-radius:16px;padding:18px;margin-top:14px}.consent p{font-size:13px;margin:6px 0 14px}.consent b{font-size:14px}
-.chips{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}.chips .tb{padding:8px 16px;font-size:13.5px}
-.sim{display:grid;gap:10px}.sx{display:grid;grid-template-columns:34px 1fr;gap:12px;background:var(--bg);border:1px solid var(--line);border-radius:16px;padding:14px;opacity:0;transform:translateY(10px);transition:.5s}.sx.show{opacity:1;transform:none}
-.sx i{width:34px;height:34px;border-radius:11px;background:linear-gradient(135deg,var(--acc),var(--acc2));color:#fff;display:grid;place-items:center;font-style:normal;font-weight:800;font-size:14px}
-.sx b{display:block;font-size:12px;letter-spacing:.08em;color:var(--acc);margin-bottom:3px}.sx div{font-size:14px;color:var(--ink);line-height:1.5}
-.sx dl{margin:6px 0 0;display:grid;grid-template-columns:auto 1fr;gap:3px 12px;font-size:13.5px}.sx dt{color:var(--mute)}.sx dd{margin:0;font-weight:600}
-@media(max-width:880px){.dg{grid-template-columns:1fr}}
+/* ---------- the board (dark map surface) ---------- */
+.board { border: 1px solid #16303c; box-shadow: 0 0 0 1px rgb(143 227 255 / .03), 0 40px 80px -40px rgb(40 140 190 / .35); background: var(--board); color: var(--board-ink); border-radius: var(--r-lg); position: relative; overflow: hidden; }
+.tag { display: inline-grid; place-items: center; min-width: 34px; height: 24px; padding: 0 7px; border-radius: 6px; font: 400 13px/1 var(--font-mono); color: #0d2230; }
+.tag--chat { background: var(--l-chat); } .tag--mail { background: var(--l-mail); } .tag--office { background: var(--l-office); }
+
+/* ---------- hero ---------- */
+.hero--collage .hero__art { background: var(--board); }
+.hero-map { position: absolute; inset: 0; width: 100%; height: 100%; }
+.hero-map .ln { stroke-dasharray: 1; stroke-dashoffset: 0; fill: none; stroke-width: 10; stroke-linecap: round; stroke-linejoin: round; transition: opacity 220ms var(--ease-out); }
+.hero-map .st { fill: var(--board); stroke: #f4fafc; stroke-width: 4; }
+.hero-map .tx { font: 400 14px var(--font-text); fill: var(--board-ink); }
+.hero-map .tg { font: 400 13px var(--font-mono); fill: #0d2230; }
+.hero-map .train { fill: #ffffff; }
+.hero-map[data-focus] .ln:not([data-line="var"]) { opacity: .22; }
+.hero-map[data-focus="chat"] .ln[data-line="chat"], .hero-map[data-focus="mail"] .ln[data-line="mail"], .hero-map[data-focus="office"] .ln[data-line="office"] { opacity: 1; }
+.map-key { position: absolute; left: var(--s-6); top: var(--s-6); display: flex; gap: var(--s-2); z-index: 2; }
+.map-key button { display: inline-flex; align-items: center; gap: 8px; height: 34px; padding: 0 12px 0 6px; border-radius: 999px; border: 1px solid var(--board-line); background: #0f2531e6; color: var(--board-ink); font: 500 13px var(--font-text); cursor: pointer; transition: border-color 160ms var(--ease-out), transform 120ms var(--ease-out); }
+.map-key button[aria-pressed="true"] { border-color: #f4fafc; }
+.map-key button:active { transform: scale(.97); }
+@media (hover: hover) and (pointer: fine) { .map-key button:hover { border-color: #6f93a5; } }
+.chat-card { position: absolute; right: var(--s-6); bottom: var(--s-6); width: 320px; z-index: 2; background: #f7fbfd; color: #0d2230; border-radius: 16px; overflow: hidden; box-shadow: 0 24px 48px -16px rgb(4 14 20 / .55), 0 2px 6px rgb(4 14 20 / .18); font-size: 14px; }
+.chat-card__h { display: flex; align-items: center; gap: 10px; padding: 12px 14px; background: #fff; border-bottom: 1px solid #dfe9ef; font-weight: 700; }
+.chat-card__h .av { width: 26px; height: 26px; border-radius: 50%; background: radial-gradient(circle at 35% 35%, #bdeeff, #1675ad); flex: none; }
+.chat-card__h small { margin-left: auto; font-weight: 400; font-size: 13px; color: #1d7a4a; }
+.chat-card__b { padding: 14px; display: grid; gap: 9px; }
+.msg { max-width: 86%; padding: 9px 12px; border-radius: 14px; line-height: 1.42; }
+.msg--me { justify-self: end; background: #0d2230; color: #fff; border-bottom-right-radius: 4px; }
+.msg--bot { background: #e3f0f6; border-bottom-left-radius: 4px; }
+.chat-card__i { margin: 0 14px 14px; padding: 10px 12px; border: 1px solid #d6e3ea; border-radius: 10px; color: #5d7482; }
+.chat-card [data-step] { transition: opacity 260ms var(--ease-out), transform 260ms var(--ease-out); }
+.chat-card.is-replaying [data-step]:not(.is-in) { opacity: 0; transform: translateY(6px); }
+.hero__proof { font-size: var(--t-small); color: var(--muted); }
+
+
+/* ---------- space hero ---------- */
+.hero--space { position: relative; min-height: 100svh; display: grid; align-content: start; overflow: hidden; background: #05090c; padding-top: calc(var(--nav) + clamp(48px, 9vh, 110px)); }
+.space { position: absolute; inset: 0; z-index: 0; }
+.hero--space::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 160px; background: linear-gradient(transparent, #05090c); z-index: 0; pointer-events: none; }
+.space__svg { width: 100%; height: 100%; display: block; }
+.stars circle { fill: #fff; }
+.stars .tw { animation: twinkle 3.6s ease-in-out infinite; }
+@keyframes twinkle { 50% { opacity: .15; } }
+.hero-space__inner { position: relative; z-index: 1; text-align: center; display: grid; justify-items: center; }
+.hero-space__inner h1 { font-size: clamp(40px, 5.6vw, 84px); line-height: .98; letter-spacing: -0.035em; max-width: 17ch; margin: 0 auto var(--s-6); }
+.hero-space__inner .t-lead { max-width: 40em; margin: 0 auto var(--s-7); color: #c5d6de; }
+.hero-space__inner .btn-row { justify-content: center; }
+.hero-space__inner .hero__proof { margin-top: var(--s-6); }
+.sp-ln { stroke-dasharray: 1; stroke-dashoffset: 0; }
+.js .sp-ln { stroke-dashoffset: 1; animation: draw 2.2s var(--ease-out) .6s forwards; }
+.js .sp-ln#sp-mail { animation-delay: .9s; } .js .sp-ln#sp-office { animation-delay: 1.2s; }
+.js .sp-tags { opacity: 0; animation: fadein .8s var(--ease-out) 2.3s forwards; }
+.js .sp-st { opacity: 0; animation: fadein .8s var(--ease-out) 1.9s forwards; }
+.js .space__svg { animation: rise-planet 1.6s var(--ease-out) both; }
+@keyframes rise-planet { from { transform: translateY(40px); opacity: 0; } to { transform: none; opacity: 1; } }
+.js .hero-space__inner > * { opacity: 0; transform: translateY(14px); animation: rise .9s var(--ease-out) forwards; }
+.js .hero-space__inner > :nth-child(2) { animation-delay: .12s; } .js .hero-space__inner > :nth-child(3) { animation-delay: .24s; } .js .hero-space__inner > :nth-child(4) { animation-delay: .36s; }
+.btn--primary { box-shadow: 0 0 0 1px rgb(143 227 255 / .4), 0 10px 30px -8px rgb(143 227 255 / .55); }
+.btn--secondary { background: rgb(255 255 255 / .04); border-color: rgb(255 255 255 / .22); color: var(--p-ink); }
+@media (max-width: 639px) {
+  .hero--space { padding-top: calc(var(--nav) + 40px); }
+  .hero-space__inner .btn-row { width: 100%; }
+  .sp-tags { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .js .sp-ln, .js .sp-st, .js .space__svg, .js .hero-space__inner > *, .stars .tw { animation: none !important; opacity: 1; transform: none; stroke-dashoffset: 0; }
+}
+
+
+main > section#leistungen, main > section#jarvis { height: auto !important; }
+@media (max-width: 479px) { .nav:not(.is-open) .nav__actions { display: none !important; } .nav__toggle { margin-left: auto !important; } }
+.demo-note { margin-top: var(--s-3); font-size: 13px; color: var(--muted); }
+/* ---------- tech background across the page ---------- */
+body { position: relative; }
+.techbg { position: absolute; left: 0; right: 0; top: 100vh; bottom: 0; z-index: 0; pointer-events: none; opacity: .5;
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 240px, #000 calc(100% - 320px), transparent 100%);
+          mask-image: linear-gradient(to bottom, transparent 0, #000 240px, #000 calc(100% - 320px), transparent 100%); }
+main, footer.closing { position: relative; z-index: 1; }
+main > section.section:not(.hero), footer.closing { background: transparent; }
+main > section.ground-inverse { background: linear-gradient(180deg, rgb(7 18 25 / .55), rgb(7 18 25 / .85) 30%, rgb(7 18 25 / .85) 70%, rgb(7 18 25 / .55)); }
+.section-head h2, .t-lead, .ws-list, .faq { text-shadow: 0 1px 18px rgb(5 9 12 / .9); }
+@media (max-width: 639px) { .techbg { opacity: .38; } }
+
+/* ---------- lines section: one network line at a time ---------- */
+.line-tabs { display: flex; gap: var(--s-2); flex-wrap: wrap; margin-bottom: var(--s-6); }
+.line-tabs button { display: inline-flex; align-items: center; gap: 10px; height: 44px; padding: 0 18px 0 8px; border-radius: 999px; border: 1px solid color-mix(in oklab, var(--ink) 18%, transparent); background: var(--p-surface); color: var(--ink); font: 500 15px var(--font-text); cursor: pointer; transition: background 160ms var(--ease-out), border-color 160ms var(--ease-out), transform 120ms var(--ease-out); }
+.line-tabs button[aria-selected="true"] { background: #8fe3ff; color: #04121a; border-color: #8fe3ff; }
+.line-tabs button:active { transform: scale(.97); }
+.line-tabs .tag { display: inline-grid; place-items: center; min-width: 34px; height: 26px; border-radius: 6px; font: 400 13px var(--font-mono); color: #0d2230; }
+.route { padding: var(--s-8); }
+.route[hidden] { display: none; }
+.route__head { display: block; margin-bottom: var(--s-8); font: 500 16px var(--font-text); color: var(--board-muted); }
+.route__head b { color: var(--board-ink); font-weight: 700; }
+.route__head .tag { margin-right: 10px; vertical-align: 1px; }
+.route__track { position: relative; container-type: inline-size; }
+.route__track::before { content: ""; position: absolute; left: 13px; right: 13px; top: 13px; height: 10px; border-radius: 10px; background: var(--c); }
+.route__train { position: absolute; top: 9px; left: 13px; width: 18px; height: 18px; border-radius: 50%; background: #fff; box-shadow: 0 2px 6px rgb(0 0 0 / .4); animation: ride 4s var(--ease-out) infinite; }
+@keyframes ride { 0% { transform: translateX(0); opacity: 0; } 8% { opacity: 1; } 85% { opacity: 1; } 100% { transform: translateX(calc(100cqw - 44px)); opacity: 0; } }
+.route ol { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--s-5); position: relative; }
+.route li { display: grid; gap: var(--s-3); align-content: start; }
+.route li:last-child { text-align: right; justify-items: end; }
+.route .stop { width: 36px; height: 36px; border-radius: 50%; background: var(--board); border: 5px solid #f4fafc; }
+.route li:first-child .stop, .route li:last-child .stop { width: 36px; height: 36px; border-width: 7px; }
+.route .time { font: 400 13px var(--font-mono); color: var(--board-muted); margin-top: var(--s-3); }
+.route h3 { font: 700 21px/1.2 var(--font-display); letter-spacing: -0.01em; color: var(--board-ink); }
+.route p { color: var(--board-muted); font-size: 16px; line-height: 1.5; max-width: 26ch; }
+@media (max-width: 899px) {
+  .route { padding: var(--s-7) var(--s-6); }
+  .route__track::before { left: 13px; right: auto; top: 13px; bottom: 13px; width: 10px; height: auto; }
+  .route__train { display: none; }
+  .route ol { grid-template-columns: 1fr; gap: var(--s-6); }
+  .route li, .route li:last-child { grid-template-columns: 36px 1fr; column-gap: var(--s-5); text-align: left; justify-items: start; }
+  .route li > :not(.stop) { grid-column: 2; }
+  .route li .stop { grid-row: 1 / span 3; }
+  .route .time { margin-top: 6px; }
+}
+
+/* ---------- services bento ---------- */
+#leistungen .panel { --p-h: 340px; background: var(--board); }
+#leistungen .panel::before, #leistungen .panel::after { display: none; }
+.flow { position: absolute; inset: 0; display: grid; place-items: center; padding: var(--s-6); }
+.flow svg { width: 100%; max-width: 440px; height: auto; }
+.flow .node { fill: var(--board-2); stroke: var(--board-line); stroke-width: 1.5; }
+.flow .nt { font: 500 13px var(--font-text); fill: var(--board-ink); }
+.flow .ns { font: 400 12px var(--font-mono); fill: var(--board-muted); }
+.flow .wire { fill: none; stroke: var(--l-mail); stroke-width: 3; stroke-linecap: round; }
+.flow .pulse { fill: #fff; }
+.mini-chat { position: absolute; left: 50%; top: var(--s-6); width: min(330px, calc(100% - 48px)); transform: translateX(-50%); }
+.mini-chat.chat-card { right: auto; bottom: auto; }
+.site-mock { position: absolute; left: var(--s-6); right: var(--s-6); top: var(--s-6); bottom: -12px; background: #fff; border-radius: 12px 12px 0 0; overflow: hidden; color: #1d2a22; box-shadow: 0 20px 40px -18px rgb(0 0 0 / .6); }
+.site-mock__bar { height: 30px; display: flex; align-items: center; gap: 6px; padding: 0 12px; background: #e9eef1; font-size: 12px; color: #55646d; }
+.site-mock__bar i { width: 8px; height: 8px; border-radius: 50%; background: #c3ced5; }
+.site-mock__bar span { margin-left: 8px; padding: 2px 10px; border-radius: 99px; background: #fff; }
+.site-mock__hero { display: grid; grid-template-columns: 1.1fr 1fr; gap: 14px; padding: 18px; align-items: center; }
+.site-mock__hero b { display: block; font: 700 20px/1.1 var(--font-display); letter-spacing: -0.02em; margin-bottom: 8px; color: #0f1f17; }
+.site-mock__hero p { font-size: 12px; line-height: 1.45; color: #4b5a52; margin-bottom: 10px; }
+.site-mock__btn { display: inline-block; padding: 6px 12px; border-radius: 99px; background: #1f4d3a; color: #fff; font-size: 12px; }
+.site-mock__pic { aspect-ratio: 4/3; border-radius: 8px; background: linear-gradient(160deg, #d9c2a5, #a9805c 55%, #5e4430); position: relative; overflow: hidden; }
+.site-mock__pic::after { content: ""; position: absolute; left: 18%; right: 18%; bottom: 0; height: 62%; border-radius: 50% 50% 0 0; background: #3f2d20; }
+.site-mock__rows { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; padding: 0 18px 18px; }
+.site-mock__rows span { padding: 10px; border-radius: 8px; background: #f1f4f2; font-size: 11.5px; color: #3c4a42; }
+.site-mock__rows b { display: block; font-size: 12.5px; color: #0f1f17; }
+.site-mock__bubble { position: absolute; right: 14px; bottom: 26px; width: 42px; height: 42px; border-radius: 50%; background: #1f4d3a; display: grid; place-items: center; box-shadow: 0 6px 14px rgb(0 0 0 / .25); }
+
+.inbox { position: absolute; inset: var(--s-6); display: grid; align-content: center; gap: 10px; }
+.inbox__row { display: grid; grid-template-columns: 92px minmax(0,1fr) auto; gap: 12px; align-items: center; padding: 12px 14px; border-radius: 12px; background: var(--board-2); border: 1px solid var(--board-line); font-size: 14px; color: var(--board-ink); }
+.inbox__row b { font-weight: 500; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.inbox__row em { font-style: normal; font-size: 13px; color: #6fdc9c; }
+.inbox__tag { justify-self: start; padding: 3px 10px; border-radius: 99px; font-size: 12.5px; color: #04121a; background: var(--c); }
+@media (max-width: 639px) { .inbox__row { grid-template-columns: 80px minmax(0,1fr); } .inbox__row em { display: none; } }
+/* ---------- industries ---------- */
+.chips { display: flex; flex-wrap: wrap; gap: var(--s-2); align-content: start; }
+.chips button { height: 40px; padding: 0 14px; border-radius: 999px; border: 1px solid color-mix(in oklab, var(--ink) 16%, transparent); background: var(--p-surface); color: var(--ink); font: 500 15px var(--font-text); cursor: pointer; transition: background 160ms var(--ease-out), color 160ms var(--ease-out), transform 120ms var(--ease-out); }
+.chips button[aria-pressed="true"] { background: #8fe3ff; color: #04121a; border-color: #8fe3ff; }
+.chips button:active { transform: scale(.97); }
+@media (hover: hover) and (pointer: fine) { .chips button:hover:not([aria-pressed="true"]), .line-tabs button:hover:not([aria-selected="true"]) { border-color: color-mix(in oklab, var(--ink) 40%, transparent); } }
+.trade { padding: var(--s-8); display: grid; gap: var(--s-7); align-content: start; min-height: 100%; }
+.trade h3 { font: 700 28px/1.15 var(--font-display); letter-spacing: -0.02em; color: var(--board-ink); }
+.trade__row { display: grid; grid-template-columns: 34px 1fr; gap: var(--s-4); align-items: start; }
+.trade__row p { color: var(--board-ink); font-size: 17px; line-height: 1.55; }
+.trade__row span.lbl { display: block; font-size: 14px; color: var(--board-muted); margin-bottom: 4px; }
+.trade__live { transition: opacity 200ms var(--ease-out), filter 200ms var(--ease-out); }
+.trade__live.is-swapping { opacity: 0; filter: blur(4px); }
+#branchen .grid { align-items: stretch; }
+
+/* ---------- JARVIS cockpit ---------- */
+.cockpit { border: 1px solid #24485a; border-radius: var(--r-lg); overflow: hidden; background: #0b1c25; display: grid; grid-template-rows: 44px 1fr; min-height: 600px; }
+.cockpit__bar { display: flex; align-items: center; gap: 8px; padding: 0 16px; border-bottom: 1px solid #1d3a49; font-size: 13px; color: var(--board-muted); }
+.cockpit__bar i { width: 10px; height: 10px; border-radius: 50%; background: #2b4b5b; }
+.cockpit__bar span { margin-left: 10px; }
+.cockpit__bar em { margin-left: auto; font-style: normal; color: #6fdc9c; }
+.cockpit__body { display: grid; grid-template-columns: 200px minmax(0, 1fr) 300px; min-height: 0; }
+.ck-side { border-right: 1px solid #1d3a49; padding: 16px 12px; display: grid; align-content: start; gap: 4px; font-size: 14px; color: var(--board-muted); }
+.ck-side span { padding: 8px 10px; border-radius: 8px; display: flex; justify-content: space-between; }
+.ck-side .on { background: #13394a; color: #e6f6fd; }
+.ck-side b { font: 400 12px var(--font-mono); color: #8fe3ff; }
+.ck-main { padding: 22px 26px; display: grid; align-content: start; gap: 12px; }
+.ck-msg { max-width: 80%; padding: 12px 15px; border-radius: 14px; font-size: 15px; line-height: 1.5; }
+.ck-msg--me { justify-self: end; background: #8fe3ff; color: #0d2230; border-bottom-right-radius: 4px; }
+.ck-msg--j { background: #132f3d; color: #e6f2f7; border-bottom-left-radius: 4px; }
+.ck-msg--j ul { margin: 8px 0 0; padding-left: 18px; color: #c3d8e2; }
+.ck-input { margin-top: 8px; padding: 12px 14px; border: 1px solid #24485a; border-radius: 10px; color: #8eaab8; font-size: 14px; }
+.ck-right { border-left: 1px solid #1d3a49; padding: 18px 16px; display: grid; align-content: start; gap: 12px; }
+.ck-right .ck-h { font: 500 13px var(--font-text); color: var(--board-muted); }
+.ck-card { background: #132f3d; border: 1px solid #1f4152; border-radius: 12px; padding: 12px 14px; display: grid; gap: 8px; font-size: 14px; color: #e6f2f7; }
+.ck-card small { color: #9fb9c6; font-size: 13px; }
+.ck-btns { display: flex; gap: 6px; }
+.ck-btns span { flex: 1; text-align: center; padding: 7px 0; border-radius: 8px; font-size: 13px; background: #8fe3ff; color: #0d2230; font-weight: 700; }
+.ck-btns span + span { background: transparent; border: 1px solid #2f5668; color: #c3d8e2; font-weight: 400; }
+.ck-flow { display: flex; align-items: center; gap: 8px; font-size: 13px; color: #c3d8e2; }
+.ck-flow i { width: 8px; height: 8px; border-radius: 50%; background: #6fdc9c; flex: none; }
+.ck-flow i.wait { background: #ffb15c; }
+.ck-flow time { margin-left: auto; font: 400 12px var(--font-mono); color: #8eaab8; }
+.jarvis-points { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--s-6); margin-top: var(--s-7); }
+.jarvis-points h3 { font: 700 19px/1.25 var(--font-display); margin-bottom: 6px; }
+.jarvis-points p { color: var(--muted); font-size: 16px; }
+
+/* ---------- working together ---------- */
+.steps-board { padding: var(--s-9) var(--s-8); }
+.steps-board .route__head { margin-bottom: var(--s-8); }
+
+/* ---------- prices ---------- */
+.offers { list-style: none; margin: 0; padding: 0; border-top: 1px solid color-mix(in oklab, var(--ink) 14%, transparent); }
+.offer { display: grid; grid-template-columns: 34px minmax(0, 1.25fr) minmax(0, 1.4fr) 170px 150px; gap: var(--s-6); align-items: center; padding: var(--s-5) 0; border-bottom: 1px solid color-mix(in oklab, var(--ink) 14%, transparent); }
+.offer .dot { width: 18px; height: 18px; border-radius: 50%; border: 5px solid var(--c); background: var(--p-bg); }
+.offer h3 { font: 700 22px/1.2 var(--font-display); letter-spacing: -0.015em; }
+.offer p { color: var(--muted); font-size: 16px; }
+.offer .price-amount { font: 700 24px/1 var(--font-display); letter-spacing: -0.02em; }
+.offer .price-label { display: block; font-size: 13px; color: var(--muted); margin-bottom: 6px; }
+.offer--feature { background: #0c1a22; border: 1px solid #1f3d4c; border-radius: var(--r-md); border-bottom-color: transparent; padding-left: var(--s-5); padding-right: var(--s-5); margin: 0 calc(-1 * var(--s-5)); box-shadow: 0 30px 60px -30px rgb(40 140 190 / .45); }
+.offer--feature .badge-line { display: inline-block; margin-left: 10px; padding: 3px 10px; border-radius: 99px; background: #8fe3ff; color: #04121a; font: 500 13px var(--font-text); vertical-align: 3px; }
+.price-foot { display: flex; justify-content: space-between; align-items: center; gap: var(--s-6); flex-wrap: wrap; margin-top: var(--s-7); }
+.price-foot p { color: var(--muted); font-size: 15px; }
+@media (max-width: 1023px) {
+  .offer { grid-template-columns: 26px minmax(0, 1fr) 150px; row-gap: var(--s-2); }
+  .offer > p { grid-column: 2 / -1; grid-row: 2; }
+  .offer > .pr-setup { grid-column: 3; grid-row: 1; }
+  .offer > .pr-month { grid-column: 2 / -1; grid-row: 3; }
+  .offer > .pr-month .price-label { display: inline; margin-right: 8px; }
+  .offer > .pr-month .price-amount { font-size: 18px; }
+}
+@media (max-width: 639px) {
+  .offer { grid-template-columns: 24px 1fr; }
+  .offer > .pr-setup { grid-column: 2; grid-row: 3; }
+  .offer > .pr-month { grid-column: 2; grid-row: 4; }
+  .offer > p { grid-column: 2; }
+}
+
+#fragen .faq { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: var(--s-8); }
+@media (max-width: 899px) { #fragen .faq { grid-template-columns: 1fr; } }
+/* tablets and phones: sections grow with their stacked content instead of cutting it */
+@media (max-width: 1023px) {
+  main > section.section { height: auto !important; min-height: 0; }
+  main > section.section > .wrap { display: block !important; }
+  footer.closing { height: auto !important; min-height: 0; }
+  .close--word .section-head--split { display: grid !important; grid-template-columns: 1fr !important; gap: var(--s-6); }
+  .close--word .section-head--split > * { min-width: 0; max-width: 100%; }
+  .close--word .btn-row { flex-direction: column; align-items: stretch; }
+  .closing__cta, .closing__cta > * { min-width: 0; max-width: 100%; }
+}
+@media (max-width: 639px) { .close__word { font-size: 16vw !important; white-space: normal; overflow-wrap: anywhere; } }
+/* ---------- demo consent (non-modal) ---------- */
+.consent { position: fixed; right: max(16px, env(safe-area-inset-right)); bottom: max(16px, env(safe-area-inset-bottom)); width: min(400px, calc(100vw - 32px)); z-index: 30; background: #0f2531; color: #e6f2f7; border-radius: 16px; padding: 22px; box-shadow: 0 24px 60px -18px rgb(4 14 20 / .6), 0 2px 8px rgb(4 14 20 / .25); transform-origin: bottom right; transition: opacity 200ms var(--ease-out), transform 200ms var(--ease-out); }
+.consent[hidden] { display: block; opacity: 0; transform: scale(.96) translateY(8px); pointer-events: none; visibility: hidden; }
+.consent h2 { font: 700 21px/1.2 var(--font-display); margin-bottom: 10px; color: #fff; }
+.consent p { font-size: 14.5px; line-height: 1.55; color: #c3d8e2; margin-bottom: 16px; }
+.consent .btn-row { gap: 8px; }
+.consent .btn--primary { background: #8fe3ff; color: #0d2230; border-color: #8fe3ff; }
+.consent .btn--secondary { color: #e6f2f7; border-color: #2f5668; background: transparent; }
+
+
+
+
+/* ---------- problem ---------- */
+.prob { align-items: center; row-gap: var(--s-7); }
+.prob__lead { margin-top: var(--s-5); color: #c5d6de; }
+.prob__board { padding: var(--s-6); display: grid; gap: var(--s-3); }
+.prob__row { display: grid; grid-template-columns: 44px 1fr; gap: var(--s-4); align-items: center; padding: var(--s-4); border-radius: 14px; background: #0c1c25; border: 1px dashed #5a4630; }
+.prob__row p { color: #e6f2f7; font-size: 16.5px; }
+.prob__ic { width: 44px; height: 44px; border-radius: 12px; display: grid; place-items: center; background: rgb(255 177 92 / .12); border: 1px solid rgb(255 177 92 / .4); }
+.prob__ic svg { width: 22px; height: 22px; fill: none; stroke: #ffb15c; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+.prob__fix { display: grid; grid-template-columns: 44px 1fr; gap: var(--s-4); align-items: center; padding: var(--s-4); margin-top: var(--s-2); border-radius: 14px; background: rgb(111 220 156 / .07); border: 1px solid rgb(111 220 156 / .35); }
+.prob__fix p { color: #e6f2f7; font-size: 16.5px; }
+.prob__line { width: 44px; height: 10px; border-radius: 10px; background: #6fdc9c; }
+/* ---------- trust ---------- */
+.trust { align-items: stretch; }
+.trust__card { padding: var(--s-7); display: grid; gap: var(--s-4); align-content: start; }
+.trust__card h3 { font: 700 24px/1.2 var(--font-display); letter-spacing: -0.015em; }
+.trust__card p { color: #c5d6de; font-size: 16.5px; max-width: 52ch; }
+.trust__visual { margin-bottom: var(--s-3); max-width: 340px; }
+.trust__visual--me { display: flex; align-items: center; gap: var(--s-4); padding: var(--s-4); border-radius: 14px; background: #0c1c25; border: 1px solid #1f3d4c; }
+.trust__visual--me img { width: 56px; height: 56px; border-radius: 14px; object-fit: cover; }
+.trust__visual--me b { display: block; font: 700 17px var(--font-display); }
+.trust__visual--me small { color: #9fb9c6; font-size: 13.5px; }
+/* ---------- mini site in services ---------- */
+.mini-site { position: absolute; left: var(--s-5); right: var(--s-5); top: var(--s-5); bottom: -10px; border-radius: 12px 12px 0 0; background: #050d12; border: 1.5px solid rgb(143 227 255 / .5); border-bottom: 0; box-shadow: 0 0 40px -12px rgb(143 227 255 / .45); overflow: hidden; }
+.mini-site .wf-hero { grid-template-columns: 1fr; }
+.mini-site .wf-art { aspect-ratio: 16 / 7; }
+.mini-site .wf-art svg { width: 22%; }
+/* ---------- offer buttons ---------- */
+.offer { grid-template-columns: 34px minmax(0, 1.1fr) minmax(0, 1.3fr) 150px 120px auto !important; }
+.offer__btn { height: 40px; font-size: 14px; padding: 0 16px; }
+@media (max-width: 1023px) {
+  .offer { grid-template-columns: 26px minmax(0, 1fr) 150px !important; }
+  .offer > .offer__btn { grid-column: 2 / -1; grid-row: 4; justify-self: start; }
+}
+@media (max-width: 639px) {
+  .offer { grid-template-columns: 24px 1fr !important; }
+  .offer > .offer__btn { grid-column: 2; grid-row: 5; }
+}
+main > section#problem, main > section#vertrauen, main > section#preise, main > section#fragen { height: auto !important; min-height: 0; }
+
+/* ---------- office automation ---------- */
+.of-grid > :first-child { grid-column: span 2; }
+@media (max-width: 639px) { .of-grid > :first-child { grid-column: auto; } }
+.of-grid { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--s-4); }
+.of-item { position: relative; display: grid; gap: var(--s-4); align-content: start; padding: var(--s-6); border-radius: var(--r-lg); background: linear-gradient(180deg, #0c1c25, #08141a); border: 1px solid #16303c; overflow: hidden; transition: border-color 200ms var(--ease-out), transform 200ms var(--ease-out); }
+.of-item::before { content: ""; position: absolute; left: var(--s-6); right: var(--s-6); top: 0; height: 2px; border-radius: 2px; background: var(--c); opacity: .9; }
+.of-item h3 { font: 700 20px/1.2 var(--font-display); letter-spacing: -0.01em; margin-bottom: 6px; }
+.of-item p { color: #b8cbd4; font-size: 15.5px; line-height: 1.5; }
+.of-ic { width: 44px; height: 44px; border-radius: 12px; display: grid; place-items: center; background: color-mix(in oklab, var(--c, #8fe3ff) 14%, transparent); border: 1px solid color-mix(in oklab, var(--c, #8fe3ff) 35%, transparent); flex: none; }
+.of-ic svg { width: 22px; height: 22px; fill: none; stroke: var(--c, #8fe3ff); stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+@media (hover: hover) and (pointer: fine) { .of-item:hover { border-color: color-mix(in oklab, var(--c) 45%, #16303c); transform: translateY(-2px); } }
+.of-rules { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s-4); margin-top: var(--s-4); }
+.of-rule { display: flex; gap: var(--s-4); align-items: center; padding: var(--s-5) var(--s-6); border-radius: var(--r-lg); border: 1px solid #1f3d4c; background: rgb(143 227 255 / .05); }
+.of-rule p { font-size: 16px; color: #c5d6de; }
+.of-rule b { color: var(--ink); }
+.of-more { margin-top: var(--s-8); padding-top: var(--s-6); border-top: 1px solid #16303c; }
+.of-more h3 { font: 700 22px/1.2 var(--font-display); margin-bottom: var(--s-5); }
+.of-more ul { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--s-4) var(--s-6); }
+.of-more li { position: relative; padding-left: 22px; font-size: 15.5px; line-height: 1.5; color: #a9bfca; }
+.of-more li::before { content: ""; position: absolute; left: 0; top: 7px; width: 10px; height: 10px; border-radius: 50%; border: 2px dashed #5f8293; }
+@media (max-width: 1023px) { .of-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } .of-more ul { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 639px) { .of-grid, .of-rules, .of-more ul { grid-template-columns: 1fr; } .of-item { grid-template-columns: 44px 1fr; padding: var(--s-5); } .of-item::before { left: var(--s-5); right: var(--s-5); } }
+main > section#buero, main > section#ki { height: auto !important; }
+
+/* ---------- glowing assistant illustration ---------- */
+.glow-board { padding: 0; background:
+  radial-gradient(60% 70% at 50% 50%, #12405a 0%, transparent 70%),
+  radial-gradient(40% 50% at 85% 20%, #0f3348 0%, transparent 70%), var(--board); }
+.glow-board svg { display: block; width: 100%; height: auto; }
+.gl-wire { fill: none; stroke-width: 2.2; stroke-linecap: round; opacity: .85; }
+.gl-wire-glow { fill: none; stroke-width: 8; opacity: .18; }
+.gl-src rect, .gl-out rect { fill: #0f2b3a; stroke: #2d5a70; stroke-width: 1.2; }
+.gl-src text, .gl-out text { font: 500 15px var(--font-text); fill: #e6f2f7; }
+.gl-src .sub, .gl-out .sub { font: 400 12.5px var(--font-text); fill: #9fbfcd; }
+.gl-ic { fill: none; stroke: #8fe3ff; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.gl-core-ring { fill: none; stroke: #8fe3ff; stroke-width: 1.5; stroke-dasharray: 4 9; opacity: .7; transform-box: fill-box; transform-origin: center; animation: spin 24s linear infinite; }
+.gl-core-ring--2 { stroke-dasharray: 1 6; opacity: .5; animation-duration: 40s; animation-direction: reverse; }
+.gl-core-title { font: 700 30px var(--font-display); fill: #fff; letter-spacing: -0.02em; }
+.gl-core-sub { font: 400 14px var(--font-text); fill: #b9dceb; }
+.gl-pulse { fill: #fff; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.gl-orbit { transform-box: view-box; animation: spin 18s linear infinite; }
+
+/* ---------- website showcase ---------- */
+.ws-list { list-style: none; margin: var(--s-6) 0 var(--s-7); padding: 0; display: grid; gap: var(--s-4); }
+.ws-list li { display: grid; grid-template-columns: 22px 1fr; gap: var(--s-3); align-items: start; font-size: 17px; }
+.ws-list li::before { content: ""; width: 14px; height: 14px; margin-top: 5px; border-radius: 50%; border: 4px solid var(--c, var(--l-chat)); background: var(--p-bg); }
+.ws-list b { font-weight: 700; }
+.stage-dev { position: relative; min-height: 560px; border-radius: var(--r-lg); background:
+  radial-gradient(60% 60% at 60% 40%, #1b5675 0%, transparent 70%), var(--board); overflow: hidden; }
+.laptop { position: absolute; left: 6%; top: 10%; width: 78%; }
+.laptop__screen { position: relative; aspect-ratio: 16 / 10; border-radius: 16px 16px 0 0; padding: 10px 10px 0; background: #071017; border: 1.5px solid rgb(143 227 255 / .55); border-bottom: 0; box-shadow: 0 0 40px -10px rgb(143 227 255 / .45), inset 0 0 30px rgb(143 227 255 / .06); }
+.laptop__base { height: 12px; margin: 0 -7%; border-radius: 0 0 16px 16px; border: 1.5px solid rgb(143 227 255 / .55); background: #0a1922; box-shadow: 0 12px 40px -12px rgb(143 227 255 / .35); }
+.viewport { position: relative; height: 100%; overflow: hidden; border-radius: 6px 6px 0 0; background: #050d12; }
+.phone { position: absolute; right: 5%; bottom: 8%; width: 23%; aspect-ratio: 9 / 19; border-radius: 28px; padding: 8px; background: #071017; border: 1.5px solid rgb(143 227 255 / .6); box-shadow: 0 0 40px -8px rgb(143 227 255 / .45); }
+.phone .viewport { border-radius: 21px; }
+.demo { position: absolute; inset: 0; opacity: 0; transition: opacity 600ms var(--ease-out); color: #e6f2f7; }
+.demo.is-on { opacity: 1; }
+.demo.is-on .wf > * { animation: wfin .7s var(--ease-out) both; }
+.demo.is-on .wf > :nth-child(2) { animation-delay: .15s; } .demo.is-on .wf > :nth-child(3) { animation-delay: .3s; } .demo.is-on .wf > :nth-child(4) { animation-delay: .45s; }
+@keyframes wfin { from { opacity: 0; transform: translateY(8px); filter: blur(4px); } }
+.wf { display: grid; gap: 12px; padding: 14px 16px; height: 100%; align-content: start; }
+.wf-nav { display: flex; align-items: center; justify-content: space-between; padding-bottom: 10px; border-bottom: 1px solid rgb(143 227 255 / .14); font: 700 12px var(--font-display); }
+.wf-nav i { display: flex; gap: 6px; } .wf-nav i::before, .wf-nav i::after, .wf-nav i b { content: ""; display: block; width: 26px; height: 5px; border-radius: 3px; background: rgb(143 227 255 / .28); }
+.wf-hero { display: grid; grid-template-columns: 1.1fr 1fr; gap: 14px; align-items: center; }
+.wf-hero h4 { font: 700 20px/1.05 var(--font-display); letter-spacing: -0.02em; margin-bottom: 8px; color: #fff; }
+.wf-line { height: 5px; border-radius: 3px; background: rgb(230 242 247 / .22); margin-bottom: 6px; }
+.wf-line.s { width: 70%; }
+.wf-btn { display: inline-block; margin-top: 6px; padding: 6px 12px; border-radius: 99px; background: #8fe3ff; color: #04121a; font-size: 11px; font-weight: 700; box-shadow: 0 0 18px -2px rgb(143 227 255 / .7); }
+.wf-art { aspect-ratio: 4 / 3; border-radius: 10px; display: grid; place-items: center; background: radial-gradient(70% 70% at 50% 40%, rgb(143 227 255 / .22), transparent 70%), #0a1a23; border: 1px solid rgb(143 227 255 / .25); }
+.wf-art svg { width: 44%; height: auto; fill: none; stroke: #8fe3ff; stroke-width: 1.4; stroke-linecap: round; stroke-linejoin: round; filter: drop-shadow(0 0 6px rgb(143 227 255 / .7)); }
+.wf-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.wf-cards span { padding: 9px; border-radius: 8px; border: 1px solid rgb(143 227 255 / .16); background: rgb(143 227 255 / .04); font-size: 10.5px; color: #c5d6de; }
+.wf-cards b { display: block; color: #fff; font-size: 11.5px; margin-bottom: 4px; }
+.dm-chat { position: absolute; right: 12px; bottom: 12px; width: 34px; height: 34px; border-radius: 50%; background: #8fe3ff; display: grid; place-items: center; box-shadow: 0 0 20px rgb(143 227 255 / .7); animation: bob 3s ease-in-out infinite; }
+@keyframes bob { 50% { transform: translateY(-4px); } }
+.phone .wf { padding: 18px 10px 10px; gap: 10px; }
+.phone .wf-hero { grid-template-columns: 1fr; gap: 10px; }
+.phone .wf-hero h4 { font-size: 15px; }
+.phone .wf-cards { grid-template-columns: 1fr; }
+.phone .wf-nav i { display: none; }
+.ws-dots { position: absolute; left: 6%; bottom: 6%; display: flex; gap: 8px; z-index: 3; }
+.ws-dots button { height: 32px; padding: 0 12px; border-radius: 99px; border: 1px solid #2f5668; background: #0f2531cc; color: #c3d8e2; font: 500 13px var(--font-text); cursor: pointer; transition: background 160ms var(--ease-out), color 160ms var(--ease-out), transform 120ms var(--ease-out); }
+.ws-dots button[aria-pressed="true"] { background: #8fe3ff; color: #0d2230; border-color: #8fe3ff; }
+.ws-dots button:active { transform: scale(.97); }
+
+/* ---------- reveal and station lighting ---------- */
+.js [data-reveal] { opacity: 0; transform: translateY(18px); transition: opacity 700ms var(--ease-out), transform 700ms var(--ease-out); transition-delay: var(--d, 0ms); }
+.js [data-reveal].is-in { opacity: 1; transform: none; }
+.js .route li { opacity: .35; transition: opacity 400ms var(--ease-out); }
+.js .route li .stop { transform: scale(.7); transition: transform 400ms var(--ease-out), background 400ms var(--ease-out); }
+.js .route.is-in li { opacity: 1; }
+.js .route.is-in li .stop { transform: scale(1); background: var(--c); }
+.js .route.is-in li:nth-child(2), .js .route.is-in li:nth-child(2) .stop { transition-delay: 350ms; }
+.js .route.is-in li:nth-child(3), .js .route.is-in li:nth-child(3) .stop { transition-delay: 700ms; }
+.js .route.is-in li:nth-child(4), .js .route.is-in li:nth-child(4) .stop { transition-delay: 1050ms; }
+.js .hero-map .ln { stroke-dashoffset: 1; animation: draw 1.6s var(--ease-out) forwards; }
+.js .hero-map .ln[data-line="mail"] { animation-delay: .25s; }
+.js .hero-map .ln[data-line="office"] { animation-delay: .5s; }
+@keyframes draw { to { stroke-dashoffset: 0; } }
+.js .hero-map .stations, .js .hero-map .labels { opacity: 0; animation: fadein .6s var(--ease-out) 1.1s forwards; }
+@keyframes fadein { to { opacity: 1; } }
+.js .hero__text > * { opacity: 0; transform: translateY(14px); animation: rise .8s var(--ease-out) forwards; }
+.js .hero__text > :nth-child(2) { animation-delay: .1s; } .js .hero__text > :nth-child(3) { animation-delay: .2s; } .js .hero__text > :nth-child(4) { animation-delay: .3s; }
+@keyframes rise { to { opacity: 1; transform: none; } }
+@media (hover: hover) and (pointer: fine) {
+  .offer { transition: transform 200ms var(--ease-out), background 200ms var(--ease-out); }
+  .offer:hover { transform: translateX(4px); }
+  
+}
+@media (prefers-reduced-motion: reduce) {
+  .js [data-reveal], .js .route li, .js .route li .stop, .js .hero__text > *, .js .hero-map .stations, .js .hero-map .labels { opacity: 1 !important; transform: none !important; animation: none !important; transition: none !important; }
+  .js .hero-map .ln { animation: none; stroke-dashoffset: 0; }
+  .dm-chat, .gl-core-ring, .gl-orbit, .demo.is-on .wf > * { animation: none !important; }
+}
+@media (max-width: 1023px) {
+  .stage-dev { min-height: 480px; margin-top: var(--s-7); }
+}
+@media (max-width: 639px) {
+  .stage-dev { min-height: 340px; }
+  .laptop { left: 4%; width: 88%; top: 8%; }
+  .phone { width: 30%; right: 3%; bottom: 14%; border-radius: 20px; padding: 6px; }
+  .phone .viewport { border-radius: 15px; }
+  .dm-hero h4 { font-size: 15px; }   .ws-dots { left: 4%; bottom: 4%; }
+  .glow-board { min-height: 0; }
+}
+
+/* ---------- motion safety ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .route__train, .hero-map .train { animation: none !important; display: none; }
+  .chat-card [data-step], .trade__live, .consent { transition: none !important; }
+}
+@media (max-width: 1023px) {
+  .cockpit__body { grid-template-columns: minmax(0, 1fr) 280px; }
+  .ck-side { display: none; }
+  .jarvis-points { grid-template-columns: 1fr; gap: var(--s-4); }
+}
+@media (max-width: 639px) {
+  .cockpit { min-height: 0; }
+  .cockpit__body { grid-template-columns: 1fr; }
+  .ck-right { border-left: 0; border-top: 1px solid #1d3a49; }
+  .ck-right .ck-card:nth-of-type(n+2), .ck-right .ck-flow:nth-child(n+5) { display: none; }
+  .map-key { left: var(--s-4); top: var(--s-4); }
+  .map-key button span { display: none; }
+  .trade { padding: var(--s-6); }
+  .route { min-height: 0; }
+}
 </style>
 </head>
 <body>
-<div id="bar"></div>
-<svg width="0" height="0" style="position:absolute"><defs>
-<linearGradient id="lg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2f5bea"/><stop offset="1" stop-color="#7a4dff"/></linearGradient>
-<symbol id="brand" viewBox="0 0 40 40"><image href="logo.webp" width="40" height="40" preserveAspectRatio="xMidYMid meet"/></symbol></defs></svg>
-
-<header><div class="w"><a class="logo" href="#top" aria-label="Bergmann AI"><svg><use href="#brand"/></svg>Bergmann <em>AI</em></a>
-<nav id="nav"><a href="#bereiche">Leistungen</a><a href="#assistent">Assistent</a><a href="#automatisierung">Automatisierung</a><a href="#branchen">Branchen</a><a href="#demo">Demo</a><a href="#faq">FAQ</a></nav>
-<a class="btn" href="mailto:shawnbergmann00@gmail.com" style="padding:11px 20px">Kontakt</a></div></header>
+<div class="techbg" aria-hidden="true"></div>
+<!-- type: software (AI service studio with its own software)
+     deal: hero collage, nav nav-centre, close close-word, footer footer-columns, rhythm dark-band, buttons solid, mark: client logo
+     moments: none; effect: none (the network map is the page's own diagram world) -->
+<header class="nav nav--centre">
+  <div class="wrap nav__bar">
+    <a class="sr-only" href="#problem">Zum Inhalt springen</a>
+    <a class="nav__logo" href="#top"><img src="logo.webp" alt="" width="32" height="32" style="border-radius:8px">Bergmann AI</a>
+    <nav class="nav__links" aria-label="Hauptmenü">
+      <div class="nav__item"><a class="nav__link" href="#leistungen">Leistungen</a></div>
+      <div class="nav__item"><a class="nav__link" href="#buero">Büro</a></div>
+      <div class="nav__item"><a class="nav__link" href="#websites">Websites</a></div>
+      <div class="nav__item"><a class="nav__link" href="#branchen">Branchen</a></div>
+      <div class="nav__item"><a class="nav__link" href="#jarvis">JARVIS</a></div>
+      <div class="nav__item"><a class="nav__link" href="#preise">Preise</a></div>
+    </nav>
+    <div class="nav__actions">
+      <a class="btn btn--primary" href="#demo" data-demo>Chatbot-Demo testen</a>
+    </div>
+    <button class="nav__toggle" type="button" aria-expanded="false" aria-label="Menü">
+      <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M2 5h14M2 13h14" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+    </button>
+  </div>
+</header>
 
 <main id="top">
-<div class="hero"><div class="aur"><i></i><i></i><i></i></div><div class="grid"></div>
-<div class="w hg">
-<div class="rv"><span class="pill"><b></b>KI-Kundenassistenten &amp; Automatisierung</span>
-<h1>Kundenfragen klären. <span class="grad">Abläufe automatisieren.</span> Ihr Team entlasten.</h1>
-<p class="lead">Bergmann AI entwickelt individuelle KI-Kundenassistenten für Ihre Website und Automatisierungen für E-Mail, Anfragen, Termine und Dokumente sowie Websites mit Chatbot für lokale Betriebe. Individuell eingerichtet für Ihr Unternehmen.</p>
-<div class="row"><a class="btn" href="#demo">KI-Assistent testen →</a><a class="btn o" href="mailto:shawnbergmann00@gmail.com">Kontakt per E-Mail</a></div>
-<div class="check"><b>✓</b>Ihre Informationen. Ihre Abläufe. Ein klarer nächster Schritt.</div></div>
-<div class="rv" style="transition-delay:.15s"><div class="mock" id="mock">
-<div class="fc a"><span>✓</span>Anfrage erfasst</div><div class="fc b"><span>📅</span>Terminwunsch gesendet</div>
-<div class="mh"><svg><use href="#brand"/></svg><div>Ihr Kundenassistent<small>● online, rund um die Uhr</small></div></div>
-<div class="m c">Ist morgen noch ein Termin für eine Inspektion frei?</div>
-<div class="m a">Ich nehme Ihren Terminwunsch gern auf. Um welches Fahrzeug geht es und wie erreicht Sie das Werkstattteam?</div>
-<div class="m c">Ein Golf. Am besten per E-Mail.</div>
-<div class="hand"><b>ÜBERGABE AN IHR TEAM</b>Terminwunsch · Inspektion · VW Golf<br>Verfügbarkeit durch die Werkstatt bestätigen lassen.</div>
-</div></div></div></div>
+  <section class="hero hero--space" aria-labelledby="hero-h">
+    <div class="space" aria-hidden="true">
+      <svg class="space__svg" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMax slice">
+        <defs>
+          <radialGradient id="pl-fill" cx="50%" cy="8%" r="75%"><stop offset="0" stop-color="#2b6f8f"/><stop offset=".18" stop-color="#123447"/><stop offset=".55" stop-color="#071820"/><stop offset="1" stop-color="#03080b"/></radialGradient>
+          <radialGradient id="pl-atmo" cx="50%" cy="50%" r="50%"><stop offset=".86" stop-color="#8fe3ff" stop-opacity="0"/><stop offset=".93" stop-color="#8fe3ff" stop-opacity=".55"/><stop offset="1" stop-color="#8fe3ff" stop-opacity="0"/></radialGradient>
+          <linearGradient id="pl-rim" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d9f6ff"/><stop offset=".25" stop-color="#8fe3ff" stop-opacity=".6"/><stop offset=".6" stop-color="#8fe3ff" stop-opacity="0"/></linearGradient>
+          <filter id="sp-glow" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="4" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+          <filter id="sp-soft" x="-20%" y="-150%" width="140%" height="400%"><feGaussianBlur stdDeviation="30"/></filter>
+          <clipPath id="pl-clip"><circle cx="720" cy="1610" r="960"/></clipPath>
+        </defs>
+        <g class="stars" id="stars"></g>
+        <circle cx="720" cy="1610" r="1040" fill="url(#pl-atmo)"/>
+        <ellipse cx="720" cy="670" rx="620" ry="90" fill="#8fe3ff" opacity=".16" filter="url(#sp-soft)"/>
+        <circle cx="720" cy="1610" r="960" fill="url(#pl-fill)"/>
+        <g clip-path="url(#pl-clip)" class="pl-surface">
+          <g fill="none" stroke="#8fe3ff" stroke-opacity=".09" stroke-width="1">
+            <ellipse cx="720" cy="1610" rx="960" ry="900"/><ellipse cx="720" cy="1610" rx="960" ry="820"/><ellipse cx="720" cy="1610" rx="960" ry="720"/>
+            <ellipse cx="720" cy="1610" rx="760" ry="960"/><ellipse cx="720" cy="1610" rx="520" ry="960"/><ellipse cx="720" cy="1610" rx="260" ry="960"/><path d="M720 650 V1610"/>
+          </g>
+          <g filter="url(#sp-glow)" fill="none" stroke-width="5" stroke-linecap="round">
+            <path id="sp-chat" class="sp-ln" pathLength="1" stroke="#8fe3ff" d="M 300 1010C 420 810 560 750 720 756S 1030 800 1160 910"/>
+            <path id="sp-mail" class="sp-ln" pathLength="1" stroke="#ffb15c" d="M 420 1010C 520 870 610 830 760 834S 1000 890 1080 1010"/>
+            <path id="sp-office" class="sp-ln" pathLength="1" stroke="#6fdc9c" d="M 240 1010C 380 870 470 900 600 910S 900 870 1240 1010"/>
+          </g>
+          <g class="sp-st" fill="#03080b" stroke="#f4fafc" stroke-width="3">
+            <circle cx="520" cy="782" r="7"/><circle cx="720" cy="756" r="9"/><circle cx="960" cy="796" r="7"/>
+            <circle cx="600" cy="854" r="6"/><circle cx="900" cy="862" r="7"/>
+            <circle cx="470" cy="906" r="6"/><circle cx="760" cy="902" r="7"/><circle cx="1040" cy="918" r="6"/>
+          </g>
+          <circle r="5" fill="#fff"><animateMotion dur="7s" repeatCount="indefinite"><mpath href="#sp-chat"/></animateMotion></circle>
+          <circle r="5" fill="#fff"><animateMotion dur="8s" begin="1.5s" repeatCount="indefinite"><mpath href="#sp-mail"/></animateMotion></circle>
+          <circle r="5" fill="#fff"><animateMotion dur="9s" begin="3s" repeatCount="indefinite"><mpath href="#sp-office"/></animateMotion></circle>
+        </g>
+        <circle cx="720" cy="1610" r="960" fill="none" stroke="url(#pl-rim)" stroke-width="2.5"/>
+      <g class="sp-tags" font-family="GMono, monospace" font-size="15">
+          <g transform="translate(1020 742)"><rect width="128" height="30" rx="8" fill="#8fe3ff"/><text x="12" y="20" fill="#04121a">C1 Chatbot</text></g>
+          <g transform="translate(860 818)"><rect width="118" height="30" rx="8" fill="#ffb15c"/><text x="12" y="20" fill="#04121a">M2 E-Mail</text></g>
+          <g transform="translate(300 846)"><rect width="96" height="30" rx="8" fill="#6fdc9c"/><text x="12" y="20" fill="#04121a">B3 Büro</text></g>
+        </g>
+      </svg>
+    </div>
+    <div class="wrap hero-space__inner">
+      <h1 id="hero-h">KI-Chatbots und <span class="hl">Automatisierungen</span> für Betriebe</h1>
+      <p class="t-lead">Ich richte Ihnen einen KI-Chatbot, automatische Abläufe oder eine neue Website ein. Persönlich, verständlich und nur mit Werkzeugen, die Ihnen wirklich Arbeit abnehmen.</p>
+      <div class="btn-row">
+        <a class="btn btn--primary" href="#demo" data-demo>Chatbot-Demo testen<svg class="m-arrow" viewBox="0 0 12 12" aria-hidden="true"><path class="m-arrow__stem" d="M1 6h8"/><path class="m-arrow__head" d="M4.5 2.5 8 6l-3.5 3.5"/></svg></a>
+        <a class="btn btn--secondary" href="mailto:shawnbergmann00@gmail.com?subject=Anfrage%20Bergmann%20AI">E-Mail schreiben</a>
+      </div>
+    </div>
+  </section>
 
-<div class="mq" aria-hidden="true"><div><span>Autohäuser</span><span>Werkstätten</span><span>Immobilienmakler</span><span>Friseure &amp; Salons</span><span>Lokale Dienstleister</span><span>E-Mail-Automatisierung</span><span>Lead-Erfassung</span><span>CRM-Pflege</span><span>Terminverwaltung</span><span>Dokumentenverarbeitung</span>
-<span>Autohäuser</span><span>Werkstätten</span><span>Immobilienmakler</span><span>Friseure &amp; Salons</span><span>Lokale Dienstleister</span><span>E-Mail-Automatisierung</span><span>Lead-Erfassung</span><span>CRM-Pflege</span><span>Terminverwaltung</span><span>Dokumentenverarbeitung</span></div></div>
+  <section class="section" id="problem" aria-labelledby="problem-h">
+    <div class="wrap">
+      <div class="grid prob">
+        <div class="span-5" data-reveal>
+          <h2 id="problem-h">Kommt Ihnen das bekannt vor?</h2>
+          <p class="t-lead prob__lead">Das muss nicht so bleiben. Vieles davon kann ein System für Sie vorbereiten, und Sie entscheiden nur noch.</p>
+        </div>
+        <div class="span-7 board prob__board" data-reveal style="--d:100ms">
+          <div class="prob__row"><span class="prob__ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 13l2.5-7h13L21 13v5H3z"/><path d="M3 13h5l1.5 2.5h5L16 13h5"/></svg></span><p>Anfragen kommen per Mail, Telefon und Website, und manche gehen unter.</p></div>
+          <div class="prob__row"><span class="prob__ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/></svg></span><p>Abends beantworten Sie noch Fragen, die eigentlich immer gleich sind.</p></div>
+          <div class="prob__row"><span class="prob__ic" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span><p>Angebote, Erinnerungen und Belege kosten Stunden, die Ihnen im Betrieb fehlen.</p></div>
+          <div class="prob__fix"><span class="prob__line" aria-hidden="true"></span><p>Mit einem eingerichteten Ablauf landet jede Anfrage an einer Stelle, und Antworten liegen schon als Entwurf bereit.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
 
-<section id="bereiche"><div class="w"><div class="rv"><span class="eye">Drei Leistungsbereiche</span><h2>Ein Partner für Kundenkontakt, interne Abläufe <span class="grad">und</span> Ihren Webauftritt.</h2></div>
-<div class="g3">
-<div class="card big spot rv"><span class="tag">Bereich 1</span><h3 style="font-size:26px">KI-Kundenassistenten</h3><p>Ein digitaler Ansprechpartner auf Ihrer Website, der freigegebene Fragen beantwortet und Anliegen aufnimmt.</p>
-<ul class="c"><li>Wiederkehrende Fragen direkt klären</li><li>Anfragen strukturiert aufnehmen</li><li>Weg zum Termin vereinfachen</li><li>Übergabe an Ihr Team</li></ul><a class="btn" href="#assistent">Mehr erfahren</a></div>
-<div class="card big spot rv" style="transition-delay:.12s"><span class="tag">Bereich 2</span><h3 style="font-size:26px">KI-Automatisierung</h3><p>Individuelle Abläufe im Hintergrund, die Zeit sparen und Fehler vermeiden.</p>
-<ul class="c"><li>E-Mail-Verarbeitung und Kommunikation</li><li>Lead-Erfassung und CRM-Pflege</li><li>Termine, Angebote und Dokumente</li><li>Follow-ups und interne Abläufe</li></ul><a class="btn" href="#automatisierung">Mehr erfahren</a></div>
-<div class="card big spot rv" style="transition-delay:.24s"><span class="tag">Bereich 3</span><h3 style="font-size:26px">Website + Chatbot für lokale Betriebe</h3><p>Eine klare Website für Autohäuser, Werkstätten, Makler, Friseure und Dienstleister, auf Wunsch mit KI-Chatbot.</p>
-<ul class="c"><li>Einseitige Website mit klarem Kontaktweg</li><li>Optional KI-Chatbot mit abgestimmten Antworten</li><li>Impressum und Datenschutz als Entwurf zur Prüfung</li><li>Online-Stellung und Pflege auf Wunsch</li></ul><a class="btn" href="mailto:shawnbergmann00@gmail.com?subject=Website%20und%20Chatbot">Anfrage senden</a></div>
-</div></div></section>
+  <section class="section" id="leistungen" aria-labelledby="leistungen-h">
+    <div class="wrap">
+      <div class="section-head" data-reveal>
+        <h2 id="leistungen-h">Was ich für Sie einrichte. <span class="muted">Jedes Angebot funktioniert für sich und lässt sich später kombinieren.</span></h2>
+      </div>
+      <div class="grid">
+        <article class="card card--open span-4" data-reveal>
+          <h3>KI-Chatbot für Ihre Website</h3>
+          <p>Beantwortet häufige Fragen rund um die Uhr, nimmt Anfragen und Terminwünsche auf und übergibt an Sie, wenn ein Mensch gefragt ist.</p>
+          <div class="panel" aria-hidden="true">
+            <div class="chat-card mini-chat">
+              <div class="chat-card__h"><span class="av"></span>Assistent · Kosmetikstudio<small>● online</small></div>
+              <div class="chat-card__b">
+                <div class="msg msg--me">Habt ihr am Samstag noch einen Termin für eine Gesichtsbehandlung frei?</div>
+                <div class="msg msg--bot">Ja, am Samstag ist um 10:30 Uhr noch etwas frei. Soll ich den Termin für Sie vormerken?</div>
+                <div class="msg msg--me">Ja, gerne.</div>
+              </div>
+            </div>
+          </div>
+        </article>
+        <article class="card card--open span-4" data-reveal>
+          <h3>Automatisierung fürs Büro</h3>
+          <p>Anfragen sammeln, E-Mails sortieren, Angebote vorbereiten, an Termine erinnern, Belege ordnen: Was sich jede Woche wiederholt, läuft automatisch.</p>
+          <div class="panel" aria-hidden="true">
+            <div class="flow">
+              <svg viewBox="0 0 440 250">
+                <path class="wire" id="w1" d="M118 125 H162"/>
+                <path class="wire" d="M278 125 C300 125 300 60 322 60"/>
+                <path class="wire" d="M278 125 H322"/>
+                <path class="wire" d="M278 125 C300 125 300 190 322 190"/>
+                <rect class="node" x="10" y="95" width="108" height="60" rx="12"/><text class="nt" x="26" y="122">Neue E-Mail</text><text class="ns" x="26" y="141">Auslöser</text>
+                <rect class="node" x="162" y="95" width="116" height="60" rx="12" style="stroke:#ffb15c"/><text class="nt" x="178" y="122">KI sortiert</text><text class="ns" x="178" y="141">Kategorie</text>
+                <rect class="node" x="322" y="35" width="108" height="50" rx="12"/><text class="nt" x="336" y="65">Termin</text>
+                <rect class="node" x="322" y="100" width="108" height="50" rx="12"/><text class="nt" x="336" y="130">Entwurf</text>
+                <rect class="node" x="322" y="165" width="108" height="50" rx="12"/><text class="nt" x="336" y="195">Ablage</text>
+                <circle class="pulse" r="5"><animateMotion dur="2.8s" repeatCount="indefinite" path="M118 125 H162 M278 125 H322"/></circle>
+              </svg>
+            </div>
+          </div>
+        </article>
+        <article class="card card--open span-4" data-reveal>
+          <h3>Website für lokale Betriebe</h3>
+          <p>Eine moderne, schnelle Website, die auf dem Handy gut aussieht und aus Besuchern Anfragen macht. Auf Wunsch direkt mit Chatbot.</p>
+          <div class="panel" aria-hidden="true">
+            <div class="mini-site"><div class="wf">
+              <div class="wf-nav"><span>Ihre Werkstatt</span><i><b></b></i></div>
+              <div class="wf-hero"><div><h4>Reparatur und Inspektion</h4><div class="wf-line"></div><div class="wf-line s"></div><span class="wf-btn">Termin anfragen</span></div><div class="wf-art"><svg viewBox="0 0 48 48"><circle cx="11" cy="31" r="8"/><circle cx="37" cy="31" r="8"/><path d="M11 31l8-14h12l6 14M19 17l6 14h-14M25 31l6-14M17 13h6"/></svg></div></div>
+            </div><span class="dm-chat"><svg width="16" height="16" viewBox="0 0 20 20"><path d="M4 5.5h12v7H9l-3.5 3v-3H4z" fill="none" stroke="#04121a" stroke-width="1.8" stroke-linejoin="round"/></svg></span></div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
 
-<section id="assistent" style="padding-top:20px"><div class="w two">
-<div class="rv"><span class="eye">Der Alltag im Kundenkontakt</span><h2>Eine neue Anfrage wartet nicht auf einen freien Moment.</h2><p>Das Telefon klingelt, eine Nachricht geht ein, ein Kunde steht vor Ihnen. Dazwischen dieselben Fragen: Öffnungszeiten, Leistungen, Preise, Termine.</p></div>
-<div class="rv"><div class="pain"><div class="num">01</div><div><h3>Ständige Unterbrechungen</h3><p>Wiederkehrende Auskünfte unterbrechen die laufende Arbeit.</p></div></div>
-<div class="pain"><div class="num">02</div><div><h3>Anfragen bleiben liegen</h3><p>Außerhalb der Öffnungszeiten wartet eine Anfrage zunächst.</p></div></div>
-<div class="pain"><div class="num">03</div><div><h3>Wichtige Angaben fehlen</h3><p>Für eine gute Rückmeldung fehlen oft die wichtigsten Informationen.</p></div></div></div></div>
-<div class="w"><div class="g3">
-<div class="card spot rv"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg></div><h3>Verstehen</h3><p>Leistung, Termin oder Rückfrage: Das Anliegen wird eingeordnet.</p></div>
-<div class="card spot rv" style="transition-delay:.1s"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z"/></svg></div><h3>Weiterhelfen</h3><p>Antworten orientieren sich an den Inhalten, die Sie freigeben.</p></div>
-<div class="card spot rv" style="transition-delay:.2s"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div><h3>Übergeben</h3><p>Kontakt aufnehmen, Buchungsweg zeigen oder strukturierte Anfrage weitergeben.</p></div>
-</div></div></section>
+  <section class="section" id="buero" aria-labelledby="buero-h">
+    <div class="wrap">
+      <div class="section-head" data-reveal>
+        <h2 id="buero-h">Was die Büro-Automatisierung heute kann. <span class="muted">Das System bereitet vor, und Sie geben frei.</span></h2>
+      </div>
+      <ul class="of-grid" data-reveal>
+        <li class="of-item" style="--c:#8fe3ff"><span class="of-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 13l2.5-7h13L21 13v5H3z"/><path d="M3 13h5l1.5 2.5h5L16 13h5"/></svg></span><div><h3>Anfragen-Erfassung</h3><p>Anfragen aus Kontaktformular oder E-Mail werden erkannt, sortiert und in einer Liste gesammelt.</p></div></li><li class="of-item" style="--c:#ffb15c"><span class="of-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg></span><div><h3>E-Mail-Sortierung</h3><p>Mails werden nach Thema und Dringlichkeit geordnet, mit fertigem Antwort-Entwurf.</p></div></li><li class="of-item" style="--c:#6fdc9c"><span class="of-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 3h9l4 4v14H6z"/><path d="M15 3v4h4M9 12h7M9 16h5"/></svg></span><div><h3>Angebots-Entwurf</h3><p>Aus einer Anfrage und Ihrer Preisliste entsteht ein Angebotsentwurf.</p></div></li><li class="of-item" style="--c:#8fe3ff"><span class="of-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 16V11a6 6 0 0 1 12 0v5l1.5 2h-15z"/><path d="M10 20.5h4"/></svg></span><div><h3>Erinnerungen</h3><p>Termin-Erinnerungen an Kunden und Nachfassen bei offenen Angeboten.</p></div></li><li class="of-item" style="--c:#6fdc9c"><span class="of-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 3h12v18l-3-2-3 2-3-2-3 2z"/><path d="M9 8h6M9 12h6"/></svg></span><div><h3>Beleg-Eingang</h3><p>Rechnungen und Belege werden erkannt, sinnvoll benannt und dem richtigen Ordner zugeordnet.</p></div></li><li class="of-item" style="--c:#ffb15c"><span class="of-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8-5.2-2.7-5.2 2.7 1-5.8L3.5 9.7l5.9-.9z"/></svg></span><div><h3>Bewertungs-Anfrage</h3><p>Zufriedene Kunden werden nach dem Auftrag um eine Google-Bewertung gebeten, nur mit Einwilligung.</p></div></li><li class="of-item" style="--c:#ffb15c"><span class="of-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3l9.5 17h-19z"/><path d="M12 10v4.5M12 17.5v.5"/></svg></span><div><h3>Fehler-Alarm</h3><p>Meldet sofort, wenn eine Automatisierung hakt.</p></div></li>
+      </ul>
+      <div class="of-rules" data-reveal style="--d:80ms">
+        <div class="of-rule"><span class="of-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M9 3v5M15 3v5M7 8h10v3a5 5 0 0 1-10 0z"/><path d="M12 16v5"/></svg></span><p><b>Passt zu Ihren Programmen.</b> Alles läuft mit Gmail, Google Sheets, Webformularen und vielen anderen Programmen über Schnittstellen.</p></div>
+        <div class="of-rule"><span class="of-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="4"/><path d="M8 12.5l3 3 5-6"/></svg></span><p><b>Sie haben das letzte Wort.</b> Alles wird als Entwurf vorbereitet. Verschickt wird nur, was Sie freigeben.</p></div>
+      </div>
+      <div class="of-more" data-reveal>
+        <h3>Auf Wunsch erweiterbar</h3>
+        <ul><li>Monats-Paket für den Steuerberater: alle Belege des Monats gesammelt, umbenannt, mit Übersichtsliste</li><li>Offene Rechnungen im Blick: Erinnerung bei unbezahlter Rechnung, mit Entwurf für die Zahlungserinnerung</li><li>Rechnungs-Entwurf in lexoffice oder sevDesk nach erledigtem Auftrag</li><li>Wochenbericht jeden Montag: neue Anfragen, Angebote, offene Rechnungen, Termine</li><li>Online-Terminbuchung mit automatischer Bestätigung und Erinnerung am Vortag</li><li>Rückruf-Aufgaben: verpasster Anruf oder Anfrage wird zur Aufgabe für den richtigen Mitarbeiter</li><li>Kundenliste (einfaches CRM), die sich von selbst füllt</li><li>Nachbestell-Erinnerung für Material oder Ware</li><li>Social-Media-Entwürfe: aus Foto und Stichworten wird ein fertiger Post zum Freigeben</li></ul>
+      </div>
+    </div>
+  </section>
 
-<section id="automatisierung" class="dark"><div class="w"><div class="rv"><span class="eye">KI-Automatisierung</span><h2>Weniger Handarbeit im Büroalltag.</h2>
-<p style="max-width:640px">Wir bauen Automatisierungen, die zu Ihren Abläufen passen. Jeder Kunde erhält eine eigene Konfiguration mit getrennten Daten und Zugängen.</p></div>
-<div class="flow rv"><div><b>1 · EINGANG</b>Anfrage per Formular oder E-Mail</div><div><b>2 · KI</b>Anliegen einordnen und prüfen</div><div><b>3 · SYSTEM</b>Eintrag im CRM oder Kalender</div><div><b>4 · TEAM</b>Meldung und Antwortentwurf</div></div>
-<div class="g3">
-<div class="card spot rv"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg></div><h3>E-Mail &amp; Kommunikation</h3><p>Mails sortieren, auswerten und Antworten als Entwurf vorbereiten.</p></div>
-<div class="card spot rv"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0M17 11l2 2 3-4"/></svg></div><h3>Leads &amp; CRM</h3><p>Anfragen erfassen, qualifizieren und sauber ablegen.</p></div>
-<div class="card spot rv"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 2v4M16 2v4"/></svg></div><h3>Termine &amp; Anfragen</h3><p>Terminwünsche zentral verwalten und nachfassen.</p></div>
-<div class="card spot rv"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h4"/></svg></div><h3>Angebote &amp; Dokumente</h3><p>Dokumente verarbeiten und Angebote vorbereiten.</p></div>
-<div class="card spot rv"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h11l-3-3M17 17H6l3 3"/></svg></div><h3>Datenübertragung</h3><p>Daten zwischen Ihren Systemen automatisch abgleichen.</p></div>
-<div class="card spot rv"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></div><h3>Follow-ups</h3><p>Erinnerungen und interne Abläufe zuverlässig im Hintergrund.</p></div>
-</div></div></section>
+  <section class="section" id="ki" aria-labelledby="ki-h">
+    <div class="wrap">
+      <div class="section-head" data-reveal>
+        <h2 id="ki-h">So arbeitet Ihr KI-Assistent. <span class="muted">Anfragen aus allen Kanälen landen an einer Stelle. Heraus kommt eine fertige Antwort.</span></h2>
+      </div>
+      <div class="board glow-board" id="ki-glow" data-reveal role="img" aria-label="Schaubild: Website-Chat, E-Mails, Kalender, Rechnungen, Tabellen und Formulare fließen in den KI-Assistenten; heraus kommen Antworten an Kunden, Termine im Kalender, Entwürfe zur Freigabe und abgelegte Dokumente"></div>
+    </div>
+  </section>
 
-<section id="branchen"><div class="w"><div class="rv"><span class="eye">Branchen</span><h2>Andere Branche. Dieselbe erste Frage.</h2><p style="max-width:620px">„Können Sie mir kurz weiterhelfen?“ Wie die Antwort aussieht, hängt von Ihrem Unternehmen ab. Wählen Sie eine Branche:</p></div>
-<div class="tabs rv" role="tablist"><button class="tb on" data-t="0">Autohaus</button><button class="tb" data-t="1">Werkstatt</button><button class="tb" data-t="2">Immobilien</button><button class="tb" data-t="3">Friseur</button><button class="tb" data-t="4">Dienstleister</button></div>
-<div class="card rv" style="padding:34px">
-<div class="tp on"><div><h3>Autohäuser</h3><p>Fahrzeugfragen einordnen, Probefahrtwünsche aufnehmen und Interessenten zum Verkaufsteam führen.</p></div><div><div class="m c">Haben Sie den Kombi noch in Schwarz?</div><div class="m a">Zur Verfügbarkeit gebe ich Ihre Anfrage an das Verkaufsteam weiter. Möchten Sie auch eine Probefahrt?</div></div></div>
-<div class="tp"><div><h3>Werkstätten</h3><p>Leistungen erklären, Fahrzeug und Anliegen erfassen und einen Terminwunsch zur Prüfung weitergeben.</p></div><div><div class="m c">Was kostet ein Ölwechsel?</div><div class="m a">Zu freigegebenen Preisen informiere ich Sie gern. Für welches Fahrzeug brauchen Sie den Service?</div></div></div>
-<div class="tp"><div><h3>Immobilienmakler</h3><p>Suchkriterien aufnehmen, erste Objektfragen beantworten und Besichtigungsinteresse strukturiert erfassen.</p></div><div><div class="m c">Ich suche eine 3-Zimmer-Wohnung.</div><div class="m a">Gern. In welcher Gegend und bis zu welchem Budget soll die Suche laufen?</div></div></div>
-<div class="tp"><div><h3>Friseure &amp; Salons</h3><p>Über freigegebene Leistungen informieren und zur bestehenden Terminbuchung weiterleiten.</p></div><div><div class="m c">Kann ich diese Woche noch einen Termin bekommen?</div><div class="m a">Sehr gern. Hier gelangen Sie direkt zur Online-Terminbuchung.</div></div></div>
-<div class="tp"><div><h3>Lokale Dienstleister</h3><p>Leistungsgebiet und Ablauf erklären, Rückrufwünsche aufnehmen und Anfragen vorbereiten.</p></div><div><div class="m c">Kommen Sie auch nach Halle?</div><div class="m a">Zu Ihrem Einsatzort gebe ich die Anfrage weiter. Wie dürfen wir Sie zurückrufen?</div></div></div>
-</div><p style="font-size:13px;margin-top:14px">Beispielgespräche zur Illustration. Antworten werden für jedes Unternehmen individuell abgestimmt.</p></div></section>
+  <section class="section" id="ablaeufe" aria-labelledby="ablaeufe-h">
+    <div class="wrap">
+      <div class="section-head" data-reveal>
+        <h2 id="ablaeufe-h">Abläufe zum Anklicken. <span class="muted">Wählen Sie eine Linie und sehen Sie, was an jeder Station passiert.</span></h2>
+      </div>
+      <div class="line-tabs" role="tablist" aria-label="Abläufe">
+        <button type="button" role="tab" id="t-chat" aria-controls="r-chat" aria-selected="true"><span class="tag" style="background:var(--l-chat)">C1</span>Chatbot</button>
+        <button type="button" role="tab" id="t-mail" aria-controls="r-mail" aria-selected="false" tabindex="-1"><span class="tag" style="background:var(--l-mail)">M2</span>E-Mail-Eingang</button>
+        <button type="button" role="tab" id="t-office" aria-controls="r-office" aria-selected="false" tabindex="-1"><span class="tag" style="background:var(--l-office)">B3</span>Büro und Ablage</button>
+      </div>
+      <div class="board route" id="r-chat" role="tabpanel" aria-labelledby="t-chat" style="--c: var(--l-chat)">
+        <p class="route__head"><span class="tag tag--chat">C1</span><b>Chatbot-Linie</b> von der Kundenfrage bis zum Termin</p>
+        <div class="route__track"><span class="route__train" aria-hidden="true"></span>
+          <ol>
+            <li><span class="stop" aria-hidden="true"></span><h3>Kunde fragt</h3><p>Auf Ihrer Website, auch abends und am Wochenende.</p></li>
+            <li><span class="stop" aria-hidden="true"></span><h3>Chatbot antwortet</h3><p>Aus Ihren freigegebenen Infos: Leistungen, Zeiten, Preise.</p></li>
+            <li><span class="stop" aria-hidden="true"></span><h3>Anliegen aufgenommen</h3><p>Terminwunsch, Name und Kontaktweg werden erfasst.</p></li>
+            <li><span class="stop" aria-hidden="true"></span><h3>Ihr Team übernimmt</h3><p>Alles kommt sortiert per E-Mail bei Ihnen an.</p></li>
+          </ol>
+        </div>
+      </div>
+      <div class="board route" id="r-mail" role="tabpanel" aria-labelledby="t-mail" style="--c: var(--l-mail)" hidden>
+        <p class="route__head"><span class="tag tag--mail">M2</span><b>E-Mail-Linie</b> vom Posteingang bis zur fertigen Antwort</p>
+        <div class="route__track"><span class="route__train" aria-hidden="true"></span>
+          <ol>
+            <li><span class="stop" aria-hidden="true"></span><h3>E-Mail kommt an</h3><p>Anfragen, Rechnungen und Terminwünsche landen im selben Postfach.</p></li>
+            <li><span class="stop" aria-hidden="true"></span><h3>KI sortiert</h3><p>Jede Nachricht bekommt ihre Kategorie und Dringlichkeit.</p></li>
+            <li><span class="stop" aria-hidden="true"></span><h3>Entwurf liegt bereit</h3><p>Eine passende Antwort ist schon vorformuliert. Raus geht sie erst nach Ihrer Freigabe.</p></li>
+            <li><span class="stop" aria-hidden="true"></span><h3>Sie prüfen und senden</h3><p>Sie lesen kurz drüber und schicken die Antwort ab.</p></li>
+          </ol>
+        </div>
+      </div>
+      <div class="board route" id="r-office" role="tabpanel" aria-labelledby="t-office" style="--c: var(--l-office)" hidden>
+        <p class="route__head"><span class="tag tag--office">B3</span><b>Büro-Linie</b> von der Rechnung bis zur Ablage</p>
+        <div class="route__track"><span class="route__train" aria-hidden="true"></span>
+          <ol>
+            <li><span class="stop" aria-hidden="true"></span><h3>Dokument kommt rein</h3><p>Als Anhang, Upload oder Foto vom Handy.</p></li>
+            <li><span class="stop" aria-hidden="true"></span><h3>Daten ausgelesen</h3><p>Absender, Betrag und Datum werden erkannt.</p></li>
+            <li><span class="stop" aria-hidden="true"></span><h3>Abgelegt und eingetragen</h3><p>Im richtigen Ordner und in Ihrer Tabelle.</p></li>
+            <li><span class="stop" aria-hidden="true"></span><h3>Erinnerung kommt</h3><p>Rechtzeitig vor Fälligkeit, per E-Mail an Sie.</p></li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </section>
 
-<section id="demo" style="padding-top:20px"><div class="w"><div class="rv"><span class="eye">Demos</span><h2>Ausprobieren statt nur lesen.</h2><p style="max-width:620px">Eine Frage sagt mehr als eine Produktbeschreibung. Testen Sie den echten Assistenten und sehen Sie, wie eine Automatisierung eine Anfrage verarbeitet.</p></div>
-<div class="dg">
-<div class="card big spot rv"><span class="tag">Demo 1 · KI-Kundenassistent</span><h3 style="font-size:23px">Der echte Assistent</h3>
-<p>Fragen Sie zum Beispiel: Welche Leistungen bietet Bergmann AI an? Wie kann ich einen Termin vereinbaren? Kann ich eine Anfrage hinterlassen?</p>
-<div class="consent"><b>Optionaler KI-Chat</b><p>Mit Ihrer Zustimmung wird der externe Chatdienst Tidio geladen. Dabei erhält Tidio technische Daten wie Ihre IP-Adresse und Geräteinformationen sowie Ihre Chatnachrichten. Cookies bzw. lokaler Speicher können verwendet werden. Eine Verarbeitung in den USA ist möglich. Die Einwilligung ist freiwillig. Bitte keine vertraulichen Daten eingeben.</p>
-<button class="btn" id="tidioBtn" type="button">Zustimmen &amp; Chat öffnen</button></div>
-<p style="font-size:13px;margin-top:12px">E-Mail und Terminbuchung bleiben auch ohne Chat verfügbar.</p></div>
-<div class="card big rv" style="transition-delay:.12s"><span class="tag">Demo 2 · Automatisierung (Simulation)</span><h3 style="font-size:23px">So verarbeitet eine Automatisierung eine Anfrage</h3>
-<p>Wählen Sie eine Beispielanfrage und sehen Sie die vier Schritte.</p>
-<div class="chips" id="simChips"><button class="tb on" data-s="0" type="button">Terminanfrage</button><button class="tb" data-s="1" type="button">Wohnungssuche</button><button class="tb" data-s="2" type="button">Rechnungsfrage</button></div>
-<div class="sim" id="sim" aria-live="polite"></div>
-<p style="font-size:13px;margin-top:12px">Simulation mit Beispieldaten zur Veranschaulichung. Echte Antworten werden vor dem Versand von Ihrem Team geprüft.</p></div>
-</div></div></section>
+  <section class="section" id="websites" aria-labelledby="websites-h">
+    <div class="wrap">
+      <div class="grid">
+        <div class="span-5" data-reveal>
+          <h2 id="websites-h">Websites für lokale Betriebe</h2>
+          <p class="t-lead" style="margin-top:var(--s-5)">Die meisten Kunden suchen Sie zuerst auf dem Handy. Ich baue Ihnen eine Seite, die dort gut aussieht und Anfragen direkt zu Ihnen bringt.</p>
+          <ul class="ws-list">
+            <li style="--c: var(--l-chat)"><span>Für das Smartphone gebaut und schnell geladen.</span></li>
+            <li style="--c: var(--l-mail)"><span>Ein klarer Kontaktweg auf jeder Seite, per Anruf, E-Mail oder Chat.</span></li>
+            <li style="--c: var(--l-office)"><span>Auf Wunsch mit Chatbot, der auch nach Feierabend antwortet.</span></li>
+            <li style="--c: var(--l-chat)"><span>Änderungen an Texten und Öffnungszeiten übernehme ich für Sie.</span></li>
+          </ul>
+          <a class="btn btn--secondary" href="mailto:shawnbergmann00@gmail.com?subject=Website%20anfragen">Website anfragen</a>
+        </div>
+        <div class="span-7 stage-dev" data-reveal style="--d:120ms" role="img" aria-label="Schematische Beispiel-Websites für einen Blumenladen, ein Café und eine Fahrradwerkstatt auf Laptop und Handy">
+          <div class="laptop" aria-hidden="true"><div class="laptop__screen"><div class="viewport" data-demos></div></div><div class="laptop__base"></div></div>
+          <div class="phone" aria-hidden="true"><div class="viewport" data-demos data-phone></div></div>
+          <div class="ws-dots" role="group" aria-label="Beispiel wählen">
+            <button type="button" aria-pressed="true" data-ws="0">Blumenladen</button>
+            <button type="button" aria-pressed="false" data-ws="1">Café</button>
+            <button type="button" aria-pressed="false" data-ws="2">Fahrradwerkstatt</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 
-<section id="ablauf" style="padding-top:20px"><div class="w two"><div class="rv"><span class="eye">Ablauf</span><h2>Gemeinsam festlegen. Gründlich testen. Gezielt einsetzen.</h2><p>Eine gute Lösung beginnt mit klaren Aufgaben und verlässlichen Informationen.</p>
-<ul class="c"><li>Ein klarer Aufgabenbereich vor dem Start</li><li>Ihre Inhalte als Grundlage</li><li>Ihr Team bleibt eingebunden</li></ul></div>
-<div class="steps rv">
-<div class="step"><div class="num">1</div><div><h3>Bedarf verstehen</h3><p>Welche Fragen und Aufgaben kosten Zeit? Wir definieren einen sinnvollen Umfang.</p></div></div>
-<div class="step"><div class="num">2</div><div><h3>Lösung konfigurieren</h3><p>Assistent oder Automatisierung wird auf Ihre Abläufe abgestimmt.</p></div></div>
-<div class="step"><div class="num">3</div><div><h3>Inhalte abstimmen</h3><p>Sie geben Informationen und Formulierungen frei.</p></div></div>
-<div class="step"><div class="num">4</div><div><h3>Testen und freigeben</h3><p>Typische Fälle und Ausnahmen werden geprüft, bevor es startet.</p></div></div>
-<div class="step"><div class="num">5</div><div><h3>Starten und weiterentwickeln</h3><p>Einbindung in Website oder Systeme. Neue Inhalte und Abläufe lassen sich später ergänzen.</p></div></div>
-</div></div></section>
+  <section class="section" id="branchen" aria-labelledby="branchen-h">
+    <div class="wrap">
+      <div class="section-head" data-reveal>
+        <h2 id="branchen-h">Abläufe für Ihre Branche. <span class="muted">Tippen Sie auf Ihren Betrieb. Dann sehen Sie, was der Assistent übernimmt.</span></h2>
+      </div>
+      <div class="grid">
+        <div class="span-5 chips" role="group" aria-label="Branche wählen" id="trade-chips"></div>
+        <div class="board span-7" data-reveal style="--d:100ms">
+          <div class="trade" aria-live="polite">
+            <div class="trade__live" id="trade-live">
+              <h3 id="trade-name">Autowerkstätten</h3>
+            </div>
+            <div class="trade__live trade__row"><span class="tag tag--chat">C1</span><p><span class="lbl">Der Chatbot beantwortet</span><span id="trade-q">Terminanfragen, Inspektionen und Fragen zu Leistungen</span></p></div>
+            <div class="trade__live trade__row"><span class="tag tag--mail">M2</span><p><span class="lbl">Automatisch im Hintergrund</span><span id="trade-a">Terminbestätigungen und Erinnerungen sowie vorbereitete Kostenvoranschläge</span></p></div>
+            <div class="trade__live trade__row"><span class="tag tag--office">B3</span><p><span class="lbl">Dazu für jeden Betrieb</span>Eingehende E-Mails sortieren, Antwortentwürfe vorbereiten und Dokumente ablegen.</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 
-<section id="faq" style="padding-top:20px"><div class="w" style="max-width:840px"><div class="rv"><span class="eye">Häufige Fragen</span><h2>Vor dem ersten Gespräch gut informiert.</h2></div>
-<details class="rv"><summary>Was ist ein KI-Kundenassistent?</summary><p>Ein digitaler Ansprechpartner auf Ihrer Website. Er beantwortet Fragen zu freigegebenen Informationen, nimmt Anliegen auf und führt zum passenden nächsten Schritt.</p></details>
-<details class="rv"><summary>Was ist eine KI-Automatisierung?</summary><p>Ein Ablauf, der Aufgaben wie E-Mail-Verarbeitung, Lead-Erfassung oder Dokumentenverarbeitung im Hintergrund erledigt, individuell für Ihr Unternehmen eingerichtet.</p></details>
-<details class="rv"><summary>Bauen Sie auch Websites für lokale Betriebe?</summary><p>Ja. Für Autohäuser, Werkstätten, Makler, Friseure und andere Dienstleister entsteht eine einseitige Website mit Kontaktweg, auf Wunsch mit KI-Chatbot. Impressum und Datenschutz liefern wir als Entwurf, die rechtliche Prüfung liegt beim Betrieb.</p></details>
-<details class="rv"><summary>Wird alles an mein Unternehmen angepasst?</summary><p>Ja. Inhalte, Tonalität, Aufgaben und Übergaben richten sich nach Ihnen. Der Umfang wird vorab gemeinsam festgelegt.</p></details>
-<details class="rv"><summary>Kann der Assistent Termine vereinbaren?</summary><p>Er kann Terminwünsche aufnehmen oder zur bestehenden Buchung führen. Eine verbindliche Buchung ist nur mit einem angebundenen System möglich.</p></details>
-<details class="rv"><summary>Was passiert bei falschen oder unklaren Antworten?</summary><p>KI kann Fehler machen. Deshalb testen wir typische Fragen vor dem Start, legen Grenzen fest und sehen Kontaktwege für persönliche Hilfe vor.</p></details>
-<details class="rv"><summary>Was kostet es und wie lange dauert es?</summary><p>Das hängt vom Umfang ab. Nach Abstimmung Ihrer Anforderungen erhalten Sie einen konkreten Vorschlag. Es gibt keine automatische Bestellung über diese Website.</p></details>
-</div></section>
+  <section class="section" id="zusammenarbeit" aria-labelledby="zusammenarbeit-h">
+    <div class="wrap">
+      <div class="section-head" data-reveal>
+        <h2 id="zusammenarbeit-h">So läuft es ab. <span class="muted">Von der ersten Nachricht bis zur Betreuung bleibe ich Ihr Ansprechpartner.</span></h2>
+      </div>
+      <div class="board route steps-board" style="--c: var(--l-chat)">
+        <p class="route__head"><span class="tag tag--chat">BA</span><b>Ihre Linie</b> von der ersten Nachricht bis zur Betreuung</p>
+        <div class="route__track"><span class="route__train" aria-hidden="true"></span>
+          <ol>
+            <li><span class="stop" aria-hidden="true"></span><h3>Kurze Nachricht</h3><p>Sie schreiben mir, wo im Alltag Zeit verloren geht.</p></li>
+            <li><span class="stop" aria-hidden="true"></span><h3>Vorschlag</h3><p>Sie bekommen einen klaren Plan mit festem Preis.</p></li>
+            <li><span class="stop" aria-hidden="true"></span><h3>Einrichtung</h3><p>Ich baue alles und teste es mit Ihnen.</p></li>
+            <li><span class="stop" aria-hidden="true"></span><h3>Betreuung</h3><p>Ändert sich etwas, passe ich es an.</p></li>
+          </ol>
+        </div>
+      </div>
+      <p style="margin-top: var(--s-6)"><a class="link" href="https://calendly.com/shawnhunter2501/30min" target="_blank" rel="noopener">Gesprächstermin buchen</a></p>
+    </div>
+  </section>
 
-<section style="padding-top:20px"><div class="w"><div class="cta rv"><span class="eye">Der nächste Schritt</span><h2>Wie könnte Ihre Lösung aussehen?</h2>
-<p>Testen Sie die Demo oder schreiben Sie uns, welche Anfragen oder Aufgaben in Ihrem Unternehmen immer wieder auftauchen.</p>
-<div class="row" style="justify-content:center"><a class="btn" href="https://bergmann-ai-kundenassistent.vivid-moose-7317.chatgpt.site/#demo" target="_blank" rel="noopener">KI-Assistent testen ↗</a><a class="btn o" href="mailto:shawnbergmann00@gmail.com">Kontakt per E-Mail</a><a class="btn o" href="https://calendly.com/shawnhunter2501/30min" target="_blank" rel="noopener">Termin buchen ↗</a></div></div></div></section>
+  <section class="section" id="vertrauen" aria-labelledby="vertrauen-h">
+    <div class="wrap">
+      <div class="section-head" data-reveal><h2 id="vertrauen-h">Worauf Sie sich verlassen können</h2></div>
+      <div class="grid trust">
+        <div class="board trust__card span-6" data-reveal>
+          <div class="trust__visual" aria-hidden="true">
+            <div class="ck-card"><b>Antwort an Kundin senden?</b><small>Entwurf mit Terminvorschlag für Donnerstag</small><div class="ck-btns"><span>Freigeben</span><span>Ändern</span></div></div>
+          </div>
+          <h3>Sie behalten die Kontrolle</h3>
+          <p>Meine Automatisierungen bereiten vor, Sie geben frei. Ohne Ihre Zustimmung wird nichts an Kunden verschickt. Auch der Chatbot auf dieser Seite lädt erst, wenn Sie zustimmen.</p>
+        </div>
+        <div class="board trust__card span-6" data-reveal style="--d:100ms">
+          <div class="trust__visual trust__visual--me" aria-hidden="true">
+            <img src="logo.webp" alt="" width="56" height="56"><div><b>Shawn Bergmann</b><small>Bergmann AI · Halle (Westf.)</small></div>
+          </div>
+          <h3>Ein Ansprechpartner statt Agentur-Warteschleife</h3>
+          <p>Ich bin Shawn Bergmann aus Halle (Westf.). Sie sprechen direkt mit dem, der Ihre Lösung baut. Ich erkläre Ihnen alles in einfachen Worten und baue nur, was Ihnen wirklich hilft.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section ground-inverse" id="jarvis" aria-labelledby="jarvis-h">
+    <div class="wrap">
+      <div class="section-head" data-reveal>
+        <h2 id="jarvis-h">So arbeite ich selbst: JARVIS</h2>
+        <p>JARVIS ist mein eigener KI-Assistent. Er sortiert jeden Morgen neue Projektanfragen, schreibt Entwürfe, führt Kalender und Aufgaben und erledigt geplante Arbeiten selbstständig. Mit denselben Bausteinen baue ich Lösungen für Ihren Betrieb.</p>
+      </div>
+      <div class="cockpit" data-reveal role="img" aria-label="Das JARVIS-Cockpit: links die Bereiche, in der Mitte ein Gespräch mit JARVIS über neue Anfragen, rechts eine offene Freigabe und laufende Abläufe">
+        <div class="cockpit__bar" aria-hidden="true"><i></i><i></i><i></i><span>JARVIS · Cockpit</span><em>● alle Abläufe aktiv</em></div>
+        <div class="cockpit__body" aria-hidden="true">
+          <div class="ck-side">
+            <span class="on">Gespräch</span><span>Aufgaben <b>4</b></span><span>Freigaben <b>1</b></span><span>Posteingang</span><span>Abläufe</span><span>Wissen</span>
+          </div>
+          <div class="ck-main">
+            <div class="ck-msg ck-msg--me">Was ist heute reingekommen?</div>
+            <div class="ck-msg ck-msg--j">Drei neue Anfragen seit heute Morgen:
+              <ul><li>Werkstatt fragt nach einem Chatbot</li><li>Makler möchte E-Mails sortieren lassen</li><li>Rückfrage zu einem Angebot</li></ul>
+            </div>
+            <div class="ck-msg ck-msg--me">Bereite für alle drei eine Antwort vor.</div>
+            <div class="ck-msg ck-msg--j">Drei Entwürfe liegen in Gmail. Der erste wartet auf Ihre Freigabe.</div>
+            <div class="ck-input">Nachricht an JARVIS …</div>
+          </div>
+          <div class="ck-right">
+            <p class="ck-h">Wartet auf Freigabe</p>
+            <div class="ck-card"><b>Antwort an Werkstatt senden?</b><small>Entwurf mit Demo-Link und Terminvorschlag</small><div class="ck-btns"><span>Freigeben</span><span>Ändern</span></div></div>
+            <p class="ck-h">Abläufe</p>
+            <div class="ck-flow"><i></i>Posteingang sortieren<time>07:41</time></div>
+            <div class="ck-flow"><i></i>Tägliche Zusammenfassung<time>08:00</time></div>
+            <div class="ck-flow"><i class="wait"></i>Antwortentwürfe<time>09:22</time></div>
+            <div class="ck-flow"><i></i>Dokumente ablegen<time>12:00</time></div>
+          </div>
+        </div>
+      </div>
+      <p class="demo-note">Beispielansicht, Inhalte nachgestellt.</p>
+      <div class="jarvis-points">
+        <div><h3>Läuft in n8n</h3><p>Für E-Mail, Aufgaben und Ablage hat JARVIS eigene Unterabläufe.</p></div>
+        <div><h3>Auch für Ihren Betrieb</h3><p>Auf Wunsch richte ich Ihnen eine JARVIS-Vorlage ein, angepasst an Ihre Abläufe.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="preise" aria-labelledby="preise-h">
+    <div class="wrap">
+      <div class="section-head" data-reveal>
+        <h2 id="preise-h">Angebote und Preise. <span class="muted">Feste Preise, keine Überraschungen. Einmalig für die Einrichtung, monatlich für Betreuung und Anpassungen.</span></h2>
+      </div>
+      <ul class="offers" data-reveal>
+        <li class="offer" style="--c: var(--l-office)"><span class="dot" aria-hidden="true"></span><h3>n8n-Workflow</h3><p>Ein Ablauf, der Ihnen jede Woche Arbeit abnimmt.</p><div class="pr-setup"><span class="price-label">Einrichtung</span><span class="price-amount">ab 249,99 €</span></div><div class="pr-month"><span class="price-label">pro Monat</span><span class="price-amount">19,99 €</span></div><a class="offer__btn btn btn--secondary" href="mailto:shawnbergmann00@gmail.com?subject=Angebot%20anfragen:%20n8n-Workflow">Angebot anfragen</a></li>
+        <li class="offer" style="--c: var(--l-chat)"><span class="dot" aria-hidden="true"></span><h3>KI-Chatbot</h3><p>Beantwortet Fragen und nimmt Anfragen auf, rund um die Uhr.</p><div class="pr-setup"><span class="price-label">Einrichtung</span><span class="price-amount">ab 389,99 €</span></div><div class="pr-month"><span class="price-label">pro Monat</span><span class="price-amount">39,99 €</span></div><a class="offer__btn btn btn--secondary" href="mailto:shawnbergmann00@gmail.com?subject=Angebot%20anfragen:%20KI-Chatbot">Angebot anfragen</a></li>
+        <li class="offer" style="--c: var(--l-mail)"><span class="dot" aria-hidden="true"></span><h3>Website für lokale Betriebe</h3><p>Modern, schnell und fürs Handy gemacht.</p><div class="pr-setup"><span class="price-label">Einrichtung</span><span class="price-amount">ab 789,99 €</span></div><div class="pr-month"><span class="price-label">pro Monat</span><span class="price-amount">24,99 €</span></div><a class="offer__btn btn btn--secondary" href="mailto:shawnbergmann00@gmail.com?subject=Angebot%20anfragen:%20Website%20für%20lokale%20Betriebe">Angebot anfragen</a></li>
+        <li class="offer offer--feature" style="--c: var(--l-chat)"><span class="dot" aria-hidden="true"></span><h3>Website mit Chatbot <span class="badge-line">Paket</span></h3><p>Ihr Auftritt, der Anfragen selbst beantwortet.</p><div class="pr-setup"><span class="price-label">Einrichtung</span><span class="price-amount">999,99 €</span></div><div class="pr-month"><span class="price-label">pro Monat</span><span class="price-amount">49,99 €</span></div><a class="offer__btn btn btn--secondary" href="mailto:shawnbergmann00@gmail.com?subject=Angebot%20anfragen:%20Website%20mit%20Chatbot">Angebot anfragen</a></li>
+        <li class="offer" style="--c: var(--l-office)"><span class="dot" aria-hidden="true"></span><h3>Büro-Automatisierung komplett</h3><p>Anfragen, E-Mails, Angebote, Erinnerungen und Belege, alles aufeinander abgestimmt.</p><div class="pr-setup"><span class="price-label">Einrichtung</span><span class="price-amount">1.200 €</span></div><div class="pr-month"><span class="price-label">pro Monat</span><span class="price-amount">79,99 €</span></div><a class="offer__btn btn btn--secondary" href="mailto:shawnbergmann00@gmail.com?subject=Angebot%20anfragen:%20Büro-Automatisierung%20komplett">Angebot anfragen</a></li>
+        <li class="offer" style="--c: var(--l-chat)"><span class="dot" aria-hidden="true"></span><h3>KI-Assistent JARVIS</h3><p>Ihr eigener KI-Assistent mit Cockpit, angepasst an Ihren Betrieb.</p><div class="pr-setup"><span class="price-label">Einrichtung</span><span class="price-amount">499,99 €</span></div><div class="pr-month"><span class="price-label">pro Monat</span><span class="price-amount">19,99 €</span></div><a class="offer__btn btn btn--secondary" href="mailto:shawnbergmann00@gmail.com?subject=Angebot%20anfragen:%20KI-Assistent%20JARVIS">Angebot anfragen</a></li>
+      </ul>
+      <div class="price-foot">
+        <p>Alle Preise netto zzgl. 19 % MwSt.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="fragen" aria-labelledby="fragen-h">
+    <div class="wrap">
+      <div class="section-head" data-reveal><h2 id="fragen-h">Häufige Fragen</h2></div>
+      <div class="faq">
+        <div class="faq__item"><h3>Brauche ich Technikwissen?</h3><p>Nein. Ich richte alles ein und zeige Ihnen, wie Sie es bedienen.</p></div>
+        <div class="faq__item"><h3>Wofür sind die monatlichen Beträge?</h3><p>Sie decken Betreuung und Anpassungen ab.</p></div>
+        <div class="faq__item"><h3>Verschickt das System selbst Nachrichten?</h3><p>Nur wenn Sie es freigeben.</p></div>
+        <div class="faq__item"><h3>Kann ich klein anfangen?</h3><p>Ja. Zum Beispiel mit einem einzelnen Ablauf, den wir später erweitern.</p></div>
+        <div class="faq__item"><h3>Wie schnell geht es los?</h3><p>Nach Ihrer kurzen Nachricht bekommen Sie von mir einen Vorschlag.</p></div>
+        <div class="faq__item"><h3>Kann der Chatbot Termine vereinbaren?</h3><p>Er nimmt Terminwünsche auf oder leitet zu Ihrer bestehenden Buchung weiter. Fest buchen kann er nur, wenn ein Kalender angebunden ist.</p></div>
+        <div class="faq__item"><h3>Was passiert, wenn der Chatbot falsch antwortet?</h3><p>KI kann sich irren. Deshalb teste ich die typischen Fragen vor dem Start mit Ihnen, lege fest, worauf er antworten darf, und baue einen Weg zu Ihnen persönlich ein.</p></div>
+        <div class="faq__item"><h3>Bekomme ich auch Impressum und Datenschutz?</h3><p>Für Websites liefere ich beides als Entwurf. Rechtlich prüfen muss es der Betrieb selbst.</p></div>
+      </div>
+    </div>
+  </section>
 </main>
 
-<footer><div class="w"><div><a class="logo" href="#top"><svg><use href="#brand"/></svg>Bergmann <em>AI</em></a><p style="margin-top:10px">KI-gestützte Kundenkommunikation und Automatisierung.<br>© 2026 Bergmann AI · Shawn Bergmann · Halle (Westf.)</p></div>
-<div><a href="https://bergmann-ai-kundenassistent.vivid-moose-7317.chatgpt.site/impressum/" target="_blank" rel="noopener">Impressum</a> · <a href="https://bergmann-ai-kundenassistent.vivid-moose-7317.chatgpt.site/datenschutz/" target="_blank" rel="noopener">Datenschutz</a></div></div></footer>
+<footer class="footer closing" id="contact" aria-labelledby="close-h">
+  <div class="wrap">
+    <div class="closing__cta close--word">
+      <div class="section-head--split">
+        <div><h2 id="close-h">Finden wir heraus, wo Sie Zeit sparen</h2><p class="t-lead">Schreiben Sie mir kurz, was Sie im Alltag aufhält. Ich melde mich mit einer ehrlichen Einschätzung, auch wenn die Antwort „lohnt sich nicht“ ist.</p></div>
+        <div class="btn-row">
+          <a class="btn btn--primary" href="mailto:shawnbergmann00@gmail.com?subject=Anfrage%20Bergmann%20AI">E-Mail schreiben<svg class="m-arrow" viewBox="0 0 12 12" aria-hidden="true"><path class="m-arrow__stem" d="M1 6h8"/><path class="m-arrow__head" d="M4.5 2.5 8 6l-3.5 3.5"/></svg></a>
+          <a class="btn btn--secondary" href="#demo" data-demo>Chatbot-Demo testen</a>
+        </div>
+      </div>
+      <p class="close__word" aria-hidden="true">Bergmann AI</p>
+    </div>
+    <div class="closing__links">
+      <div class="grid">
+        <div class="span-4 stack-4">
+          <a class="nav__logo" href="#top"><img src="logo.webp" alt="" width="32" height="32" style="border-radius:8px">Bergmann AI</a>
+          <p class="footer__lede">KI-Chatbots, Automatisierungen und Websites für Betriebe. Shawn Bergmann, Halle (Westf.).</p>
+        </div>
+        <div class="span-2 start-7 footer__col"><h4>Leistungen</h4><ul><li><a href="#leistungen">Leistungen</a></li><li><a href="#buero">Büro</a></li><li><a href="#websites">Websites</a></li></ul></div>
+        <div class="span-2 footer__col"><h4>Bergmann AI</h4><ul><li><a href="#zusammenarbeit">Ablauf</a></li><li><a href="#preise">Preise</a></li><li><a href="#fragen">Fragen</a></li></ul></div>
+        <div class="span-2 footer__col"><h4>Kontakt</h4><ul><li><a href="mailto:shawnbergmann00@gmail.com">shawnbergmann00@gmail.com</a></li><li><a href="https://calendly.com/shawnhunter2501/30min" target="_blank" rel="noopener">Termin</a></li></ul></div>
+      </div>
+      <div class="footer__legal">
+        <span>&copy; 2026 Bergmann AI &nbsp; <a href="https://bergmann-ai-kundenassistent.vivid-moose-7317.chatgpt.site/impressum/" target="_blank" rel="noopener">Impressum</a> &nbsp; <a href="https://bergmann-ai-kundenassistent.vivid-moose-7317.chatgpt.site/datenschutz/" target="_blank" rel="noopener">Datenschutz</a></span>
+        <span>Tidio und n8n sind Marken ihrer Inhaber.</span>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<aside class="consent" id="demo" role="dialog" aria-labelledby="consent-h" hidden>
+  <h2 id="consent-h">Chatbot-Demo starten</h2>
+  <p>Mit Ihrer Zustimmung wird der externe Chatdienst Tidio geladen. Dabei erhält Tidio technische Daten wie Ihre IP-Adresse und Geräteinformationen sowie Ihre Chatnachrichten; Cookies oder lokaler Speicher können verwendet werden, eine Verarbeitung in den USA ist möglich. Die Einwilligung ist freiwillig. Bitte keine vertraulichen Daten eingeben.</p>
+  <div class="btn-row">
+    <button class="btn btn--primary" type="button" id="consent-yes">Zustimmen und Chat öffnen</button>
+    <button class="btn btn--secondary" type="button" id="consent-no">Abbrechen</button>
+  </div>
+</aside>
 
 <script>
-(function(){
-var rm=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}})},{threshold:.12});
-document.querySelectorAll('.rv').forEach(function(el){io.observe(el)});
-// Chat-Animation im Hero
-var seq=document.querySelectorAll('#mock .m,#mock .hand'),i=0;
-function nx(){if(i<seq.length){seq[i].classList.add('show');i++;setTimeout(nx,rm?0:1100)}}
-setTimeout(nx,rm?0:700);
-// Spotlight
-document.querySelectorAll('.spot').forEach(function(c){c.addEventListener('mousemove',function(e){var r=c.getBoundingClientRect();c.style.setProperty('--x',(e.clientX-r.left)+'px');c.style.setProperty('--y',(e.clientY-r.top)+'px')})});
-// Tabs
-var tb=document.querySelectorAll('.tabs .tb'),tp=document.querySelectorAll('.tp');
-tb.forEach(function(b){b.addEventListener('click',function(){tb.forEach(function(x){x.classList.remove('on')});tp.forEach(function(x){x.classList.remove('on')});b.classList.add('on');tp[+b.dataset.t].classList.add('on')})});
-// Scrollbalken + aktive Navigation
-var bar=document.getElementById('bar'),links=document.querySelectorAll('#nav a');
-function sc(){var h=document.documentElement;bar.style.width=(h.scrollTop/(h.scrollHeight-h.clientHeight)*100)+'%';
-var cur='';links.forEach(function(a){var s=document.querySelector(a.getAttribute('href'));if(s&&s.getBoundingClientRect().top<160)cur=a.getAttribute('href')});
-links.forEach(function(a){a.classList.toggle('on',a.getAttribute('href')===cur)})}
-addEventListener('scroll',sc,{passive:true});sc();
+(function () {
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+
+  /* tech background: faint line art of networks, workflows and gears, drawn once as two tiles */
+  (function () {
+    var bg = document.querySelector('.techbg'); if (!bg) return;
+    var C = '#8fe3ff', seed = 11;
+    var r = function () { seed = (seed * 9301 + 49297) % 233280; return seed / 233280; };
+    function mesh(x, y, cols, rows, gap) {
+      var o = '', pts = [];
+      for (var i = 0; i < cols; i++) for (var j = 0; j < rows; j++) pts.push([x + i * gap, y + j * gap * .8 + (i % 2) * gap * .4]);
+      pts.forEach(function (p, a) { pts.forEach(function (q, b) { if (b > a && Math.abs(p[0] - q[0]) <= gap + 1 && r() < .55) o += '<line x1="' + p[0] + '" y1="' + p[1] + '" x2="' + q[0] + '" y2="' + q[1] + '"/>'; }); });
+      pts.forEach(function (p) { o += '<circle cx="' + p[0] + '" cy="' + p[1] + '" r="5" fill="#05090c"/>'; });
+      return o;
+    }
+    function gear(cx, cy, R, n) {
+      var d = '', t = Math.PI * 2 / n;
+      for (var i = 0; i < n; i++) {
+        var a = i * t, pts = [[R, a], [R + R * .22, a + t * .2], [R + R * .22, a + t * .45], [R, a + t * .65]];
+        pts.forEach(function (p, k) { d += (i === 0 && k === 0 ? 'M' : 'L') + (cx + p[0] * Math.cos(p[1])).toFixed(1) + ' ' + (cy + p[0] * Math.sin(p[1])).toFixed(1); });
+      }
+      return '<path d="' + d + 'Z"/><circle cx="' + cx + '" cy="' + cy + '" r="' + (R * .38).toFixed(1) + '"/>';
+    }
+    function chain(x, y, n, icons) {
+      var o = '';
+      for (var i = 0; i < n; i++) {
+        var bx = x + i * 92;
+        o += '<rect x="' + bx + '" y="' + y + '" width="56" height="56" rx="12"/>' + icons[i % icons.length](bx + 28, y + 28);
+        if (i < n - 1) o += '<path d="M' + (bx + 62) + ' ' + (y + 28) + 'H' + (bx + 86) + 'M' + (bx + 80) + ' ' + (y + 22) + 'l6 6-6 6"/>';
+      }
+      return o;
+    }
+    var IC = [
+      function (x, y) { return '<ellipse cx="' + x + '" cy="' + (y - 9) + '" rx="12" ry="5"/><path d="M' + (x - 12) + ' ' + (y - 9) + 'v18c0 3 24 3 24 0v-18M' + (x - 12) + ' ' + y + 'c0 3 24 3 24 0"/>'; },
+      function (x, y) { return gear(x, y, 9, 8); },
+      function (x, y) { return '<rect x="' + (x - 13) + '" y="' + (y - 9) + '" width="26" height="18" rx="2"/><path d="M' + (x - 13) + ' ' + (y - 8) + 'l13 9 13-9"/>'; },
+      function (x, y) { return '<path d="M' + (x - 10) + ' ' + y + 'l7 7 13-14"/>'; },
+      function (x, y) { return '<path d="M' + (x - 8) + ' ' + (y - 11) + 'l18 11-18 11z"/>'; }
+    ];
+    function globe(cx, cy, R) {
+      var o = '<circle cx="' + cx + '" cy="' + cy + '" r="' + R + '"/><circle cx="' + cx + '" cy="' + cy + '" r="' + (R + 26) + '" stroke-dasharray="2 10"/>' +
+        '<ellipse cx="' + cx + '" cy="' + cy + '" rx="' + R + '" ry="' + (R * .35) + '"/><ellipse cx="' + cx + '" cy="' + cy + '" rx="' + (R * .35) + '" ry="' + R + '"/>';
+      var p = [];
+      for (var i = 0; i < 26; i++) { var a = r() * 6.283, d = Math.sqrt(r()) * R * .9; p.push([cx + d * Math.cos(a), cy + d * Math.sin(a)]); }
+      p.forEach(function (a, i) { var b = p[(i + 1 + Math.floor(r() * 4)) % p.length]; o += '<line x1="' + a[0].toFixed(0) + '" y1="' + a[1].toFixed(0) + '" x2="' + b[0].toFixed(0) + '" y2="' + b[1].toFixed(0) + '"/>'; });
+      p.forEach(function (a) { o += '<circle cx="' + a[0].toFixed(0) + '" cy="' + a[1].toFixed(0) + '" r="2.5" fill="' + C + '"/>'; });
+      return o;
+    }
+    function label(x, y, t) { return '<text x="' + x + '" y="' + y + '" fill="' + C + '" stroke="none" font-family="Work, sans-serif" font-size="13" letter-spacing="1.5">' + t + '</text>'; }
+    function circuit(x, y, w) {
+      var o = '';
+      for (var i = 0; i < 5; i++) { var yy = y + i * 18, len = w * (.4 + r() * .6); o += '<path d="M' + x + ' ' + yy + 'h' + (len * .6).toFixed(0) + 'l12 12h' + (len * .4).toFixed(0) + '"/><circle cx="' + (x + len + 12).toFixed(0) + '" cy="' + (yy + 12) + '" r="3"/>'; }
+      return o;
+    }
+    function tile(W, H, parts) {
+      return 'url("data:image/svg+xml;utf8,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="' + W + '" height="' + H + '" viewBox="0 0 ' + W + ' ' + H + '"><g fill="none" stroke="' + C + '" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" opacity=".55">' + parts + '</g></svg>') + '")';
+    }
+    var t1 = tile(1440, 1500,
+      label(1010, 70, 'KI-MODELLE') + mesh(1010, 100, 6, 4, 46) +
+      label(60, 300, 'AUTOMATISIERTE ABLÄUFE') + chain(60, 320, 5, IC) +
+      globe(250, 760, 150) + label(150, 960, 'LERNEN · VERSTEHEN · ANTWORTEN') +
+      '<g>' + gear(1180, 640, 54, 12) + gear(1262, 708, 34, 9) + gear(1110, 730, 26, 8) + '</g>' + label(1060, 820, 'PROZESSAUTOMATISIERUNG') +
+      label(820, 1150, 'DATENFLUSS') + chain(820, 1170, 5, [IC[0], IC[2], IC[1], IC[3], IC[0]]) +
+      circuit(40, 1300, 260) + circuit(1180, 300, 200));
+    var t2 = tile(1440, 1500,
+      label(80, 140, 'WORKFLOWS') + chain(80, 160, 4, [IC[2], IC[1], IC[3], IC[4]]) +
+      mesh(980, 420, 7, 5, 44) + label(980, 400, 'NEURONALES NETZ') +
+      globe(1190, 1080, 120) +
+      '<g>' + gear(300, 1080, 46, 11) + gear(370, 1140, 28, 8) + '</g>' +
+      circuit(520, 760, 300));
+    bg.style.backgroundImage = t1 + ',' + t2;
+    bg.style.backgroundSize = '1440px 1500px, 1440px 1500px';
+    bg.style.backgroundPosition = 'center 0, center 1500px';
+    bg.style.backgroundRepeat = 'repeat-y, repeat-y';
+  })();
+
+  /* stars */
+  var st = document.getElementById('stars');
+  if (st) { var h = ''; var seed = 7; var rnd = function () { seed = (seed * 9301 + 49297) % 233280; return seed / 233280; };
+    for (var k = 0; k < 140; k++) { var x = rnd() * 1440, y = rnd() * 640, r = rnd() < .9 ? rnd() * 1.1 + .3 : 1.8;
+      h += '<circle cx="' + x.toFixed(1) + '" cy="' + y.toFixed(1) + '" r="' + r.toFixed(2) + '" opacity="' + (rnd() * .6 + .3).toFixed(2) + '"' + (rnd() < .25 ? ' class="tw" style="animation-delay:' + (rnd() * 3.6).toFixed(2) + 's"' : '') + '/>'; }
+    st.innerHTML = h; }
+  /* hero: highlight one line */
+  var map = document.querySelector('.hero-map');
+  document.querySelectorAll('[data-focus-line]').forEach(function (b) {
+    b.addEventListener('click', function () {
+      var on = b.getAttribute('aria-pressed') !== 'true';
+      document.querySelectorAll('[data-focus-line]').forEach(function (o) { o.setAttribute('aria-pressed', 'false'); });
+      if (on) { b.setAttribute('aria-pressed', 'true'); map.setAttribute('data-focus', b.dataset.focusLine); }
+      else map.removeAttribute('data-focus');
+    });
+  });
+  if (reduce && map) map.pauseAnimations && map.pauseAnimations();
+
+  /* hero chat: replay the conversation, one message after another */
+  var card = document.querySelector('[data-chat-loop]');
+  if (card && !reduce) {
+    var steps = card.querySelectorAll('[data-step]');
+    var play = function () {
+      card.classList.add('is-replaying');
+      steps.forEach(function (s) { s.classList.remove('is-in'); });
+      steps.forEach(function (s, i) { setTimeout(function () { s.classList.add('is-in'); }, 500 + i * 900); });
+      setTimeout(function () { card.classList.remove('is-replaying'); }, 500 + steps.length * 900);
+    };
+    setTimeout(play, 600); setInterval(play, 9000);
+  }
+
+  /* line tabs (click only) */
+  var tabs = Array.prototype.slice.call(document.querySelectorAll('.line-tabs [role="tab"]'));
+  function select(t) {
+    tabs.forEach(function (o) {
+      var on = o === t; o.setAttribute('aria-selected', on); o.tabIndex = on ? 0 : -1;
+      document.getElementById(o.getAttribute('aria-controls')).hidden = !on;
+    });
+  }
+  tabs.forEach(function (t, i) {
+    t.addEventListener('click', function () { select(t); });
+    t.addEventListener('keydown', function (e) {
+      var d = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0;
+      if (d) { var n = tabs[(i + d + tabs.length) % tabs.length]; select(n); n.focus(); e.preventDefault(); }
+    });
+  });
+
+  /* industries: from the acquisition templates */
+  var T = [
+    ['Autohäuser', 'Fahrzeugverfügbarkeit, Probefahrten und Werkstatttermine', 'Probefahrt- und Werkstatttermine bestätigen und per Erinnerung absichern'],
+    ['Autowerkstätten', 'Terminanfragen, Inspektionen und Fragen zu Leistungen', 'Terminbestätigungen und Erinnerungen sowie vorbereitete Kostenvoranschläge'],
+    ['Immobilienmakler', 'Objektanfragen, Besichtigungstermine und erste Interessentenfragen', 'Besichtigungstermine koordinieren und Interessenten vorsortieren'],
+    ['Friseursalons', 'Terminfragen, Leistungen und Öffnungszeiten', 'Terminbestätigungen, Erinnerungen und Bewertungsanfragen nach dem Besuch'],
+    ['Kosmetikstudios', 'Terminfragen, Behandlungen und Preise', 'Terminbestätigungen, Erinnerungen und Bewertungsanfragen nach dem Besuch'],
+    ['Fitnessstudios', 'Probetraining, Mitgliedschaften und Kurszeiten', 'Probetrainings vereinbaren und danach automatisch nachfassen'],
+    ['Fahrschulen', 'Anmeldung, Führerscheinklassen und Kursstarts', 'Anmeldungen aufnehmen und benötigte Unterlagen automatisch anfordern'],
+    ['Hotels', 'Verfügbarkeit, Check-in und Fragen zur Ausstattung', 'Anfragen beantworten und Buchungsbestätigungen vorbereiten'],
+    ['Pensionen', 'Verfügbarkeit, Anreise und Fragen zur Ausstattung', 'Anfragen beantworten und Buchungsbestätigungen vorbereiten'],
+    ['Handwerksbetriebe', 'Angebotsanfragen, Terminwünsche und Fragen zum Einsatzgebiet', 'Anfragen aufnehmen, Angebote vorbereiten und Termine bestätigen'],
+    ['Elektrobetriebe', 'Terminwünsche, Angebotsanfragen und Fragen zum Einsatzgebiet', 'Anfragen aufnehmen, Angebote vorbereiten und Termine bestätigen'],
+    ['Sanitär und Heizung', 'Störungsmeldungen, Terminwünsche und Angebotsanfragen', 'Störungsmeldungen aufnehmen, Termine bestätigen und Angebote vorbereiten'],
+    ['Steuerberater', 'Terminanfragen, Fragen zu Unterlagen und Erstkontakte', 'Erstanfragen aufnehmen, Unterlagen anfordern und Termine bestätigen'],
+    ['Rechtsanwaltskanzleien', 'Erstanfragen, Terminwünsche und Fragen zum Ablauf', 'Erstanfragen aufnehmen, Unterlagen anfordern und Termine bestätigen'],
+    ['Reisebüros', 'Reiseanfragen, Beratungstermine und Fragen zu Buchungen', 'Reiseanfragen aufnehmen und Beratungstermine koordinieren'],
+    ['Lokale Dienstleister', 'Fragen zu Leistungen, Öffnungszeiten und Terminen', 'Anfragen aufnehmen, Termine bestätigen und Angebote vorbereiten']
+  ];
+  var wrap = document.getElementById('trade-chips');
+  var live = document.querySelectorAll('.trade__live');
+  function show(i, animate) {
+    var set = function () {
+      document.getElementById('trade-name').textContent = T[i][0];
+      document.getElementById('trade-q').textContent = T[i][1];
+      document.getElementById('trade-a').textContent = T[i][2];
+    };
+    wrap.querySelectorAll('button').forEach(function (b, j) { b.setAttribute('aria-pressed', i === j); });
+    if (!animate || reduce) return set();
+    live.forEach(function (l) { l.classList.add('is-swapping'); });
+    setTimeout(function () { set(); live.forEach(function (l) { l.classList.remove('is-swapping'); }); }, 160);
+  }
+  T.forEach(function (t, i) {
+    var b = document.createElement('button'); b.type = 'button'; b.textContent = t[0];
+    b.addEventListener('click', function () { show(i, true); });
+    wrap.appendChild(b);
+  });
+  show(1, false);
+
+
+  /* glowing assistant illustration in the knowledge-platform style */
+  var SRC = [
+    ['PDF-Rechnungen', '#e5484d', '<path d="M-7-10h9l5 5v15h-14z" fill="#fff"/><text x="0" y="6" text-anchor="middle" font-size="7" font-weight="700" fill="#e5484d" font-family="Work, sans-serif">PDF</text>'],
+    ['Angebote', '#2f6fe4', '<path d="M-7-10h9l5 5v15h-14z" fill="#fff"/><path d="M-4-2h8M-4 2h8M-4 6h5" stroke="#2f6fe4" stroke-width="1.6"/>'],
+    ['Tabellen', '#1f9d55', '<rect x="-9" y="-9" width="18" height="18" rx="2" fill="#fff"/><path d="M-9-3h18M-9 3h18M-3-9v18M3-9v18" stroke="#1f9d55" stroke-width="1.4"/>'],
+    ['Kalender', '#f08c2b', '<rect x="-9" y="-8" width="18" height="17" rx="2" fill="#fff"/><path d="M-9-3h18" stroke="#f08c2b" stroke-width="2"/><path d="M-5-11v5M5-11v5" stroke="#fff" stroke-width="2" stroke-linecap="round"/><text x="0" y="7" text-anchor="middle" font-size="8" font-weight="700" fill="#f08c2b" font-family="Work, sans-serif">12</text>'],
+    ['E-Mails', '#3a8ee6', '<rect x="-10" y="-7" width="20" height="14" rx="2" fill="#fff"/><path d="M-10-6 0 1 10-6" fill="none" stroke="#3a8ee6" stroke-width="1.6"/>'],
+    ['Kontaktformular', '#14a3a3', '<rect x="-8" y="-10" width="16" height="20" rx="2" fill="#fff"/><path d="M-4-5h8M-4-1h8M-4 3h8" stroke="#14a3a3" stroke-width="1.6"/><rect x="-4" y="6" width="5" height="2" fill="#14a3a3"/>'],
+    ['Website-Chat', '#0ea5c6', '<path d="M-10-7h20v12H-2l-5 5v-5h-3z" fill="#fff"/><circle cx="-4" cy="-1" r="1.4" fill="#0ea5c6"/><circle cx="0" cy="-1" r="1.4" fill="#0ea5c6"/><circle cx="4" cy="-1" r="1.4" fill="#0ea5c6"/>'],
+    ['Kundenliste', '#5b6b8a', '<ellipse cx="0" cy="-7" rx="8" ry="3" fill="#fff"/><path d="M-8-7v13c0 4 16 4 16 0V-7" fill="#fff"/><path d="M-8-1c0 4 16 4 16 0M-8 4c0 4 16 4 16 0" fill="none" stroke="#5b6b8a" stroke-width="1.4"/>']
+  ];
+  var NS = 'http://www.w3.org/2000/svg';
+  function drawGlow() {
+    var host = document.getElementById('ki-glow'); if (!host) return;
+    var narrow = host.clientWidth < 760;
+    if (host.dataset.mode === String(narrow)) return; host.dataset.mode = String(narrow);
+    var W = narrow ? 420 : 1200, H = narrow ? 1180 : 600, cx = narrow ? 210 : 545, cy = narrow ? 470 : 285, R = narrow ? 92 : 104;
+    var defs = '<defs><filter id="gblur" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="16"/></filter>' +
+      '<filter id="gline" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="2.5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>' +
+      '<radialGradient id="core" cx="50%" cy="42%" r="62%"><stop offset="0" stop-color="#a9ecff"/><stop offset=".3" stop-color="#2f9fd8"/><stop offset=".75" stop-color="#0b3550"/><stop offset="1" stop-color="#061a26"/></radialGradient>' +
+      '<radialGradient id="plat" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#8fe3ff" stop-opacity=".7"/><stop offset="1" stop-color="#8fe3ff" stop-opacity="0"/></radialGradient>' +
+      '<clipPath id="coreclip"><circle cx="' + cx + '" cy="' + cy + '" r="' + (R - 4) + '"/></clipPath>' +
+      '<pattern id="gdots" width="24" height="24" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r="1" fill="#1e3e4f"/></pattern></defs>';
+    var o = '<rect width="' + W + '" height="' + H + '" fill="url(#gdots)" opacity=".6"/>', wires = '', pulses = '', nodes = '';
+    /* sources */
+    SRC.forEach(function (sx, i) {
+      var x, y, w = narrow ? 186 : 196, h = 52, bx, by, d;
+      if (narrow) { x = 16 + (i % 2) * 202; y = 22 + Math.floor(i / 2) * 64; bx = x + w / 2; by = y + h; d = 'M' + bx + ' ' + by + ' C' + bx + ' ' + (by + 90) + ' ' + cx + ' ' + (cy - R - 120) + ' ' + cx + ' ' + (cy - R); }
+      else { x = 40; y = 34 + i * 66; bx = x + w; by = y + h / 2; d = 'M' + bx + ' ' + by + ' C' + (bx + 140) + ' ' + by + ' ' + (cx - R - 150) + ' ' + cy + ' ' + (cx - R) + ' ' + cy; }
+      wires += '<path d="' + d + '" fill="none" stroke="#8fe3ff" stroke-width="7" opacity=".08"/><path id="gw' + i + '" d="' + d + '" fill="none" stroke="#8fe3ff" stroke-width="1.6" opacity=".75"/>';
+      pulses += '<circle r="3" fill="#fff"><animateMotion dur="' + (2.4 + (i % 4) * .4) + 's" begin="' + (i * .35) + 's" repeatCount="indefinite"><mpath href="#gw' + i + '"/></animateMotion></circle>';
+      nodes += '<g transform="translate(' + x + ' ' + y + ')"><rect width="' + w + '" height="' + h + '" rx="12" fill="#0b1c26" stroke="#1f4255"/>' +
+        '<rect x="8" y="8" width="36" height="36" rx="9" fill="' + sx[1] + '"/><g transform="translate(26 26)">' + sx[2] + '</g>' +
+        '<text x="56" y="31" fill="#e6f2f7" font-family="Work, sans-serif" font-size="14" font-weight="500">' + sx[0] + '</text></g>';
+    });
+    /* core: glowing sphere with a neural mesh inside */
+    var seed = 5, rnd = function () { seed = (seed * 9301 + 49297) % 233280; return seed / 233280; }, pts = [], mesh = '';
+    for (var k = 0; k < 34; k++) { var a = rnd() * 6.283, dd = Math.sqrt(rnd()) * (R - 12); pts.push([cx + dd * Math.cos(a), cy + dd * Math.sin(a)]); }
+    pts.forEach(function (p, i) { pts.forEach(function (q, j) { if (j > i && Math.hypot(p[0] - q[0], p[1] - q[1]) < R * .42) mesh += '<line x1="' + p[0].toFixed(1) + '" y1="' + p[1].toFixed(1) + '" x2="' + q[0].toFixed(1) + '" y2="' + q[1].toFixed(1) + '"/>'; }); });
+    var dots = pts.map(function (p) { return '<circle cx="' + p[0].toFixed(1) + '" cy="' + p[1].toFixed(1) + '" r="2" fill="#e8fbff"/>'; }).join('');
+    var ticks = '';
+    for (var t = 0; t < 60; t++) { var an = t / 60 * 6.283, r1 = R + 26, r2 = R + (t % 5 === 0 ? 36 : 31); ticks += '<line x1="' + (cx + r1 * Math.cos(an)).toFixed(1) + '" y1="' + (cy + r1 * Math.sin(an)).toFixed(1) + '" x2="' + (cx + r2 * Math.cos(an)).toFixed(1) + '" y2="' + (cy + r2 * Math.sin(an)).toFixed(1) + '"/>'; }
+    var core = '<circle cx="' + cx + '" cy="' + cy + '" r="' + (R + 40) + '" fill="#2fa8e6" opacity=".35" filter="url(#gblur)"/>' +
+      '<g class="gl-core-ring" style="transform-box:view-box;transform-origin:' + cx + 'px ' + cy + 'px" stroke="#8fe3ff" stroke-width="1.2" opacity=".55">' + ticks + '</g>' +
+      '<circle class="gl-core-ring gl-core-ring--2" cx="' + cx + '" cy="' + cy + '" r="' + (R + 14) + '"/>' +
+      '<circle cx="' + cx + '" cy="' + cy + '" r="' + R + '" fill="url(#core)"/>' +
+      '<g clip-path="url(#coreclip)" stroke="#bff3ff" stroke-width=".7" opacity=".55">' + mesh + '</g><g clip-path="url(#coreclip)" opacity=".9">' + dots + '</g>' +
+      '<circle cx="' + cx + '" cy="' + cy + '" r="' + R + '" fill="none" stroke="#c9f5ff" stroke-width="2" filter="url(#gline)"/>' +
+      '<text x="' + cx + '" y="' + (cy + 17) + '" text-anchor="middle" font-family="Bricolage, sans-serif" font-weight="700" font-size="54" fill="#fff" filter="url(#gline)">KI</text>' +
+      '<text x="' + cx + '" y="' + (cy + R + 66) + '" text-anchor="middle" font-family="Bricolage, sans-serif" font-weight="700" font-size="17" fill="#fff">Ihr KI-Assistent</text>' +
+      '<text x="' + cx + '" y="' + (cy + R + 88) + '" text-anchor="middle" font-family="Work, sans-serif" font-size="13" fill="#9fc3d3">Ihre Anfragen an einem Ort</text>';
+    /* chat panel and customer */
+    var px = narrow ? 30 : 790, py = narrow ? cy + R + 120 : 46, pw = narrow ? 360 : 360, ph = 330;
+    var pd = narrow ? 'M' + cx + ' ' + (cy + R) + ' V' + py : 'M' + (cx + R) + ' ' + cy + ' C' + (cx + R + 70) + ' ' + cy + ' ' + (px - 70) + ' ' + (py + 150) + ' ' + px + ' ' + (py + 150);
+    if (narrow) pd = 'M' + cx + ' ' + (cy + R + 100) + ' V' + py;
+    wires += '<path d="' + pd + '" fill="none" stroke="#8fe3ff" stroke-width="10" opacity=".12"/><path id="gout" d="' + pd + '" fill="none" stroke="#8fe3ff" stroke-width="2.4" filter="url(#gline)"/>';
+    pulses += '<circle r="4" fill="#fff"><animateMotion dur="1.8s" repeatCount="indefinite"><mpath href="#gout"/></animateMotion></circle>';
+    var f = 'font-family="Work, sans-serif"';
+    var panel = '<g transform="translate(' + px + ' ' + py + ')">' +
+      '<rect width="' + pw + '" height="' + ph + '" rx="18" fill="#0a1d28" stroke="#8fe3ff" stroke-opacity=".55" stroke-width="1.4" filter="url(#gline)"/>' +
+      '<rect width="' + pw + '" height="' + ph + '" rx="18" fill="#0a1d28"/>' +
+      '<path d="M22 22h14v10h-6l-4 4v-4h-4z" fill="none" stroke="#8fe3ff" stroke-width="1.5" stroke-linejoin="round"/><text x="46" y="34" ' + f + ' font-size="14" font-weight="700" fill="#fff">KI-Chatbot</text>' +
+      '<rect x="20" y="52" width="' + (pw - 40) + '" height="50" rx="10" fill="#12324a"/><text x="34" y="73" ' + f + ' font-size="13" fill="#e6f2f7">Wann habt ihr diese Woche einen</text><text x="34" y="91" ' + f + ' font-size="13" fill="#e6f2f7">Termin für die Inspektion frei?</text>' +
+      '<rect x="20" y="114" width="' + (pw - 40) + '" height="170" rx="10" fill="#0e2735" stroke="#1f4a5e"/>' +
+      '<text x="34" y="138" ' + f + ' font-size="12" font-weight="700" fill="#8fe3ff">Antwort</text>' +
+      '<text x="34" y="160" ' + f + ' font-size="13" fill="#e6f2f7">Donnerstag sind 9:30 und 14:00 Uhr frei.</text><text x="34" y="178" ' + f + ' font-size="13" fill="#e6f2f7">Soll ich 9:30 für Sie vormerken?</text>' +
+      '<text x="34" y="206" ' + f + ' font-size="11.5" fill="#9fc3d3">Quellen</text>' +
+      '<rect x="34" y="216" width="14" height="17" rx="2" fill="#e5484d"/><text x="56" y="229" ' + f + ' font-size="12" fill="#c5d6de">Leistungen-und-Preise.pdf</text>' +
+      '<rect x="34" y="244" width="14" height="14" rx="2" fill="#f08c2b"/><text x="56" y="256" ' + f + ' font-size="12" fill="#c5d6de">Werkstatt-Kalender</text>' +
+      '<text x="22" y="312" ' + f + ' font-size="12" fill="#9fc3d3">War diese Antwort hilfreich?</text>' +
+      '<path d="M' + (pw - 64) + ' 310v-8l4-6v6h6l-1 8z" fill="none" stroke="#9fc3d3" stroke-width="1.3"/><path d="M' + (pw - 36) + ' 300v8l4 6v-6h6l-1-8z" fill="none" stroke="#9fc3d3" stroke-width="1.3"/></g>';
+    var ax = px + pw / 2, ay = py + ph + (narrow ? 70 : 74);
+    var person = '<path d="M' + ax + ' ' + (py + ph) + ' V' + (ay - 34) + '" stroke="#8fe3ff" stroke-dasharray="3 5" opacity=".7"/>' +
+      '<ellipse cx="' + ax + '" cy="' + (ay + 30) + '" rx="74" ry="16" fill="url(#plat)"/><ellipse cx="' + ax + '" cy="' + (ay + 30) + '" rx="60" ry="11" fill="none" stroke="#8fe3ff" stroke-width="1.4" filter="url(#gline)"/>' +
+      '<ellipse cx="' + ax + '" cy="' + (ay + 30) + '" rx="84" ry="19" fill="none" stroke="#8fe3ff" stroke-opacity=".35" stroke-dasharray="2 6"/>' +
+      '<circle cx="' + ax + '" cy="' + ay + '" r="30" fill="#0e2a3a" stroke="#8fe3ff" stroke-width="1.6" filter="url(#gline)"/>' +
+      '<circle cx="' + ax + '" cy="' + (ay - 7) + '" r="9" fill="#8fe3ff"/><path d="M' + (ax - 16) + ' ' + (ay + 18) + 'c2-11 30-11 32 0" fill="#8fe3ff"/>' +
+      '<text x="' + ax + '" y="' + (ay + 70) + '" text-anchor="middle" font-family="Bricolage, sans-serif" font-weight="700" font-size="14" fill="#fff">Ihr Kunde</text>';
+    host.innerHTML = '<svg viewBox="0 0 ' + W + ' ' + (narrow ? ay + 90 : H + 40) + '" aria-hidden="true">' + defs + o + wires + core + nodes + panel + person + (reduce ? '' : pulses) + '</svg>';
+  }
+  drawGlow(); window.addEventListener('resize', drawGlow);
+
+  /* website showcase */
+  var ART = {
+    flower: '<svg viewBox="0 0 48 48"><circle cx="24" cy="18" r="5"/><path d="M24 13c-3-8 6-8 0 0M29 18c8-3 8 6 0 0M24 23c3 8-6 8 0 0M19 18c-8 3-8-6 0 0"/><path d="M24 23v19M24 34c-5-1-8-4-9-8M24 30c5-1 8-4 9-8"/></svg>',
+    cup: '<svg viewBox="0 0 48 48"><path d="M10 18h24v10a10 10 0 0 1-10 10h-4a10 10 0 0 1-10-10z"/><path d="M34 21h3a5 5 0 0 1 0 10h-3M16 7c-2 3 2 5 0 8M22 7c-2 3 2 5 0 8M28 7c-2 3 2 5 0 8"/></svg>',
+    bike: '<svg viewBox="0 0 48 48"><circle cx="11" cy="31" r="8"/><circle cx="37" cy="31" r="8"/><path d="M11 31l8-14h12l6 14M19 17l6 14h-14M25 31l6-14M17 13h6"/></svg>'
+  };
+  var DEMOS = [
+    { name: 'Ihr Blumenladen', h: 'Frische Sträuße für jeden Anlass', b: 'Strauß bestellen', art: 'flower', cards: [['Sträuße', 'Saisonal gebunden'], ['Hochzeit', 'Beratung vor Ort'], ['Lieferung', 'Am selben Tag']] },
+    { name: 'Ihr Café', h: 'Kaffee, Kuchen und Frühstück', b: 'Tisch reservieren', art: 'cup', cards: [['Frühstück', 'Ab 8 Uhr'], ['Torten', 'Auf Vorbestellung'], ['Feiern', 'Bis 30 Gäste']] },
+    { name: 'Ihre Fahrradwerkstatt', h: 'Reparatur und Inspektion', b: 'Termin buchen', art: 'bike', cards: [['Inspektion', 'Mit Checkliste'], ['E-Bikes', 'Akku-Service'], ['Ersatzteile', 'Vorrätig']] }
+  ];
+  var bubble = '<span class="dm-chat"><svg width="16" height="16" viewBox="0 0 20 20"><path d="M4 5.5h12v7H9l-3.5 3v-3H4z" fill="none" stroke="#04121a" stroke-width="1.8" stroke-linejoin="round"/></svg></span>';
+  document.querySelectorAll('[data-demos]').forEach(function (vp) {
+    vp.innerHTML = DEMOS.map(function (d, i) {
+      return '<div class="demo' + (i === 0 ? ' is-on' : '') + '"><div class="wf">' +
+        '<div class="wf-nav"><span>' + d.name + '</span><i><b></b></i></div>' +
+        '<div class="wf-hero"><div><h4>' + d.h + '</h4><div class="wf-line"></div><div class="wf-line s"></div><span class="wf-btn">' + d.b + '</span></div><div class="wf-art">' + ART[d.art] + '</div></div>' +
+        '<div class="wf-cards">' + d.cards.map(function (c) { return '<span><b>' + c[0] + '</b>' + c[1] + '</span>'; }).join('') + '</div>' +
+        '</div>' + bubble + '</div>';
+    }).join('');
+  });
+  var wsBtns = document.querySelectorAll('[data-ws]'), wsI = 0, wsTimer;
+  function wsShow(i) {
+    wsI = i;
+    document.querySelectorAll('[data-demos]').forEach(function (vp) { vp.querySelectorAll('.demo').forEach(function (d, j) { d.classList.toggle('is-on', i === j); }); });
+    wsBtns.forEach(function (b, j) { b.setAttribute('aria-pressed', i === j); });
+  }
+  function wsAuto() { clearInterval(wsTimer); if (!reduce) wsTimer = setInterval(function () { wsShow((wsI + 1) % DEMOS.length); }, 5500); }
+  wsBtns.forEach(function (b) { b.addEventListener('click', function () { wsShow(+b.dataset.ws); wsAuto(); }); });
+  wsAuto();
+
+  /* reveal on scroll, once; route stations light up in order */
+  document.querySelectorAll('.route').forEach(function (r) { r.setAttribute('data-reveal', ''); });
+  if ('IntersectionObserver' in window && !reduce) {
+    var io = new IntersectionObserver(function (es) {
+      es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('is-in'); io.unobserve(e.target); } });
+    }, { rootMargin: '0px 0px -10% 0px', threshold: 0.12 });
+    document.querySelectorAll('[data-reveal]').forEach(function (el) { io.observe(el); });
+    tabs.forEach(function (t) { t.addEventListener('click', function () { var p = document.getElementById(t.getAttribute('aria-controls')); p.classList.remove('is-in'); void p.offsetWidth; p.classList.add('is-in'); }); });
+  } else {
+    document.querySelectorAll('[data-reveal]').forEach(function (el) { el.classList.add('is-in'); });
+  }
+
+  /* chatbot demo: Tidio loads only after consent */
+  var TIDIO_KEY = 'sfoicz4obievoq3qgseb8uc9zelzjomr';
+  var box = document.getElementById('demo'), last = null;
+  function openBox(e) { e.preventDefault(); last = e.currentTarget; box.hidden = false; document.getElementById('consent-yes').focus(); }
+  function closeBox() { box.hidden = true; if (last) last.focus(); }
+  document.querySelectorAll('[data-demo]').forEach(function (a) { a.addEventListener('click', openBox); });
+  document.getElementById('consent-no').addEventListener('click', closeBox);
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !box.hidden) closeBox(); });
+  document.getElementById('consent-yes').addEventListener('click', function () {
+    var btn = this;
+    if (document.getElementById('tidio-s')) { if (window.tidioChatApi) window.tidioChatApi.open(); box.hidden = true; return; }
+    document.addEventListener('tidioChat-ready', function () { window.tidioChatApi.show(); window.tidioChatApi.open(); box.hidden = true; });
+    var s = document.createElement('script'); s.id = 'tidio-s'; s.async = true; s.src = 'https://code.tidio.co/' + TIDIO_KEY + '.js';
+    s.onerror = function () { btn.textContent = 'Chat konnte nicht laden'; };
+    document.body.appendChild(s);
+    btn.textContent = 'Chat wird geladen …'; btn.disabled = true;
+  });
 })();
 </script>
-<script>
-(function(){
-var TIDIO_KEY='sfoicz4obievoq3qgseb8uc9zelzjomr'; /* HIER Tidio-Kennung eintragen, z. B. abc123xyz (Teil zwischen code.tidio.co/ und .js) */
-var DEMO_FALLBACK='https://bergmann-ai-kundenassistent.vivid-moose-7317.chatgpt.site/#demo';
-var btn=document.getElementById('tidioBtn');
-if(btn)btn.addEventListener('click',function(){
- if(!TIDIO_KEY){window.open(DEMO_FALLBACK,'_blank','noopener');return}
- if(document.getElementById('tidio-s')){if(window.tidioChatApi)window.tidioChatApi.open();return}
- document.addEventListener('tidioChat-ready',function(){window.tidioChatApi.show();window.tidioChatApi.open()});
- var t=document.createElement('script');t.id='tidio-s';t.async=true;t.src='//code.tidio.co/'+TIDIO_KEY+'.js';document.body.appendChild(t);
- btn.textContent='Chat wird geladen …';
-});
-var D=[
-{mail:'„Hallo, mein Golf braucht eine Inspektion. Geht das nächste Woche am Dienstag? Erreichbar bin ich per Telefon.“',
- ki:[['Kategorie','Terminanfrage'],['Fahrzeug','VW Golf'],['Wunschzeit','Dienstag nächste Woche'],['Kontaktweg','Telefon'],['Dringlichkeit','normal']],
- crm:[['Kontakt','neu angelegt'],['Status','Neue Anfrage'],['Aufgabe','Termin prüfen']],
- re:'Guten Tag, vielen Dank für Ihre Anfrage. Wir prüfen den Dienstag und melden uns telefonisch mit einem Terminvorschlag.'},
-{mail:'„Wir suchen eine 3-Zimmer-Wohnung in Halle, Budget bis 1.200 € warm, Einzug ab Januar.“',
- ki:[['Kategorie','Suchprofil'],['Ort','Halle'],['Zimmer','3'],['Budget','bis 1.200 € warm'],['Einzug','ab Januar']],
- crm:[['Interessent','neu angelegt'],['Suchprofil','gespeichert'],['Aufgabe','passende Objekte senden']],
- re:'Guten Tag, vielen Dank für Ihr Suchprofil. Wir senden Ihnen passende Objekte aus Halle, sobald wir sie geprüft haben.'},
-{mail:'„Die Rechnung vom letzten Monat stimmt nicht. Bitte um Korrektur.“',
- ki:[['Kategorie','Rechnungsfrage'],['Dringlichkeit','hoch'],['Übergabe','an Mitarbeiter'],['Zusage','keine automatische']],
- crm:[['Ticket','angelegt'],['Priorität','hoch'],['Aufgabe','Rechnung prüfen']],
- re:'Guten Tag, vielen Dank für Ihre Nachricht. Wir prüfen die Rechnung und melden uns persönlich bei Ihnen.'}];
-var box=document.getElementById('sim'),chips=document.querySelectorAll('#simChips .tb'),tm=[];
-var rm=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-function dl(a){return '<dl>'+a.map(function(r){return '<dt>'+r[0]+'</dt><dd>'+r[1]+'</dd>'}).join('')+'</dl>'}
-function run(k){
- tm.forEach(clearTimeout);tm=[];var d=D[k];
- var st=[['1','EINGANG','<div>'+d.mail+'</div>'],['2','KI-EINORDNUNG',dl(d.ki)],['3','CRM-EINTRAG',dl(d.crm)],['4','ANTWORTENTWURF','<div>'+d.re+'</div><div style="font-size:12.5px;color:var(--mute);margin-top:6px">Entwurf. Versand erst nach Prüfung durch Ihr Team.</div>']];
- box.innerHTML=st.map(function(x){return '<div class="sx"><i>'+x[0]+'</i><div><b>'+x[1]+'</b>'+x[2]+'</div></div>'}).join('');
- box.querySelectorAll('.sx').forEach(function(el,i){tm.push(setTimeout(function(){el.classList.add('show')},rm?0:i*850+150))});
-}
-chips.forEach(function(c){c.addEventListener('click',function(){chips.forEach(function(x){x.classList.remove('on')});c.classList.add('on');run(+c.dataset.s)})});
-var ob=new IntersectionObserver(function(e){if(e[0].isIntersecting){run(0);ob.disconnect()}},{threshold:.25});
-if(box)ob.observe(box);
-})();
-</script>
+<script type="module" src="assets/system.js"></script>
+<script type="module" src="assets/motion/motion.js"></script>
+<script type="module" src="assets/layout/layout.js"></script>
 </body>
 </html>
