@@ -318,9 +318,9 @@ main > section.ground-inverse { background: linear-gradient(180deg, rgb(7 18 25 
 .trust__visual--me b { display: block; font: 700 17px var(--font-display); }
 .trust__visual--me small { color: #9fb9c6; font-size: 13.5px; }
 /* ---------- mini site in services ---------- */
-.mini-site { position: absolute; left: var(--s-5); right: var(--s-5); top: var(--s-5); bottom: -10px; border-radius: 12px 12px 0 0; background: #050d12; border: 1.5px solid rgb(143 227 255 / .5); border-bottom: 0; box-shadow: 0 0 40px -12px rgb(143 227 255 / .45); overflow: hidden; }
+.mini-site { position: absolute; left: 50%; width: min(calc(100% - 2 * var(--s-5)), 440px); transform: translateX(-50%); top: var(--s-5); bottom: -10px; border-radius: 12px 12px 0 0; background: #050d12; border: 1.5px solid rgb(143 227 255 / .5); border-bottom: 0; box-shadow: 0 0 40px -12px rgb(143 227 255 / .45); overflow: hidden; }
 .mini-site .wf-hero { grid-template-columns: 1fr; }
-.mini-site .wf-art { aspect-ratio: 16 / 7; }
+.mini-site .wf-art { aspect-ratio: auto; height: 120px; }
 .mini-site .wf-art svg { width: 22%; }
 /* ---------- offer buttons ---------- */
 .offer { grid-template-columns: 34px minmax(0, 1.1fr) minmax(0, 1.3fr) 150px 120px auto !important; }
