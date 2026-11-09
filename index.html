@@ -117,14 +117,31 @@ main > section#leistungen, main > section#jarvis { height: auto !important; }
 .demo-note { margin-top: var(--s-3); font-size: 13px; color: var(--muted); }
 /* ---------- tech background across the page ---------- */
 body { position: relative; }
-.techbg { position: absolute; left: 0; right: 0; top: 100vh; bottom: 0; z-index: 0; pointer-events: none; opacity: .5;
-  -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 240px, #000 calc(100% - 320px), transparent 100%);
-          mask-image: linear-gradient(to bottom, transparent 0, #000 240px, #000 calc(100% - 320px), transparent 100%); }
+.photobg { position: fixed; inset: 0; z-index: 0; pointer-events: none; background: #05090c; }
+.photobg__img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 70% 50%; opacity: 0; transition: opacity 1.1s var(--ease-out); }
+.photobg__img.is-on { opacity: .55; }
+.photobg::after { content: ""; position: absolute; inset: 0; background: radial-gradient(ellipse 70% 60% at 38% 45%, rgb(5 9 12 / .55), transparent 75%), linear-gradient(180deg, rgb(5 9 12 / .35), rgb(5 9 12 / .1) 40%, rgb(5 9 12 / .45)); }
 main, footer.closing { position: relative; z-index: 1; }
 main > section.section:not(.hero), footer.closing { background: transparent; }
 main > section.ground-inverse { background: linear-gradient(180deg, rgb(7 18 25 / .55), rgb(7 18 25 / .85) 30%, rgb(7 18 25 / .85) 70%, rgb(7 18 25 / .55)); }
 .section-head h2, .t-lead, .ws-list, .faq { text-shadow: 0 1px 18px rgb(5 9 12 / .9); }
-@media (max-width: 639px) { .techbg { opacity: .38; } }
+@media (max-width: 639px) { .photobg__img.is-on { opacity: .48; } .photobg__img[data-bg="brain"] { object-position: 82% 50%; } }
+@media (prefers-reduced-motion: reduce) { .photobg__img { transition: none; } }
+/* hero photo */
+.hero-photo { position: absolute; left: 0; right: 0; bottom: 0; width: 100%; height: auto; min-height: 300px; object-fit: cover; object-position: 72% 50%; display: block;
+  -webkit-mask-image: linear-gradient(180deg, transparent 0, #000 22%, #000 100%); mask-image: linear-gradient(180deg, transparent 0, #000 22%, #000 100%); }
+.hero--space::before { content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none; background: radial-gradient(ellipse 52% 46% at 50% 36%, rgb(5 9 12 / .7), transparent 72%); }
+.js .hero-photo { animation: rise-planet 1.6s var(--ease-out) both; }
+@media (max-width: 639px) { .hero-photo { height: 38svh; min-height: 0; object-position: 86% 50%; -webkit-mask-image: linear-gradient(180deg, transparent 0, #000 42%); mask-image: linear-gradient(180deg, transparent 0, #000 42%); } }
+@media (prefers-reduced-motion: reduce) { .js .hero-photo { animation: none; } }
+/* buero picture */
+.buero-intro { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); gap: var(--s-7); align-items: center; margin-bottom: var(--ly-head-gap, var(--s-8)); }
+.buero-intro > .section-head { margin-bottom: 0 !important; }
+.buero-pic { margin: 0; position: relative; }
+.buero-pic::before { content: ""; position: absolute; inset: 12% 8%; background: radial-gradient(closest-side, rgb(60 110 255 / .28), transparent); filter: blur(30px); z-index: -1; }
+.buero-pic img { display: block; width: 100%; height: auto;
+  -webkit-mask-image: radial-gradient(ellipse 68% 64% at 54% 46%, #000 40%, rgb(0 0 0 / .6) 62%, transparent 82%); mask-image: radial-gradient(ellipse 68% 64% at 54% 46%, #000 40%, rgb(0 0 0 / .6) 62%, transparent 82%); mix-blend-mode: lighten; }
+@media (max-width: 899px) { .buero-intro { grid-template-columns: 1fr; gap: var(--s-4); } .buero-pic { max-width: 560px; margin-inline: auto; } }
 
 /* ---------- lines section: one network line at a time ---------- */
 .line-tabs { display: flex; gap: var(--s-2); flex-wrap: wrap; margin-bottom: var(--s-6); }
@@ -610,7 +627,10 @@ main > section#buero, main > section#ki { height: auto !important; }
 </style>
 </head>
 <body>
-<div class="techbg" aria-hidden="true"></div>
+<div class="photobg" aria-hidden="true">
+  <img class="photobg__img is-on" data-bg="brain" src="assets/img/bg-brain-1100.webp" srcset="assets/img/bg-brain-1100.webp 1100w, assets/img/bg-brain-1920.webp 1920w" sizes="100vw" width="1920" height="1063" alt="" decoding="async">
+  <img class="photobg__img" data-bg="network" src="assets/img/bg-network-1100.webp" srcset="assets/img/bg-network-1100.webp 1100w, assets/img/bg-network-1920.webp 1920w" sizes="100vw" width="1920" height="1052" alt="" loading="lazy" decoding="async">
+</div>
 <!-- type: software (AI service studio with its own software)
      deal: hero collage, nav nav-centre, close close-word, footer footer-columns, rhythm dark-band, buttons solid, mark: client logo
      moments: none; effect: none (the network map is the page's own diagram world) -->
@@ -639,44 +659,9 @@ main > section#buero, main > section#ki { height: auto !important; }
   <section class="hero hero--space" aria-labelledby="hero-h">
     <div class="space" aria-hidden="true">
       <svg class="space__svg" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMax slice">
-        <defs>
-          <radialGradient id="pl-fill" cx="50%" cy="8%" r="75%"><stop offset="0" stop-color="#2b6f8f"/><stop offset=".18" stop-color="#123447"/><stop offset=".55" stop-color="#071820"/><stop offset="1" stop-color="#03080b"/></radialGradient>
-          <radialGradient id="pl-atmo" cx="50%" cy="50%" r="50%"><stop offset=".86" stop-color="#8fe3ff" stop-opacity="0"/><stop offset=".93" stop-color="#8fe3ff" stop-opacity=".55"/><stop offset="1" stop-color="#8fe3ff" stop-opacity="0"/></radialGradient>
-          <linearGradient id="pl-rim" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d9f6ff"/><stop offset=".25" stop-color="#8fe3ff" stop-opacity=".6"/><stop offset=".6" stop-color="#8fe3ff" stop-opacity="0"/></linearGradient>
-          <filter id="sp-glow" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="4" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
-          <filter id="sp-soft" x="-20%" y="-150%" width="140%" height="400%"><feGaussianBlur stdDeviation="30"/></filter>
-          <clipPath id="pl-clip"><circle cx="720" cy="1610" r="960"/></clipPath>
-        </defs>
         <g class="stars" id="stars"></g>
-        <circle cx="720" cy="1610" r="1040" fill="url(#pl-atmo)"/>
-        <ellipse cx="720" cy="670" rx="620" ry="90" fill="#8fe3ff" opacity=".16" filter="url(#sp-soft)"/>
-        <circle cx="720" cy="1610" r="960" fill="url(#pl-fill)"/>
-        <g clip-path="url(#pl-clip)" class="pl-surface">
-          <g fill="none" stroke="#8fe3ff" stroke-opacity=".09" stroke-width="1">
-            <ellipse cx="720" cy="1610" rx="960" ry="900"/><ellipse cx="720" cy="1610" rx="960" ry="820"/><ellipse cx="720" cy="1610" rx="960" ry="720"/>
-            <ellipse cx="720" cy="1610" rx="760" ry="960"/><ellipse cx="720" cy="1610" rx="520" ry="960"/><ellipse cx="720" cy="1610" rx="260" ry="960"/><path d="M720 650 V1610"/>
-          </g>
-          <g filter="url(#sp-glow)" fill="none" stroke-width="5" stroke-linecap="round">
-            <path id="sp-chat" class="sp-ln" pathLength="1" stroke="#8fe3ff" d="M 300 1010C 420 810 560 750 720 756S 1030 800 1160 910"/>
-            <path id="sp-mail" class="sp-ln" pathLength="1" stroke="#ffb15c" d="M 420 1010C 520 870 610 830 760 834S 1000 890 1080 1010"/>
-            <path id="sp-office" class="sp-ln" pathLength="1" stroke="#6fdc9c" d="M 240 1010C 380 870 470 900 600 910S 900 870 1240 1010"/>
-          </g>
-          <g class="sp-st" fill="#03080b" stroke="#f4fafc" stroke-width="3">
-            <circle cx="520" cy="782" r="7"/><circle cx="720" cy="756" r="9"/><circle cx="960" cy="796" r="7"/>
-            <circle cx="600" cy="854" r="6"/><circle cx="900" cy="862" r="7"/>
-            <circle cx="470" cy="906" r="6"/><circle cx="760" cy="902" r="7"/><circle cx="1040" cy="918" r="6"/>
-          </g>
-          <circle r="5" fill="#fff"><animateMotion dur="7s" repeatCount="indefinite"><mpath href="#sp-chat"/></animateMotion></circle>
-          <circle r="5" fill="#fff"><animateMotion dur="8s" begin="1.5s" repeatCount="indefinite"><mpath href="#sp-mail"/></animateMotion></circle>
-          <circle r="5" fill="#fff"><animateMotion dur="9s" begin="3s" repeatCount="indefinite"><mpath href="#sp-office"/></animateMotion></circle>
-        </g>
-        <circle cx="720" cy="1610" r="960" fill="none" stroke="url(#pl-rim)" stroke-width="2.5"/>
-      <g class="sp-tags" font-family="GMono, monospace" font-size="15">
-          <g transform="translate(1020 742)"><rect width="128" height="30" rx="8" fill="#8fe3ff"/><text x="12" y="20" fill="#04121a">C1 Chatbot</text></g>
-          <g transform="translate(860 818)"><rect width="118" height="30" rx="8" fill="#ffb15c"/><text x="12" y="20" fill="#04121a">M2 E-Mail</text></g>
-          <g transform="translate(300 846)"><rect width="96" height="30" rx="8" fill="#6fdc9c"/><text x="12" y="20" fill="#04121a">B3 Büro</text></g>
-        </g>
       </svg>
+      <img class="hero-photo" src="assets/img/hero-ai-1280.webp" srcset="assets/img/hero-ai-1280.webp 1280w, assets/img/hero-ai-2560.webp 2560w" sizes="(max-width: 639px) 300vw, 100vw" width="2560" height="770" alt="" fetchpriority="high" decoding="async">
     </div>
     <div class="wrap hero-space__inner">
       <h1 id="hero-h">KI-Chatbots und <span class="hl">Automatisierungen</span> für Betriebe</h1>
@@ -751,8 +736,11 @@ main > section#buero, main > section#ki { height: auto !important; }
 
   <section class="section" id="buero" aria-labelledby="buero-h">
     <div class="wrap">
+      <div class="buero-intro">
       <div class="section-head" data-reveal>
         <h2 id="buero-h">Was die Büro-Automatisierung heute kann. <span class="muted">Das System bereitet vor, und Sie geben frei.</span></h2>
+      </div>
+      <figure class="buero-pic" data-reveal style="--d:80ms"><img src="assets/img/buero-laptop-1200.webp" srcset="assets/img/buero-laptop-700.webp 700w, assets/img/buero-laptop-1200.webp 1200w" sizes="(max-width: 899px) 92vw, 560px" width="1200" height="952" alt="" loading="lazy" decoding="async"></figure>
       </div>
       <ul class="of-grid" data-reveal>
         <li class="of-item" style="--c:#8fe3ff"><span class="of-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 13l2.5-7h13L21 13v5H3z"/><path d="M3 13h5l1.5 2.5h5L16 13h5"/></svg></span><div><h3>Anfragen-Erfassung</h3><p>Anfragen aus Kontaktformular oder E-Mail werden erkannt, sortiert und in einer Liste gesammelt.</p></div></li><li class="of-item" style="--c:#ffb15c"><span class="of-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg></span><div><h3>E-Mail-Sortierung</h3><p>Mails werden nach Thema und Dringlichkeit geordnet, mit fertigem Antwort-Entwurf.</p></div></li><li class="of-item" style="--c:#6fdc9c"><span class="of-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 3h9l4 4v14H6z"/><path d="M15 3v4h4M9 12h7M9 16h5"/></svg></span><div><h3>Angebots-Entwurf</h3><p>Aus einer Anfrage und Ihrer Preisliste entsteht ein Angebotsentwurf.</p></div></li><li class="of-item" style="--c:#8fe3ff"><span class="of-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 16V11a6 6 0 0 1 12 0v5l1.5 2h-15z"/><path d="M10 20.5h4"/></svg></span><div><h3>Erinnerungen</h3><p>Termin-Erinnerungen an Kunden und Nachfassen bei offenen Angeboten.</p></div></li><li class="of-item" style="--c:#6fdc9c"><span class="of-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 3h12v18l-3-2-3 2-3-2-3 2z"/><path d="M9 8h6M9 12h6"/></svg></span><div><h3>Beleg-Eingang</h3><p>Rechnungen und Belege werden erkannt, sinnvoll benannt und dem richtigen Ordner zugeordnet.</p></div></li><li class="of-item" style="--c:#ffb15c"><span class="of-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8-5.2-2.7-5.2 2.7 1-5.8L3.5 9.7l5.9-.9z"/></svg></span><div><h3>Bewertungs-Anfrage</h3><p>Zufriedene Kunden werden nach dem Auftrag um eine Google-Bewertung gebeten, nur mit Einwilligung.</p></div></li><li class="of-item" style="--c:#ffb15c"><span class="of-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3l9.5 17h-19z"/><path d="M12 10v4.5M12 17.5v.5"/></svg></span><div><h3>Fehler-Alarm</h3><p>Meldet sofort, wenn eine Automatisierung hakt.</p></div></li>
@@ -1102,77 +1090,13 @@ main > section#buero, main > section#ki { height: auto !important; }
   var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 
-  /* tech background: faint line art of networks, workflows and gears, drawn once as two tiles */
+  /* photo background: the brain and the network picture take turns behind the sections */
   (function () {
-    var bg = document.querySelector('.techbg'); if (!bg) return;
-    var C = '#8fe3ff', seed = 11;
-    var r = function () { seed = (seed * 9301 + 49297) % 233280; return seed / 233280; };
-    function mesh(x, y, cols, rows, gap) {
-      var o = '', pts = [];
-      for (var i = 0; i < cols; i++) for (var j = 0; j < rows; j++) pts.push([x + i * gap, y + j * gap * .8 + (i % 2) * gap * .4]);
-      pts.forEach(function (p, a) { pts.forEach(function (q, b) { if (b > a && Math.abs(p[0] - q[0]) <= gap + 1 && r() < .55) o += '<line x1="' + p[0] + '" y1="' + p[1] + '" x2="' + q[0] + '" y2="' + q[1] + '"/>'; }); });
-      pts.forEach(function (p) { o += '<circle cx="' + p[0] + '" cy="' + p[1] + '" r="5" fill="#05090c"/>'; });
-      return o;
-    }
-    function gear(cx, cy, R, n) {
-      var d = '', t = Math.PI * 2 / n;
-      for (var i = 0; i < n; i++) {
-        var a = i * t, pts = [[R, a], [R + R * .22, a + t * .2], [R + R * .22, a + t * .45], [R, a + t * .65]];
-        pts.forEach(function (p, k) { d += (i === 0 && k === 0 ? 'M' : 'L') + (cx + p[0] * Math.cos(p[1])).toFixed(1) + ' ' + (cy + p[0] * Math.sin(p[1])).toFixed(1); });
-      }
-      return '<path d="' + d + 'Z"/><circle cx="' + cx + '" cy="' + cy + '" r="' + (R * .38).toFixed(1) + '"/>';
-    }
-    function chain(x, y, n, icons) {
-      var o = '';
-      for (var i = 0; i < n; i++) {
-        var bx = x + i * 92;
-        o += '<rect x="' + bx + '" y="' + y + '" width="56" height="56" rx="12"/>' + icons[i % icons.length](bx + 28, y + 28);
-        if (i < n - 1) o += '<path d="M' + (bx + 62) + ' ' + (y + 28) + 'H' + (bx + 86) + 'M' + (bx + 80) + ' ' + (y + 22) + 'l6 6-6 6"/>';
-      }
-      return o;
-    }
-    var IC = [
-      function (x, y) { return '<ellipse cx="' + x + '" cy="' + (y - 9) + '" rx="12" ry="5"/><path d="M' + (x - 12) + ' ' + (y - 9) + 'v18c0 3 24 3 24 0v-18M' + (x - 12) + ' ' + y + 'c0 3 24 3 24 0"/>'; },
-      function (x, y) { return gear(x, y, 9, 8); },
-      function (x, y) { return '<rect x="' + (x - 13) + '" y="' + (y - 9) + '" width="26" height="18" rx="2"/><path d="M' + (x - 13) + ' ' + (y - 8) + 'l13 9 13-9"/>'; },
-      function (x, y) { return '<path d="M' + (x - 10) + ' ' + y + 'l7 7 13-14"/>'; },
-      function (x, y) { return '<path d="M' + (x - 8) + ' ' + (y - 11) + 'l18 11-18 11z"/>'; }
-    ];
-    function globe(cx, cy, R) {
-      var o = '<circle cx="' + cx + '" cy="' + cy + '" r="' + R + '"/><circle cx="' + cx + '" cy="' + cy + '" r="' + (R + 26) + '" stroke-dasharray="2 10"/>' +
-        '<ellipse cx="' + cx + '" cy="' + cy + '" rx="' + R + '" ry="' + (R * .35) + '"/><ellipse cx="' + cx + '" cy="' + cy + '" rx="' + (R * .35) + '" ry="' + R + '"/>';
-      var p = [];
-      for (var i = 0; i < 26; i++) { var a = r() * 6.283, d = Math.sqrt(r()) * R * .9; p.push([cx + d * Math.cos(a), cy + d * Math.sin(a)]); }
-      p.forEach(function (a, i) { var b = p[(i + 1 + Math.floor(r() * 4)) % p.length]; o += '<line x1="' + a[0].toFixed(0) + '" y1="' + a[1].toFixed(0) + '" x2="' + b[0].toFixed(0) + '" y2="' + b[1].toFixed(0) + '"/>'; });
-      p.forEach(function (a) { o += '<circle cx="' + a[0].toFixed(0) + '" cy="' + a[1].toFixed(0) + '" r="2.5" fill="' + C + '"/>'; });
-      return o;
-    }
-    function label(x, y, t) { return '<text x="' + x + '" y="' + y + '" fill="' + C + '" stroke="none" font-family="Work, sans-serif" font-size="13" letter-spacing="1.5">' + t + '</text>'; }
-    function circuit(x, y, w) {
-      var o = '';
-      for (var i = 0; i < 5; i++) { var yy = y + i * 18, len = w * (.4 + r() * .6); o += '<path d="M' + x + ' ' + yy + 'h' + (len * .6).toFixed(0) + 'l12 12h' + (len * .4).toFixed(0) + '"/><circle cx="' + (x + len + 12).toFixed(0) + '" cy="' + (yy + 12) + '" r="3"/>'; }
-      return o;
-    }
-    function tile(W, H, parts) {
-      return 'url("data:image/svg+xml;utf8,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="' + W + '" height="' + H + '" viewBox="0 0 ' + W + ' ' + H + '"><g fill="none" stroke="' + C + '" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" opacity=".55">' + parts + '</g></svg>') + '")';
-    }
-    var t1 = tile(1440, 1500,
-      label(1010, 70, 'KI-MODELLE') + mesh(1010, 100, 6, 4, 46) +
-      label(60, 300, 'AUTOMATISIERTE ABLÄUFE') + chain(60, 320, 5, IC) +
-      globe(250, 760, 150) + label(150, 960, 'LERNEN · VERSTEHEN · ANTWORTEN') +
-      '<g>' + gear(1180, 640, 54, 12) + gear(1262, 708, 34, 9) + gear(1110, 730, 26, 8) + '</g>' + label(1060, 820, 'PROZESSAUTOMATISIERUNG') +
-      label(820, 1150, 'DATENFLUSS') + chain(820, 1170, 5, [IC[0], IC[2], IC[1], IC[3], IC[0]]) +
-      circuit(40, 1300, 260) + circuit(1180, 300, 200));
-    var t2 = tile(1440, 1500,
-      label(80, 140, 'WORKFLOWS') + chain(80, 160, 4, [IC[2], IC[1], IC[3], IC[4]]) +
-      mesh(980, 420, 7, 5, 44) + label(980, 400, 'NEURONALES NETZ') +
-      globe(1190, 1080, 120) +
-      '<g>' + gear(300, 1080, 46, 11) + gear(370, 1140, 28, 8) + '</g>' +
-      circuit(520, 760, 300));
-    bg.style.backgroundImage = t1 + ',' + t2;
-    bg.style.backgroundSize = '1440px 1500px, 1440px 1500px';
-    bg.style.backgroundPosition = 'center 0, center 1500px';
-    bg.style.backgroundRepeat = 'repeat-y, repeat-y';
+    var imgs = document.querySelectorAll('.photobg__img'); if (!imgs.length || !('IntersectionObserver' in window)) return;
+    var map = { problem: 'brain', leistungen: 'brain', buero: 'network', ki: 'network', ablaeufe: 'network', websites: 'brain', branchen: 'brain', zusammenarbeit: 'brain', vertrauen: 'network', jarvis: 'network', preise: 'network', fragen: 'brain', contact: 'brain' };
+    function show(k) { imgs.forEach(function (im) { im.classList.toggle('is-on', im.getAttribute('data-bg') === k); }); }
+    var io = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) show(map[e.target.id]); }); }, { rootMargin: '-45% 0px -45% 0px' });
+    Object.keys(map).forEach(function (id) { var el = document.getElementById(id); if (el) io.observe(el); });
   })();
 
   /* stars */
