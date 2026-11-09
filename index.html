@@ -117,15 +117,14 @@ main > section#leistungen, main > section#jarvis { height: auto !important; }
 .demo-note { margin-top: var(--s-3); font-size: 13px; color: var(--muted); }
 /* ---------- tech background across the page ---------- */
 body { position: relative; }
-.photobg { position: fixed; inset: 0; z-index: 0; pointer-events: none; background: #05090c; }
-.photobg__img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 70% 50%; opacity: 0; transition: opacity 1.1s var(--ease-out); }
-.photobg__img.is-on { opacity: .55; }
-.photobg::after { content: ""; position: absolute; inset: 0; background: radial-gradient(ellipse 70% 60% at 38% 45%, rgb(5 9 12 / .55), transparent 75%), linear-gradient(180deg, rgb(5 9 12 / .35), rgb(5 9 12 / .1) 40%, rgb(5 9 12 / .45)); }
+.photobg { position: fixed; inset: 0; z-index: 0; pointer-events: none; background: #05090c; will-change: transform; transform: translateZ(0); contain: strict; }
+.photobg__img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 70% 50%; opacity: 0; transition: opacity .9s var(--ease-out); will-change: opacity; }
+.photobg__img.is-on { opacity: 1; }
 main, footer.closing { position: relative; z-index: 1; }
 main > section.section:not(.hero), footer.closing { background: transparent; }
 main > section.ground-inverse { background: linear-gradient(180deg, rgb(7 18 25 / .55), rgb(7 18 25 / .85) 30%, rgb(7 18 25 / .85) 70%, rgb(7 18 25 / .55)); }
 .section-head h2, .t-lead, .ws-list, .faq { text-shadow: 0 1px 18px rgb(5 9 12 / .9); }
-@media (max-width: 639px) { .photobg__img.is-on { opacity: .48; } .photobg__img[data-bg="brain"] { object-position: 82% 50%; } }
+@media (max-width: 639px) { .photobg__img[data-bg="brain"] { object-position: 82% 50%; } }
 @media (prefers-reduced-motion: reduce) { .photobg__img { transition: none; } }
 /* hero photo */
 .hero-photo { position: absolute; left: 0; right: 0; bottom: 0; width: 100%; height: auto; min-height: 300px; object-fit: cover; object-position: 72% 50%; display: block;
@@ -627,7 +626,7 @@ main > section#buero, main > section#ki { height: auto !important; }
 
 /* ---------- glass skin: every box in the light-blue translucent look of the hero ---------- */
 :root {
-  --glass: linear-gradient(155deg, rgb(160 205 255 / .12), rgb(80 130 240 / .05) 38%, rgb(6 14 36 / .62));
+  --glass: linear-gradient(155deg, rgb(160 205 255 / .12), rgb(40 80 180 / .14) 38%, rgb(6 14 36 / .78));
   --glass-in: linear-gradient(155deg, rgb(160 205 255 / .09), rgb(10 22 50 / .38));
   --glass-line: rgb(150 205 255 / .34);
   --glass-line-in: rgb(150 205 255 / .24);
@@ -636,7 +635,7 @@ main > section#buero, main > section#ki { height: auto !important; }
 }
 .board, #leistungen .panel, .of-item, .of-rule, .of-x, .offer--feature, .cockpit, .ask, .consent {
   background: var(--glass) !important; border: 1px solid var(--glass-line) !important; box-shadow: var(--glass-shadow) !important;
-  -webkit-backdrop-filter: blur(14px) saturate(140%); backdrop-filter: blur(14px) saturate(140%); }
+  }
 .offer--feature { border-bottom-color: var(--glass-line) !important; }
 .prob__row, .prob__fix, .trust__visual--me, .inbox__row, .ck-card, .ck-mail, .ck-ev div, .ck-steps, .wf-cards span {
   background: var(--glass-in) !important; border: 1px solid var(--glass-line-in) !important; box-shadow: var(--glass-shadow-in) !important; }
@@ -646,6 +645,9 @@ main > section#buero, main > section#ki { height: auto !important; }
 .chips button:not([aria-pressed="true"]), .line-tabs button:not([aria-selected="true"]), .ws-dots button:not([aria-pressed="true"]), .map-key button {
   background: var(--glass-in) !important; border-color: var(--glass-line-in) !important; box-shadow: inset 0 1px 0 rgb(215 240 255 / .16); }
 .btn--secondary { background: linear-gradient(155deg, rgb(160 205 255 / .12), rgb(10 22 50 / .3)); border-color: rgb(150 205 255 / .4); box-shadow: inset 0 1px 0 rgb(215 240 255 / .22); }
+
+/* performance: animations rest while their section is off screen */
+.anim-off *, .anim-off *::before, .anim-off *::after { animation-play-state: paused !important; }
 </style>
 </head>
 <body>
@@ -683,7 +685,7 @@ main > section#buero, main > section#ki { height: auto !important; }
       <svg class="space__svg" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMax slice">
         <g class="stars" id="stars"></g>
       </svg>
-      <img class="hero-photo" src="assets/img/hero-ai-1280.webp" srcset="assets/img/hero-ai-1280.webp 1280w, assets/img/hero-ai-2560.webp 2560w" sizes="(max-width: 639px) 300vw, 100vw" width="2560" height="770" alt="" fetchpriority="high" decoding="async">
+      <img class="hero-photo" src="assets/img/hero-ai-1600.webp" srcset="assets/img/hero-ai-1600.webp 1600w, assets/img/hero-ai-3200.webp 3200w" sizes="(max-width: 639px) 300vw, 100vw" width="3200" height="966" alt="" fetchpriority="high" decoding="async">
     </div>
     <div class="wrap hero-space__inner">
       <h1 id="hero-h">KI-Chatbots und <span class="hl">Automatisierungen</span> für Betriebe</h1>
@@ -1111,6 +1113,19 @@ main > section#buero, main > section#ki { height: auto !important; }
 (function () {
   var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+
+  /* performance: pause CSS and SVG animations of sections that are off screen */
+  (function () {
+    if (!('IntersectionObserver' in window)) return;
+    var io = new IntersectionObserver(function (es) {
+      es.forEach(function (e) {
+        var off = !e.isIntersecting;
+        e.target.classList.toggle('anim-off', off);
+        e.target.querySelectorAll('svg').forEach(function (sv) { if (sv.pauseAnimations) { if (off) sv.pauseAnimations(); else sv.unpauseAnimations(); } });
+      });
+    }, { rootMargin: '200px 0px' });
+    document.querySelectorAll('main > section, footer.closing').forEach(function (el) { io.observe(el); });
+  })();
 
   /* photo background: the brain and the network picture take turns behind the sections */
   (function () {
