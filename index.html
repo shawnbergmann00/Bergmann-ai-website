@@ -32,7 +32,7 @@
   --ly-scale: 0.96;
   /* the network: the dark board and its three lines */
   --board: #0a161d; --board-2: #10232d; --board-line: #1f3d4c; --board-ink: #e6f2f7; --board-muted: #9fb9c6;
-  --l-chat: #8fe3ff; --l-mail: #ffb15c; --l-office: #6fdc9c;
+  --l-chat: #8fe3ff; --l-mail: #6ea8ff; --l-office: #b9c9ff;
   --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
 }
 ::selection { background: #8fe3ff; color: #04121a; }
@@ -67,7 +67,7 @@ h1, h2, h3 { text-wrap: balance; }
 .chat-card { position: absolute; right: var(--s-6); bottom: var(--s-6); width: 320px; z-index: 2; background: #f7fbfd; color: #0d2230; border-radius: 16px; overflow: hidden; box-shadow: 0 24px 48px -16px rgb(4 14 20 / .55), 0 2px 6px rgb(4 14 20 / .18); font-size: 14px; }
 .chat-card__h { display: flex; align-items: center; gap: 10px; padding: 12px 14px; background: #fff; border-bottom: 1px solid #dfe9ef; font-weight: 700; }
 .chat-card__h .av { width: 26px; height: 26px; border-radius: 50%; background: radial-gradient(circle at 35% 35%, #bdeeff, #1675ad); flex: none; }
-.chat-card__h small { margin-left: auto; font-weight: 400; font-size: 13px; color: #1d7a4a; }
+.chat-card__h small { margin-left: auto; font-weight: 400; font-size: 13px; color: #3f6fd8; }
 .chat-card__b { padding: 14px; display: grid; gap: 9px; }
 .msg { max-width: 86%; padding: 9px 12px; border-radius: 14px; line-height: 1.42; }
 .msg--me { justify-self: end; background: #0d2230; color: #fff; border-bottom-right-radius: 4px; }
@@ -117,14 +117,31 @@ main > section#leistungen, main > section#jarvis { height: auto !important; }
 .demo-note { margin-top: var(--s-3); font-size: 13px; color: var(--muted); }
 /* ---------- tech background across the page ---------- */
 body { position: relative; }
-.techbg { position: absolute; left: 0; right: 0; top: 100vh; bottom: 0; z-index: 0; pointer-events: none; opacity: .5;
-  -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 240px, #000 calc(100% - 320px), transparent 100%);
-          mask-image: linear-gradient(to bottom, transparent 0, #000 240px, #000 calc(100% - 320px), transparent 100%); }
+.photobg { position: fixed; inset: 0; z-index: 0; pointer-events: none; background: #05090c; }
+.photobg__img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 70% 50%; opacity: 0; transition: opacity 1.1s var(--ease-out); }
+.photobg__img.is-on { opacity: .55; }
+.photobg::after { content: ""; position: absolute; inset: 0; background: radial-gradient(ellipse 70% 60% at 38% 45%, rgb(5 9 12 / .55), transparent 75%), linear-gradient(180deg, rgb(5 9 12 / .35), rgb(5 9 12 / .1) 40%, rgb(5 9 12 / .45)); }
 main, footer.closing { position: relative; z-index: 1; }
 main > section.section:not(.hero), footer.closing { background: transparent; }
 main > section.ground-inverse { background: linear-gradient(180deg, rgb(7 18 25 / .55), rgb(7 18 25 / .85) 30%, rgb(7 18 25 / .85) 70%, rgb(7 18 25 / .55)); }
 .section-head h2, .t-lead, .ws-list, .faq { text-shadow: 0 1px 18px rgb(5 9 12 / .9); }
-@media (max-width: 639px) { .techbg { opacity: .38; } }
+@media (max-width: 639px) { .photobg__img.is-on { opacity: .48; } .photobg__img[data-bg="brain"] { object-position: 82% 50%; } }
+@media (prefers-reduced-motion: reduce) { .photobg__img { transition: none; } }
+/* hero photo */
+.hero-photo { position: absolute; left: 0; right: 0; bottom: 0; width: 100%; height: auto; min-height: 300px; object-fit: cover; object-position: 72% 50%; display: block;
+  -webkit-mask-image: linear-gradient(180deg, transparent 0, #000 22%, #000 100%); mask-image: linear-gradient(180deg, transparent 0, #000 22%, #000 100%); }
+.hero--space::before { content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none; background: radial-gradient(ellipse 52% 46% at 50% 36%, rgb(5 9 12 / .7), transparent 72%); }
+.js .hero-photo { animation: rise-planet 1.6s var(--ease-out) both; }
+@media (max-width: 639px) { .hero-photo { height: 38svh; min-height: 0; object-position: 86% 50%; -webkit-mask-image: linear-gradient(180deg, transparent 0, #000 42%); mask-image: linear-gradient(180deg, transparent 0, #000 42%); } }
+@media (prefers-reduced-motion: reduce) { .js .hero-photo { animation: none; } }
+/* buero picture */
+.buero-intro { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); gap: var(--s-7); align-items: center; margin-bottom: var(--ly-head-gap, var(--s-8)); }
+.buero-intro > .section-head { margin-bottom: 0 !important; }
+.buero-pic { margin: 0; position: relative; }
+.buero-pic::before { content: ""; position: absolute; inset: 12% 8%; background: radial-gradient(closest-side, rgb(60 110 255 / .28), transparent); filter: blur(30px); z-index: -1; }
+.buero-pic img { display: block; width: 100%; height: auto;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 4%, #000 90%, transparent), linear-gradient(180deg, transparent, #000 10%, #000 78%, transparent); -webkit-mask-composite: source-in; mask-image: linear-gradient(90deg, transparent, #000 4%, #000 90%, transparent), linear-gradient(180deg, transparent, #000 10%, #000 78%, transparent); mask-composite: intersect; }
+@media (max-width: 899px) { .buero-intro { grid-template-columns: 1fr; gap: var(--s-4); } .buero-pic { max-width: 560px; margin-inline: auto; } }
 
 /* ---------- lines section: one network line at a time ---------- */
 .line-tabs { display: flex; gap: var(--s-2); flex-wrap: wrap; margin-bottom: var(--s-6); }
@@ -176,18 +193,18 @@ main > section.ground-inverse { background: linear-gradient(180deg, rgb(7 18 25 
 .flow--big .flow-tall { display: none; }
 .flow .hd { font: 500 11px var(--font-mono); letter-spacing: .12em; fill: var(--board-muted); }
 .flow .nt--big { font: 700 17px var(--font-display); fill: #fff; }
-.flow .node--out { stroke: rgb(111 220 156 / .45); }
-.flow .hub { fill: #0c1c25; stroke: #ffb15c; stroke-width: 1.5; filter: drop-shadow(0 0 14px rgb(255 177 92 / .25)); }
-.flow .ok { fill: rgb(111 220 156 / .1); stroke: #6fdc9c; stroke-width: 1.5; filter: drop-shadow(0 0 14px rgb(111 220 156 / .3)); }
-.flow .warn { fill: rgb(255 177 92 / .06); stroke: #ffb15c; stroke-width: 1.3; stroke-dasharray: 5 4; }
-.flow .num { fill: #ffb15c; }
+.flow .node--out { stroke: rgb(185 201 255 / .45); }
+.flow .hub { fill: #0c1c25; stroke: #6ea8ff; stroke-width: 1.5; filter: drop-shadow(0 0 14px rgb(110 168 255 / .25)); }
+.flow .ok { fill: rgb(185 201 255 / .1); stroke: #b9c9ff; stroke-width: 1.5; filter: drop-shadow(0 0 14px rgb(185 201 255 / .3)); }
+.flow .warn { fill: rgb(110 168 255 / .06); stroke: #6ea8ff; stroke-width: 1.3; stroke-dasharray: 5 4; }
+.flow .num { fill: #6ea8ff; }
 .flow .numt { font: 700 12px var(--font-text); fill: #04121a; text-anchor: middle; }
-.flow .step-line { stroke: rgb(255 177 92 / .4); stroke-width: 1.5; }
+.flow .step-line { stroke: rgb(110 168 255 / .4); stroke-width: 1.5; }
 .flow .wire--in { stroke: rgb(143 227 255 / .5); stroke-width: 2; }
-.flow .wire--out { stroke: #ffb15c; stroke-width: 2; opacity: .75; }
-.flow .wire--ok { stroke: #6fdc9c; stroke-width: 1.6; opacity: .55; }
-.flow .wire--warn { stroke: #ffb15c; stroke-width: 1.5; stroke-dasharray: 4 4; opacity: .6; }
-.flow .pulse--ok { fill: #6fdc9c; }
+.flow .wire--out { stroke: #6ea8ff; stroke-width: 2; opacity: .75; }
+.flow .wire--ok { stroke: #b9c9ff; stroke-width: 1.6; opacity: .55; }
+.flow .wire--warn { stroke: #6ea8ff; stroke-width: 1.5; stroke-dasharray: 4 4; opacity: .6; }
+.flow .pulse--ok { fill: #b9c9ff; }
 @media (max-width: 899px) {
   .flow--big .flow-wide { display: none; }
   .flow--big .flow-tall { display: block; max-width: 460px; margin: 0 auto; }
@@ -212,7 +229,7 @@ main > section.ground-inverse { background: linear-gradient(180deg, rgb(7 18 25 
 .inbox { position: absolute; inset: var(--s-6); display: grid; align-content: center; gap: 10px; }
 .inbox__row { display: grid; grid-template-columns: 92px minmax(0,1fr) auto; gap: 12px; align-items: center; padding: 12px 14px; border-radius: 12px; background: var(--board-2); border: 1px solid var(--board-line); font-size: 14px; color: var(--board-ink); }
 .inbox__row b { font-weight: 500; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.inbox__row em { font-style: normal; font-size: 13px; color: #6fdc9c; }
+.inbox__row em { font-style: normal; font-size: 13px; color: #b9c9ff; }
 .inbox__tag { justify-self: start; padding: 3px 10px; border-radius: 99px; font-size: 12.5px; color: #04121a; background: var(--c); }
 @media (max-width: 639px) { .inbox__row { grid-template-columns: 80px minmax(0,1fr); } .inbox__row em { display: none; } }
 /* ---------- industries ---------- */
@@ -249,7 +266,7 @@ main > section.ground-inverse { background: linear-gradient(180deg, rgb(7 18 25 
 .ask__f :focus-visible { outline: 2px solid #8fe3ff; outline-offset: 1px; border-color: #8fe3ff; }
 .ask__f [aria-invalid="true"] { border-color: #ff8a7a; }
 .ask__hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
-.ask__err { color: #ffb0a5; font-size: 14px; }
+.ask__err { color: #cfe0ff; font-size: 14px; }
 .ask__row { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 16px; margin-top: 4px; }
 .ask__send[disabled] { opacity: .6; cursor: progress; }
 .ask__note { font-size: 13px; color: #8eaab8; flex: 1 1 200px; }
@@ -260,7 +277,7 @@ main > section.ground-inverse { background: linear-gradient(180deg, rgb(7 18 25 
 .ask__done[hidden] { display: none; }
 .ask__done p { color: #b5ccd7; }
 .ask__done h2 { display: flex; align-items: flex-start; gap: 10px; }
-.ask__check { flex: none; width: 28px; height: 28px; margin-top: 2px; fill: none; stroke: #6fdc9c; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
+.ask__check { flex: none; width: 28px; height: 28px; margin-top: 2px; fill: none; stroke: #b9c9ff; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
 @media (max-width: 539px) { .ask__form { padding: 22px 18px; } .ask__two { grid-template-columns: 1fr; } .ask h2 { font-size: 22px; } }
 @media (prefers-reduced-motion: reduce) { .ask[open] { animation: none; } }
 /* ---------- JARVIS cockpit ---------- */
@@ -273,8 +290,8 @@ main > section.ground-inverse { background: linear-gradient(180deg, rgb(7 18 25 
 .ck-search { flex: 1; max-width: 360px; margin-left: 12px; height: 32px; display: flex; align-items: center; gap: 8px; padding: 0 10px; border-radius: 8px; border: 1px solid var(--ck-line); background: #0a1b23; color: #6f8d9b; }
 .ck-search svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 2; }
 .ck-search kbd { margin-left: auto; font: 400 11px var(--font-mono); padding: 2px 6px; border-radius: 5px; border: 1px solid var(--ck-line); color: var(--ck-mut); }
-.ck-live { margin-left: auto; white-space: nowrap; display: flex; align-items: center; gap: 7px; padding: 5px 10px; border-radius: 99px; background: rgb(111 220 156 / .1); border: 1px solid rgb(111 220 156 / .35); color: #9be8bb; font-size: 12.5px; }
-.ck-live i { width: 7px; height: 7px; border-radius: 50%; background: #6fdc9c; }
+.ck-live { margin-left: auto; white-space: nowrap; display: flex; align-items: center; gap: 7px; padding: 5px 10px; border-radius: 99px; background: rgb(185 201 255 / .1); border: 1px solid rgb(185 201 255 / .35); color: #cfe0ff; font-size: 12.5px; }
+.ck-live i { width: 7px; height: 7px; border-radius: 50%; background: #b9c9ff; }
 .ck-date { font: 400 12px var(--font-mono); color: var(--ck-mut); }
 .ck-av { width: 28px; height: 28px; border-radius: 50%; display: grid; place-items: center; background: #163847; border: 1px solid #2f5668; font: 700 11px var(--font-text); color: #cfeaf5; }
 .cockpit__body { display: grid; grid-template-columns: 196px minmax(0, 1fr) 300px; min-height: 0; }
@@ -283,17 +300,17 @@ main > section.ground-inverse { background: linear-gradient(180deg, rgb(7 18 25 
 .ck-side svg { width: 15px; height: 15px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; flex: none; }
 .ck-side .on { background: linear-gradient(90deg, rgb(143 227 255 / .16), rgb(143 227 255 / .04)); color: #fff; box-shadow: inset 2px 0 0 #8fe3ff; }
 .ck-side b { margin-left: auto; min-width: 20px; padding: 1px 6px; border-radius: 99px; text-align: center; font: 500 11px var(--font-mono); color: #04121a; background: #8fe3ff; }
-.ck-side b.w { background: #ffb15c; }
+.ck-side b.w { background: #6ea8ff; }
 .ck-side .ck-lbl { margin-top: 14px; padding: 6px 10px; font: 500 10.5px var(--font-mono); letter-spacing: .12em; color: #5f7d8b; }
 .ck-side .sub { font-size: 12.5px; padding: 6px 10px; }
-.ck-side .sub i { width: 7px; height: 7px; border-radius: 50%; background: #6fdc9c; flex: none; }
+.ck-side .sub i { width: 7px; height: 7px; border-radius: 50%; background: #b9c9ff; flex: none; }
 .ck-main { padding: 18px 20px; display: grid; gap: 14px; align-content: start; min-width: 0; }
 .ck-kpis { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
 .ck-kpi { padding: 12px 14px; border-radius: 12px; background: var(--ck-tile); border: 1px solid var(--ck-line); display: grid; gap: 2px; }
 .ck-kpi small { font-size: 12px; color: var(--ck-mut); }
 .ck-kpi b { font: 700 26px/1.1 var(--font-display); letter-spacing: -0.02em; color: #fff; }
-.ck-kpi em { font: 400 11.5px var(--font-mono); font-style: normal; color: #6fdc9c; }
-.ck-kpi em.w { color: #ffb15c; } .ck-kpi em.n { color: var(--ck-mut); }
+.ck-kpi em { font: 400 11.5px var(--font-mono); font-style: normal; color: #b9c9ff; }
+.ck-kpi em.w { color: #6ea8ff; } .ck-kpi em.n { color: var(--ck-mut); }
 .ck-grid { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr); gap: 14px; }
 .ck-box { border-radius: 12px; background: var(--ck-tile); border: 1px solid var(--ck-line); padding: 14px; display: grid; gap: 10px; align-content: start; min-width: 0; }
 .ck-h { display: flex; align-items: center; justify-content: space-between; font: 500 10.5px var(--font-mono); letter-spacing: .12em; text-transform: uppercase; color: #6f8d9b; }
@@ -303,7 +320,7 @@ main > section.ground-inverse { background: linear-gradient(180deg, rgb(7 18 25 
 .ck-msg--j { background: #15323f; color: var(--ck-ink); border-bottom-left-radius: 4px; }
 .ck-msg--j ul { margin: 6px 0 0; padding-left: 16px; color: #c3d8e2; }
 .ck-steps { display: grid; gap: 4px; padding: 8px 10px; border-radius: 10px; border: 1px dashed #24485a; font: 400 11.5px var(--font-mono); color: var(--ck-mut); }
-.ck-steps span::before { content: "✓ "; color: #6fdc9c; }
+.ck-steps span::before { content: "✓ "; color: #b9c9ff; }
 .ck-type { display: inline-flex; gap: 4px; padding: 10px 13px; border-radius: 12px; background: #15323f; justify-self: start; }
 .ck-type i { width: 6px; height: 6px; border-radius: 50%; background: #8fe3ff; animation: cktype 1.2s ease-in-out infinite; }
 .ck-type i:nth-child(2) { animation-delay: .15s; } .ck-type i:nth-child(3) { animation-delay: .3s; }
@@ -317,15 +334,15 @@ main > section.ground-inverse { background: linear-gradient(180deg, rgb(7 18 25 
 .ck-ev div { position: relative; padding: 7px 10px 7px 24px; border-radius: 8px; border: 1px solid var(--ck-line); background: rgb(143 227 255 / .04); }
 .ck-ev div::before { content: ""; position: absolute; left: 10px; top: 13px; width: 7px; height: 7px; border-radius: 50%; background: var(--c, #8fe3ff); }
 .ck-ev small { display: block; color: var(--ck-mut); font-size: 11.5px; }
-.ck-now { position: relative; height: 1px; margin: 2px 0 2px 44px; background: #ff7a7a; }
-.ck-now::before { content: ""; position: absolute; left: -4px; top: -3px; width: 7px; height: 7px; border-radius: 50%; background: #ff7a7a; }
+.ck-now { position: relative; height: 1px; margin: 2px 0 2px 44px; background: #8fe3ff; }
+.ck-now::before { content: ""; position: absolute; left: -4px; top: -3px; width: 7px; height: 7px; border-radius: 50%; background: #8fe3ff; }
 .ck-todo { display: grid; gap: 7px; font-size: 13px; color: #c3d8e2; }
 .ck-todo span { display: flex; align-items: center; gap: 9px; }
 .ck-todo span::before { content: ""; width: 13px; height: 13px; border-radius: 4px; border: 1.5px solid #3b6476; flex: none; }
 .ck-todo .done { color: #6f8d9b; text-decoration: line-through; }
-.ck-todo .done::before { background: #6fdc9c; border-color: #6fdc9c; }
+.ck-todo .done::before { background: #b9c9ff; border-color: #b9c9ff; }
 .ck-right { border-left: 1px solid var(--ck-line); padding: 18px 16px; display: grid; align-content: start; gap: 12px; background: rgb(6 18 24 / .4); }
-.ck-card { background: #12303d; border: 1px solid rgb(255 177 92 / .45); border-radius: 12px; padding: 12px 13px; display: grid; gap: 8px; font-size: 13.5px; box-shadow: 0 0 24px -12px rgb(255 177 92 / .5); }
+.ck-card { background: #12303d; border: 1px solid rgb(110 168 255 / .45); border-radius: 12px; padding: 12px 13px; display: grid; gap: 8px; font-size: 13.5px; box-shadow: 0 0 24px -12px rgb(110 168 255 / .5); }
 .ck-card small { color: #9fb9c6; font-size: 12px; }
 .ck-mail { padding: 9px 10px; border-radius: 8px; background: #0a1b23; border: 1px solid var(--ck-line); font-size: 12px; color: #b5ccd7; line-height: 1.45; }
 .ck-mail b { display: block; color: #fff; font-size: 12px; margin-bottom: 3px; }
@@ -334,11 +351,11 @@ main > section.ground-inverse { background: linear-gradient(180deg, rgb(7 18 25 
 .ck-btns span + span { background: transparent; border: 1px solid #2f5668; color: #c3d8e2; font-weight: 400; }
 .ck-flows { display: grid; gap: 9px; }
 .ck-flow { display: grid; grid-template-columns: 8px 1fr auto; gap: 4px 9px; align-items: center; font-size: 12.5px; color: #c3d8e2; }
-.ck-flow i { width: 8px; height: 8px; border-radius: 50%; background: #6fdc9c; }
-.ck-flow i.wait { background: #ffb15c; } .ck-flow i.plan { background: #3b6476; }
+.ck-flow i { width: 8px; height: 8px; border-radius: 50%; background: #b9c9ff; }
+.ck-flow i.wait { background: #6ea8ff; } .ck-flow i.plan { background: #3b6476; }
 .ck-flow time { font: 400 11px var(--font-mono); color: var(--ck-mut); }
 .ck-flow u { grid-column: 2 / -1; height: 3px; border-radius: 3px; background: #183644; text-decoration: none; overflow: hidden; }
-.ck-flow u::after { content: ""; display: block; height: 100%; width: var(--p, 100%); border-radius: 3px; background: var(--c, #6fdc9c); }
+.ck-flow u::after { content: ""; display: block; height: 100%; width: var(--p, 100%); border-radius: 3px; background: var(--c, #b9c9ff); }
 .ck-log { display: grid; gap: 5px; font: 400 11px/1.4 var(--font-mono); color: #7f9cab; }
 .ck-log span b { color: #8fe3ff; font-weight: 400; margin-right: 6px; }
 .jarvis-points { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--s-6); margin-top: var(--s-7); }
@@ -411,11 +428,11 @@ main > section.ground-inverse { background: linear-gradient(180deg, rgb(7 18 25 
 .prob__row p { color: #b5ccd7; font-size: 15.5px; line-height: 1.55; }
 .prob__row p b { display: block; margin-bottom: 4px; font: 700 17px/1.3 var(--font-display); color: #fff; }
 .prob__row { align-items: start !important; }
-.prob__ic { width: 44px; height: 44px; border-radius: 12px; display: grid; place-items: center; background: rgb(255 177 92 / .12); border: 1px solid rgb(255 177 92 / .4); }
-.prob__ic svg { width: 22px; height: 22px; fill: none; stroke: #ffb15c; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
-.prob__fix { display: grid; grid-template-columns: 44px 1fr; gap: var(--s-4); align-items: center; padding: var(--s-4); margin-top: var(--s-2); border-radius: 14px; background: rgb(111 220 156 / .07); border: 1px solid rgb(111 220 156 / .35); }
+.prob__ic { width: 44px; height: 44px; border-radius: 12px; display: grid; place-items: center; background: rgb(110 168 255 / .12); border: 1px solid rgb(110 168 255 / .4); }
+.prob__ic svg { width: 22px; height: 22px; fill: none; stroke: #6ea8ff; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+.prob__fix { display: grid; grid-template-columns: 44px 1fr; gap: var(--s-4); align-items: center; padding: var(--s-4); margin-top: var(--s-2); border-radius: 14px; background: rgb(185 201 255 / .07); border: 1px solid rgb(185 201 255 / .35); }
 .prob__fix p { color: #e6f2f7; font-size: 16.5px; }
-.prob__line { width: 44px; height: 10px; border-radius: 10px; background: #6fdc9c; }
+.prob__line { width: 44px; height: 10px; border-radius: 10px; background: #b9c9ff; }
 /* ---------- trust ---------- */
 .trust { align-items: stretch; }
 .trust__card { padding: var(--s-7); display: grid; gap: var(--s-4); align-content: start; }
@@ -607,10 +624,35 @@ main > section#buero, main > section#ki { height: auto !important; }
   .trade { padding: var(--s-6); }
   .route { min-height: 0; }
 }
+
+/* ---------- glass skin: every box in the light-blue translucent look of the hero ---------- */
+:root {
+  --glass: linear-gradient(155deg, rgb(160 205 255 / .12), rgb(80 130 240 / .05) 38%, rgb(6 14 36 / .62));
+  --glass-in: linear-gradient(155deg, rgb(160 205 255 / .09), rgb(10 22 50 / .38));
+  --glass-line: rgb(150 205 255 / .34);
+  --glass-line-in: rgb(150 205 255 / .24);
+  --glass-shadow: inset 0 1px 0 rgb(215 240 255 / .3), inset 1px 0 0 rgb(215 240 255 / .07), inset 0 -40px 80px -60px rgb(90 150 255 / .38), 0 0 36px -12px rgb(80 150 255 / .5), 0 40px 80px -40px rgb(0 0 0 / .75);
+  --glass-shadow-in: inset 0 1px 0 rgb(215 240 255 / .18), 0 0 18px -10px rgb(80 150 255 / .45);
+}
+.board, #leistungen .panel, .of-item, .of-rule, .of-x, .offer--feature, .cockpit, .ask, .consent {
+  background: var(--glass) !important; border: 1px solid var(--glass-line) !important; box-shadow: var(--glass-shadow) !important;
+  -webkit-backdrop-filter: blur(14px) saturate(140%); backdrop-filter: blur(14px) saturate(140%); }
+.offer--feature { border-bottom-color: var(--glass-line) !important; }
+.prob__row, .prob__fix, .trust__visual--me, .inbox__row, .ck-card, .ck-mail, .ck-ev div, .ck-steps, .wf-cards span {
+  background: var(--glass-in) !important; border: 1px solid var(--glass-line-in) !important; box-shadow: var(--glass-shadow-in) !important; }
+.of-item::before, .of-x::before { background: linear-gradient(90deg, transparent, rgb(143 227 255 / .9), transparent) !important; opacity: 1 !important; height: 1.5px !important; }
+.prob__ic, .of-ic { background: rgb(143 227 255 / .08) !important; border: 1px solid rgb(150 215 255 / .45) !important; box-shadow: inset 0 1px 0 rgb(215 240 255 / .25), 0 0 16px -4px rgb(143 227 255 / .45); }
+.prob__ic svg, .of-ic svg { stroke: #8fe3ff !important; }
+.chips button:not([aria-pressed="true"]), .line-tabs button:not([aria-selected="true"]), .ws-dots button:not([aria-pressed="true"]), .map-key button {
+  background: var(--glass-in) !important; border-color: var(--glass-line-in) !important; box-shadow: inset 0 1px 0 rgb(215 240 255 / .16); }
+.btn--secondary { background: linear-gradient(155deg, rgb(160 205 255 / .12), rgb(10 22 50 / .3)); border-color: rgb(150 205 255 / .4); box-shadow: inset 0 1px 0 rgb(215 240 255 / .22); }
 </style>
 </head>
 <body>
-<div class="techbg" aria-hidden="true"></div>
+<div class="photobg" aria-hidden="true">
+  <img class="photobg__img is-on" data-bg="brain" src="assets/img/bg-brain-1100.webp" srcset="assets/img/bg-brain-1100.webp 1100w, assets/img/bg-brain-1920.webp 1920w" sizes="100vw" width="1920" height="1063" alt="" decoding="async">
+  <img class="photobg__img" data-bg="network" src="assets/img/bg-network-1100.webp" srcset="assets/img/bg-network-1100.webp 1100w, assets/img/bg-network-1920.webp 1920w" sizes="100vw" width="1920" height="1052" alt="" loading="lazy" decoding="async">
+</div>
 <!-- type: software (AI service studio with its own software)
      deal: hero collage, nav nav-centre, close close-word, footer footer-columns, rhythm dark-band, buttons solid, mark: client logo
      moments: none; effect: none (the network map is the page's own diagram world) -->
@@ -639,44 +681,9 @@ main > section#buero, main > section#ki { height: auto !important; }
   <section class="hero hero--space" aria-labelledby="hero-h">
     <div class="space" aria-hidden="true">
       <svg class="space__svg" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMax slice">
-        <defs>
-          <radialGradient id="pl-fill" cx="50%" cy="8%" r="75%"><stop offset="0" stop-color="#2b6f8f"/><stop offset=".18" stop-color="#123447"/><stop offset=".55" stop-color="#071820"/><stop offset="1" stop-color="#03080b"/></radialGradient>
-          <radialGradient id="pl-atmo" cx="50%" cy="50%" r="50%"><stop offset=".86" stop-color="#8fe3ff" stop-opacity="0"/><stop offset=".93" stop-color="#8fe3ff" stop-opacity=".55"/><stop offset="1" stop-color="#8fe3ff" stop-opacity="0"/></radialGradient>
-          <linearGradient id="pl-rim" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d9f6ff"/><stop offset=".25" stop-color="#8fe3ff" stop-opacity=".6"/><stop offset=".6" stop-color="#8fe3ff" stop-opacity="0"/></linearGradient>
-          <filter id="sp-glow" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="4" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
-          <filter id="sp-soft" x="-20%" y="-150%" width="140%" height="400%"><feGaussianBlur stdDeviation="30"/></filter>
-          <clipPath id="pl-clip"><circle cx="720" cy="1610" r="960"/></clipPath>
-        </defs>
         <g class="stars" id="stars"></g>
-        <circle cx="720" cy="1610" r="1040" fill="url(#pl-atmo)"/>
-        <ellipse cx="720" cy="670" rx="620" ry="90" fill="#8fe3ff" opacity=".16" filter="url(#sp-soft)"/>
-        <circle cx="720" cy="1610" r="960" fill="url(#pl-fill)"/>
-        <g clip-path="url(#pl-clip)" class="pl-surface">
-          <g fill="none" stroke="#8fe3ff" stroke-opacity=".09" stroke-width="1">
-            <ellipse cx="720" cy="1610" rx="960" ry="900"/><ellipse cx="720" cy="1610" rx="960" ry="820"/><ellipse cx="720" cy="1610" rx="960" ry="720"/>
-            <ellipse cx="720" cy="1610" rx="760" ry="960"/><ellipse cx="720" cy="1610" rx="520" ry="960"/><ellipse cx="720" cy="1610" rx="260" ry="960"/><path d="M720 650 V1610"/>
-          </g>
-          <g filter="url(#sp-glow)" fill="none" stroke-width="5" stroke-linecap="round">
-            <path id="sp-chat" class="sp-ln" pathLength="1" stroke="#8fe3ff" d="M 300 1010C 420 810 560 750 720 756S 1030 800 1160 910"/>
-            <path id="sp-mail" class="sp-ln" pathLength="1" stroke="#ffb15c" d="M 420 1010C 520 870 610 830 760 834S 1000 890 1080 1010"/>
-            <path id="sp-office" class="sp-ln" pathLength="1" stroke="#6fdc9c" d="M 240 1010C 380 870 470 900 600 910S 900 870 1240 1010"/>
-          </g>
-          <g class="sp-st" fill="#03080b" stroke="#f4fafc" stroke-width="3">
-            <circle cx="520" cy="782" r="7"/><circle cx="720" cy="756" r="9"/><circle cx="960" cy="796" r="7"/>
-            <circle cx="600" cy="854" r="6"/><circle cx="900" cy="862" r="7"/>
-            <circle cx="470" cy="906" r="6"/><circle cx="760" cy="902" r="7"/><circle cx="1040" cy="918" r="6"/>
-          </g>
-          <circle r="5" fill="#fff"><animateMotion dur="7s" repeatCount="indefinite"><mpath href="#sp-chat"/></animateMotion></circle>
-          <circle r="5" fill="#fff"><animateMotion dur="8s" begin="1.5s" repeatCount="indefinite"><mpath href="#sp-mail"/></animateMotion></circle>
-          <circle r="5" fill="#fff"><animateMotion dur="9s" begin="3s" repeatCount="indefinite"><mpath href="#sp-office"/></animateMotion></circle>
-        </g>
-        <circle cx="720" cy="1610" r="960" fill="none" stroke="url(#pl-rim)" stroke-width="2.5"/>
-      <g class="sp-tags" font-family="GMono, monospace" font-size="15">
-          <g transform="translate(1020 742)"><rect width="128" height="30" rx="8" fill="#8fe3ff"/><text x="12" y="20" fill="#04121a">C1 Chatbot</text></g>
-          <g transform="translate(860 818)"><rect width="118" height="30" rx="8" fill="#ffb15c"/><text x="12" y="20" fill="#04121a">M2 E-Mail</text></g>
-          <g transform="translate(300 846)"><rect width="96" height="30" rx="8" fill="#6fdc9c"/><text x="12" y="20" fill="#04121a">B3 Büro</text></g>
-        </g>
       </svg>
+      <img class="hero-photo" src="assets/img/hero-ai-1280.webp" srcset="assets/img/hero-ai-1280.webp 1280w, assets/img/hero-ai-2560.webp 2560w" sizes="(max-width: 639px) 300vw, 100vw" width="2560" height="770" alt="" fetchpriority="high" decoding="async">
     </div>
     <div class="wrap hero-space__inner">
       <h1 id="hero-h">KI-Chatbots und <span class="hl">Automatisierungen</span> für Betriebe</h1>
@@ -751,11 +758,14 @@ main > section#buero, main > section#ki { height: auto !important; }
 
   <section class="section" id="buero" aria-labelledby="buero-h">
     <div class="wrap">
+      <div class="buero-intro">
       <div class="section-head" data-reveal>
         <h2 id="buero-h">Was die Büro-Automatisierung heute kann. <span class="muted">Das System bereitet vor, und Sie geben frei.</span></h2>
       </div>
+      <figure class="buero-pic" data-reveal style="--d:80ms"><img src="assets/img/buero-laptop-1400.webp" srcset="assets/img/buero-laptop-800.webp 800w, assets/img/buero-laptop-1400.webp 1400w" sizes="(max-width: 899px) 92vw, 600px" width="1400" height="1111" alt="Laptop mit Büro-Assistent: E-Mails werden sortiert, Belege erkannt und abgelegt, Erinnerungen verschickt und Angebote als Entwurf zur Freigabe vorbereitet" loading="lazy" decoding="async"></figure>
+      </div>
       <ul class="of-grid" data-reveal>
-        <li class="of-item" style="--c:#8fe3ff"><span class="of-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 13l2.5-7h13L21 13v5H3z"/><path d="M3 13h5l1.5 2.5h5L16 13h5"/></svg></span><div><h3>Anfragen-Erfassung</h3><p>Anfragen aus Kontaktformular oder E-Mail werden erkannt, sortiert und in einer Liste gesammelt.</p></div></li><li class="of-item" style="--c:#ffb15c"><span class="of-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg></span><div><h3>E-Mail-Sortierung</h3><p>Mails werden nach Thema und Dringlichkeit geordnet, mit fertigem Antwort-Entwurf.</p></div></li><li class="of-item" style="--c:#6fdc9c"><span class="of-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 3h9l4 4v14H6z"/><path d="M15 3v4h4M9 12h7M9 16h5"/></svg></span><div><h3>Angebots-Entwurf</h3><p>Aus einer Anfrage und Ihrer Preisliste entsteht ein Angebotsentwurf.</p></div></li><li class="of-item" style="--c:#8fe3ff"><span class="of-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 16V11a6 6 0 0 1 12 0v5l1.5 2h-15z"/><path d="M10 20.5h4"/></svg></span><div><h3>Erinnerungen</h3><p>Termin-Erinnerungen an Kunden und Nachfassen bei offenen Angeboten.</p></div></li><li class="of-item" style="--c:#6fdc9c"><span class="of-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 3h12v18l-3-2-3 2-3-2-3 2z"/><path d="M9 8h6M9 12h6"/></svg></span><div><h3>Beleg-Eingang</h3><p>Rechnungen und Belege werden erkannt, sinnvoll benannt und dem richtigen Ordner zugeordnet.</p></div></li><li class="of-item" style="--c:#ffb15c"><span class="of-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8-5.2-2.7-5.2 2.7 1-5.8L3.5 9.7l5.9-.9z"/></svg></span><div><h3>Bewertungs-Anfrage</h3><p>Zufriedene Kunden werden nach dem Auftrag um eine Google-Bewertung gebeten, nur mit Einwilligung.</p></div></li><li class="of-item" style="--c:#ffb15c"><span class="of-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3l9.5 17h-19z"/><path d="M12 10v4.5M12 17.5v.5"/></svg></span><div><h3>Fehler-Alarm</h3><p>Meldet sofort, wenn eine Automatisierung hakt.</p></div></li>
+        <li class="of-item" style="--c:#8fe3ff"><span class="of-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 13l2.5-7h13L21 13v5H3z"/><path d="M3 13h5l1.5 2.5h5L16 13h5"/></svg></span><div><h3>Anfragen-Erfassung</h3><p>Anfragen aus Kontaktformular oder E-Mail werden erkannt, sortiert und in einer Liste gesammelt.</p></div></li><li class="of-item" style="--c:#6ea8ff"><span class="of-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg></span><div><h3>E-Mail-Sortierung</h3><p>Mails werden nach Thema und Dringlichkeit geordnet, mit fertigem Antwort-Entwurf.</p></div></li><li class="of-item" style="--c:#b9c9ff"><span class="of-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 3h9l4 4v14H6z"/><path d="M15 3v4h4M9 12h7M9 16h5"/></svg></span><div><h3>Angebots-Entwurf</h3><p>Aus einer Anfrage und Ihrer Preisliste entsteht ein Angebotsentwurf.</p></div></li><li class="of-item" style="--c:#8fe3ff"><span class="of-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 16V11a6 6 0 0 1 12 0v5l1.5 2h-15z"/><path d="M10 20.5h4"/></svg></span><div><h3>Erinnerungen</h3><p>Termin-Erinnerungen an Kunden und Nachfassen bei offenen Angeboten.</p></div></li><li class="of-item" style="--c:#b9c9ff"><span class="of-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 3h12v18l-3-2-3 2-3-2-3 2z"/><path d="M9 8h6M9 12h6"/></svg></span><div><h3>Beleg-Eingang</h3><p>Rechnungen und Belege werden erkannt, sinnvoll benannt und dem richtigen Ordner zugeordnet.</p></div></li><li class="of-item" style="--c:#6ea8ff"><span class="of-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8-5.2-2.7-5.2 2.7 1-5.8L3.5 9.7l5.9-.9z"/></svg></span><div><h3>Bewertungs-Anfrage</h3><p>Zufriedene Kunden werden nach dem Auftrag um eine Google-Bewertung gebeten, nur mit Einwilligung.</p></div></li><li class="of-item" style="--c:#6ea8ff"><span class="of-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3l9.5 17h-19z"/><path d="M12 10v4.5M12 17.5v.5"/></svg></span><div><h3>Fehler-Alarm</h3><p>Meldet sofort, wenn eine Automatisierung hakt.</p></div></li>
       </ul>
       <div class="of-rules" data-reveal style="--d:80ms">
         <div class="of-rule"><span class="of-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M9 3v5M15 3v5M7 8h10v3a5 5 0 0 1-10 0z"/><path d="M12 16v5"/></svg></span><p><b>Passt zu Ihren Programmen.</b> Alles läuft mit Gmail, Google Sheets, Webformularen und vielen anderen Programmen über Schnittstellen.</p></div>
@@ -763,7 +773,7 @@ main > section#buero, main > section#ki { height: auto !important; }
       </div>
       <div class="of-more" data-reveal>
         <div class="of-more__head"><h3>Auf Wunsch erweiterbar</h3><span class="of-more__tag">Zusatzbausteine auf Anfrage</span></div>
-        <ul class="of-xgrid"><li class="of-x" style="--c:#6fdc9c"><span class="of-ic of-ic--sm" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 8l9-5 9 5v8l-9 5-9-5z"/><path d="M3 8l9 5 9-5M12 13v8"/></svg></span><div><h4>Monats-Paket für den Steuerberater</h4><p>Alle Belege des Monats gesammelt, umbenannt, mit Übersichtsliste.</p></div></li><li class="of-x" style="--c:#ffb15c"><span class="of-ic of-ic--sm" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 3h9l4 4v14H6z"/><path d="M15 3v4h4"/><path d="M12 11v4M12 18v.5"/></svg></span><div><h4>Offene Rechnungen im Blick</h4><p>Erinnerung bei unbezahlter Rechnung, mit Entwurf für die Zahlungserinnerung.</p></div></li><li class="of-x" style="--c:#8fe3ff"><span class="of-ic of-ic--sm" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 3h9l4 4v14H6z"/><path d="M15 3v4h4M9 12h7M9 16h4"/></svg></span><div><h4>Rechnungs-Entwurf</h4><p>Nach erledigtem Auftrag direkt in lexoffice oder sevDesk.</p></div></li><li class="of-x" style="--c:#6fdc9c"><span class="of-ic of-ic--sm" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 20V4M4 20h16"/><path d="M8 16v-4M12 16V8M16 16v-6"/></svg></span><div><h4>Wochenbericht jeden Montag</h4><p>Neue Anfragen, Angebote, offene Rechnungen und Termine auf einen Blick.</p></div></li><li class="of-x" style="--c:#8fe3ff"><span class="of-ic of-ic--sm" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4M9 15l2 2 4-4"/></svg></span><div><h4>Online-Terminbuchung</h4><p>Mit automatischer Bestätigung und Erinnerung am Vortag.</p></div></li><li class="of-x" style="--c:#ffb15c"><span class="of-ic of-ic--sm" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"/></svg></span><div><h4>Rückruf-Aufgaben</h4><p>Ein verpasster Anruf oder eine Anfrage wird zur Aufgabe für den richtigen Mitarbeiter.</p></div></li><li class="of-x" style="--c:#6fdc9c"><span class="of-ic of-ic--sm" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0"/><path d="M16 4.5a3.5 3.5 0 0 1 0 7M18 14a6 6 0 0 1 3.5 6"/></svg></span><div><h4>Kundenliste (einfaches CRM)</h4><p>Füllt sich von selbst mit jeder neuen Anfrage.</p></div></li><li class="of-x" style="--c:#ffb15c"><span class="of-ic of-ic--sm" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 4h2l2.5 11h11L21 7H6.5"/><circle cx="9" cy="19.5" r="1.5"/><circle cx="17" cy="19.5" r="1.5"/></svg></span><div><h4>Nachbestell-Erinnerung</h4><p>Erinnert rechtzeitig, wenn Material oder Ware nachbestellt werden muss.</p></div></li><li class="of-x" style="--c:#8fe3ff"><span class="of-ic of-ic--sm" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="2"/><path d="M21 16l-5-5-9 9"/></svg></span><div><h4>Social-Media-Entwürfe</h4><p>Aus Foto und Stichworten wird ein fertiger Post zum Freigeben.</p></div></li></ul>
+        <ul class="of-xgrid"><li class="of-x" style="--c:#b9c9ff"><span class="of-ic of-ic--sm" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 8l9-5 9 5v8l-9 5-9-5z"/><path d="M3 8l9 5 9-5M12 13v8"/></svg></span><div><h4>Monats-Paket für den Steuerberater</h4><p>Alle Belege des Monats gesammelt, umbenannt, mit Übersichtsliste.</p></div></li><li class="of-x" style="--c:#6ea8ff"><span class="of-ic of-ic--sm" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 3h9l4 4v14H6z"/><path d="M15 3v4h4"/><path d="M12 11v4M12 18v.5"/></svg></span><div><h4>Offene Rechnungen im Blick</h4><p>Erinnerung bei unbezahlter Rechnung, mit Entwurf für die Zahlungserinnerung.</p></div></li><li class="of-x" style="--c:#8fe3ff"><span class="of-ic of-ic--sm" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 3h9l4 4v14H6z"/><path d="M15 3v4h4M9 12h7M9 16h4"/></svg></span><div><h4>Rechnungs-Entwurf</h4><p>Nach erledigtem Auftrag direkt in lexoffice oder sevDesk.</p></div></li><li class="of-x" style="--c:#b9c9ff"><span class="of-ic of-ic--sm" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 20V4M4 20h16"/><path d="M8 16v-4M12 16V8M16 16v-6"/></svg></span><div><h4>Wochenbericht jeden Montag</h4><p>Neue Anfragen, Angebote, offene Rechnungen und Termine auf einen Blick.</p></div></li><li class="of-x" style="--c:#8fe3ff"><span class="of-ic of-ic--sm" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4M9 15l2 2 4-4"/></svg></span><div><h4>Online-Terminbuchung</h4><p>Mit automatischer Bestätigung und Erinnerung am Vortag.</p></div></li><li class="of-x" style="--c:#6ea8ff"><span class="of-ic of-ic--sm" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"/></svg></span><div><h4>Rückruf-Aufgaben</h4><p>Ein verpasster Anruf oder eine Anfrage wird zur Aufgabe für den richtigen Mitarbeiter.</p></div></li><li class="of-x" style="--c:#b9c9ff"><span class="of-ic of-ic--sm" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0"/><path d="M16 4.5a3.5 3.5 0 0 1 0 7M18 14a6 6 0 0 1 3.5 6"/></svg></span><div><h4>Kundenliste (einfaches CRM)</h4><p>Füllt sich von selbst mit jeder neuen Anfrage.</p></div></li><li class="of-x" style="--c:#6ea8ff"><span class="of-ic of-ic--sm" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 4h2l2.5 11h11L21 7H6.5"/><circle cx="9" cy="19.5" r="1.5"/><circle cx="17" cy="19.5" r="1.5"/></svg></span><div><h4>Nachbestell-Erinnerung</h4><p>Erinnert rechtzeitig, wenn Material oder Ware nachbestellt werden muss.</p></div></li><li class="of-x" style="--c:#8fe3ff"><span class="of-ic of-ic--sm" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="2"/><path d="M21 16l-5-5-9 9"/></svg></span><div><h4>Social-Media-Entwürfe</h4><p>Aus Foto und Stichworten wird ein fertiger Post zum Freigeben.</p></div></li></ul>
       </div>
     </div>
   </section>
@@ -953,10 +963,10 @@ main > section#buero, main > section#ki { height: auto !important; }
               <div class="ck-box ck-box--cal">
                 <p class="ck-h">Heute <span>Kalender</span></p>
                 <div class="ck-cal">
-                  <div class="ck-ev"><time>08:30</time><div style="--c:#6fdc9c">Tageszusammenfassung<small>automatisch versendet</small></div></div>
+                  <div class="ck-ev"><time>08:30</time><div style="--c:#b9c9ff">Tageszusammenfassung<small>automatisch versendet</small></div></div>
                   <div class="ck-now"></div>
                   <div class="ck-ev"><time>10:00</time><div>Rückruf Werkstatt<small>Chatbot-Anfrage</small></div></div>
-                  <div class="ck-ev"><time>13:30</time><div style="--c:#ffb15c">Angebot Makler fertig machen<small>Entwurf liegt bereit</small></div></div>
+                  <div class="ck-ev"><time>13:30</time><div style="--c:#6ea8ff">Angebot Makler fertig machen<small>Entwurf liegt bereit</small></div></div>
                   <div class="ck-ev"><time>16:00</time><div>Kundentermin<small>Erinnerung geht 1 h vorher raus</small></div></div>
                 </div>
                 <p class="ck-h">Aufgaben <span>4 offen</span></p>
@@ -974,7 +984,7 @@ main > section#buero, main > section#ki { height: auto !important; }
             <div class="ck-flows">
               <div class="ck-flow"><i></i>Posteingang sortieren<time>07:41</time><u></u></div>
               <div class="ck-flow"><i></i>Tägliche Zusammenfassung<time>08:30</time><u></u></div>
-              <div class="ck-flow"><i class="wait"></i>Antwortentwürfe<time>09:22</time><u style="--p:66%;--c:#ffb15c"></u></div>
+              <div class="ck-flow"><i class="wait"></i>Antwortentwürfe<time>09:22</time><u style="--p:66%;--c:#6ea8ff"></u></div>
               <div class="ck-flow"><i class="plan"></i>Dokumente ablegen<time>12:00</time><u style="--p:0%"></u></div>
             </div>
             <p class="ck-h ck-h--log">Aktivität</p>
@@ -1102,77 +1112,13 @@ main > section#buero, main > section#ki { height: auto !important; }
   var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 
-  /* tech background: faint line art of networks, workflows and gears, drawn once as two tiles */
+  /* photo background: the brain and the network picture take turns behind the sections */
   (function () {
-    var bg = document.querySelector('.techbg'); if (!bg) return;
-    var C = '#8fe3ff', seed = 11;
-    var r = function () { seed = (seed * 9301 + 49297) % 233280; return seed / 233280; };
-    function mesh(x, y, cols, rows, gap) {
-      var o = '', pts = [];
-      for (var i = 0; i < cols; i++) for (var j = 0; j < rows; j++) pts.push([x + i * gap, y + j * gap * .8 + (i % 2) * gap * .4]);
-      pts.forEach(function (p, a) { pts.forEach(function (q, b) { if (b > a && Math.abs(p[0] - q[0]) <= gap + 1 && r() < .55) o += '<line x1="' + p[0] + '" y1="' + p[1] + '" x2="' + q[0] + '" y2="' + q[1] + '"/>'; }); });
-      pts.forEach(function (p) { o += '<circle cx="' + p[0] + '" cy="' + p[1] + '" r="5" fill="#05090c"/>'; });
-      return o;
-    }
-    function gear(cx, cy, R, n) {
-      var d = '', t = Math.PI * 2 / n;
-      for (var i = 0; i < n; i++) {
-        var a = i * t, pts = [[R, a], [R + R * .22, a + t * .2], [R + R * .22, a + t * .45], [R, a + t * .65]];
-        pts.forEach(function (p, k) { d += (i === 0 && k === 0 ? 'M' : 'L') + (cx + p[0] * Math.cos(p[1])).toFixed(1) + ' ' + (cy + p[0] * Math.sin(p[1])).toFixed(1); });
-      }
-      return '<path d="' + d + 'Z"/><circle cx="' + cx + '" cy="' + cy + '" r="' + (R * .38).toFixed(1) + '"/>';
-    }
-    function chain(x, y, n, icons) {
-      var o = '';
-      for (var i = 0; i < n; i++) {
-        var bx = x + i * 92;
-        o += '<rect x="' + bx + '" y="' + y + '" width="56" height="56" rx="12"/>' + icons[i % icons.length](bx + 28, y + 28);
-        if (i < n - 1) o += '<path d="M' + (bx + 62) + ' ' + (y + 28) + 'H' + (bx + 86) + 'M' + (bx + 80) + ' ' + (y + 22) + 'l6 6-6 6"/>';
-      }
-      return o;
-    }
-    var IC = [
-      function (x, y) { return '<ellipse cx="' + x + '" cy="' + (y - 9) + '" rx="12" ry="5"/><path d="M' + (x - 12) + ' ' + (y - 9) + 'v18c0 3 24 3 24 0v-18M' + (x - 12) + ' ' + y + 'c0 3 24 3 24 0"/>'; },
-      function (x, y) { return gear(x, y, 9, 8); },
-      function (x, y) { return '<rect x="' + (x - 13) + '" y="' + (y - 9) + '" width="26" height="18" rx="2"/><path d="M' + (x - 13) + ' ' + (y - 8) + 'l13 9 13-9"/>'; },
-      function (x, y) { return '<path d="M' + (x - 10) + ' ' + y + 'l7 7 13-14"/>'; },
-      function (x, y) { return '<path d="M' + (x - 8) + ' ' + (y - 11) + 'l18 11-18 11z"/>'; }
-    ];
-    function globe(cx, cy, R) {
-      var o = '<circle cx="' + cx + '" cy="' + cy + '" r="' + R + '"/><circle cx="' + cx + '" cy="' + cy + '" r="' + (R + 26) + '" stroke-dasharray="2 10"/>' +
-        '<ellipse cx="' + cx + '" cy="' + cy + '" rx="' + R + '" ry="' + (R * .35) + '"/><ellipse cx="' + cx + '" cy="' + cy + '" rx="' + (R * .35) + '" ry="' + R + '"/>';
-      var p = [];
-      for (var i = 0; i < 26; i++) { var a = r() * 6.283, d = Math.sqrt(r()) * R * .9; p.push([cx + d * Math.cos(a), cy + d * Math.sin(a)]); }
-      p.forEach(function (a, i) { var b = p[(i + 1 + Math.floor(r() * 4)) % p.length]; o += '<line x1="' + a[0].toFixed(0) + '" y1="' + a[1].toFixed(0) + '" x2="' + b[0].toFixed(0) + '" y2="' + b[1].toFixed(0) + '"/>'; });
-      p.forEach(function (a) { o += '<circle cx="' + a[0].toFixed(0) + '" cy="' + a[1].toFixed(0) + '" r="2.5" fill="' + C + '"/>'; });
-      return o;
-    }
-    function label(x, y, t) { return '<text x="' + x + '" y="' + y + '" fill="' + C + '" stroke="none" font-family="Work, sans-serif" font-size="13" letter-spacing="1.5">' + t + '</text>'; }
-    function circuit(x, y, w) {
-      var o = '';
-      for (var i = 0; i < 5; i++) { var yy = y + i * 18, len = w * (.4 + r() * .6); o += '<path d="M' + x + ' ' + yy + 'h' + (len * .6).toFixed(0) + 'l12 12h' + (len * .4).toFixed(0) + '"/><circle cx="' + (x + len + 12).toFixed(0) + '" cy="' + (yy + 12) + '" r="3"/>'; }
-      return o;
-    }
-    function tile(W, H, parts) {
-      return 'url("data:image/svg+xml;utf8,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="' + W + '" height="' + H + '" viewBox="0 0 ' + W + ' ' + H + '"><g fill="none" stroke="' + C + '" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" opacity=".55">' + parts + '</g></svg>') + '")';
-    }
-    var t1 = tile(1440, 1500,
-      label(1010, 70, 'KI-MODELLE') + mesh(1010, 100, 6, 4, 46) +
-      label(60, 300, 'AUTOMATISIERTE ABLÄUFE') + chain(60, 320, 5, IC) +
-      globe(250, 760, 150) + label(150, 960, 'LERNEN · VERSTEHEN · ANTWORTEN') +
-      '<g>' + gear(1180, 640, 54, 12) + gear(1262, 708, 34, 9) + gear(1110, 730, 26, 8) + '</g>' + label(1060, 820, 'PROZESSAUTOMATISIERUNG') +
-      label(820, 1150, 'DATENFLUSS') + chain(820, 1170, 5, [IC[0], IC[2], IC[1], IC[3], IC[0]]) +
-      circuit(40, 1300, 260) + circuit(1180, 300, 200));
-    var t2 = tile(1440, 1500,
-      label(80, 140, 'WORKFLOWS') + chain(80, 160, 4, [IC[2], IC[1], IC[3], IC[4]]) +
-      mesh(980, 420, 7, 5, 44) + label(980, 400, 'NEURONALES NETZ') +
-      globe(1190, 1080, 120) +
-      '<g>' + gear(300, 1080, 46, 11) + gear(370, 1140, 28, 8) + '</g>' +
-      circuit(520, 760, 300));
-    bg.style.backgroundImage = t1 + ',' + t2;
-    bg.style.backgroundSize = '1440px 1500px, 1440px 1500px';
-    bg.style.backgroundPosition = 'center 0, center 1500px';
-    bg.style.backgroundRepeat = 'repeat-y, repeat-y';
+    var imgs = document.querySelectorAll('.photobg__img'); if (!imgs.length || !('IntersectionObserver' in window)) return;
+    var map = { problem: 'brain', leistungen: 'brain', buero: 'network', ki: 'network', ablaeufe: 'network', websites: 'brain', branchen: 'brain', zusammenarbeit: 'brain', vertrauen: 'network', jarvis: 'network', preise: 'network', fragen: 'brain', contact: 'brain' };
+    function show(k) { imgs.forEach(function (im) { im.classList.toggle('is-on', im.getAttribute('data-bg') === k); }); }
+    var io = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) show(map[e.target.id]); }); }, { rootMargin: '-45% 0px -45% 0px' });
+    Object.keys(map).forEach(function (id) { var el = document.getElementById(id); if (el) io.observe(el); });
   })();
 
   /* stars */
@@ -1264,14 +1210,14 @@ main > section#buero, main > section#ki { height: auto !important; }
 
   /* glowing assistant illustration in the knowledge-platform style */
   var SRC = [
-    ['PDF-Rechnungen', '#e5484d', '<path d="M-7-10h9l5 5v15h-14z" fill="#fff"/><text x="0" y="6" text-anchor="middle" font-size="7" font-weight="700" fill="#e5484d" font-family="Work, sans-serif">PDF</text>'],
+    ['PDF-Rechnungen', '#6ea8ff', '<path d="M-7-10h9l5 5v15h-14z" fill="#fff"/><text x="0" y="6" text-anchor="middle" font-size="7" font-weight="700" fill="#6ea8ff" font-family="Work, sans-serif">PDF</text>'],
     ['Angebote', '#2f6fe4', '<path d="M-7-10h9l5 5v15h-14z" fill="#fff"/><path d="M-4-2h8M-4 2h8M-4 6h5" stroke="#2f6fe4" stroke-width="1.6"/>'],
-    ['Tabellen', '#1f9d55', '<rect x="-9" y="-9" width="18" height="18" rx="2" fill="#fff"/><path d="M-9-3h18M-9 3h18M-3-9v18M3-9v18" stroke="#1f9d55" stroke-width="1.4"/>'],
-    ['Kalender', '#f08c2b', '<rect x="-9" y="-8" width="18" height="17" rx="2" fill="#fff"/><path d="M-9-3h18" stroke="#f08c2b" stroke-width="2"/><path d="M-5-11v5M5-11v5" stroke="#fff" stroke-width="2" stroke-linecap="round"/><text x="0" y="7" text-anchor="middle" font-size="8" font-weight="700" fill="#f08c2b" font-family="Work, sans-serif">12</text>'],
+    ['Tabellen', '#6ea8ff', '<rect x="-9" y="-9" width="18" height="18" rx="2" fill="#fff"/><path d="M-9-3h18M-9 3h18M-3-9v18M3-9v18" stroke="#6ea8ff" stroke-width="1.4"/>'],
+    ['Kalender', '#8fe3ff', '<rect x="-9" y="-8" width="18" height="17" rx="2" fill="#fff"/><path d="M-9-3h18" stroke="#8fe3ff" stroke-width="2"/><path d="M-5-11v5M5-11v5" stroke="#fff" stroke-width="2" stroke-linecap="round"/><text x="0" y="7" text-anchor="middle" font-size="8" font-weight="700" fill="#8fe3ff" font-family="Work, sans-serif">12</text>'],
     ['E-Mails', '#3a8ee6', '<rect x="-10" y="-7" width="20" height="14" rx="2" fill="#fff"/><path d="M-10-6 0 1 10-6" fill="none" stroke="#3a8ee6" stroke-width="1.6"/>'],
-    ['Kontaktformular', '#14a3a3', '<rect x="-8" y="-10" width="16" height="20" rx="2" fill="#fff"/><path d="M-4-5h8M-4-1h8M-4 3h8" stroke="#14a3a3" stroke-width="1.6"/><rect x="-4" y="6" width="5" height="2" fill="#14a3a3"/>'],
-    ['Website-Chat', '#0ea5c6', '<path d="M-10-7h20v12H-2l-5 5v-5h-3z" fill="#fff"/><circle cx="-4" cy="-1" r="1.4" fill="#0ea5c6"/><circle cx="0" cy="-1" r="1.4" fill="#0ea5c6"/><circle cx="4" cy="-1" r="1.4" fill="#0ea5c6"/>'],
-    ['Kundenliste', '#5b6b8a', '<ellipse cx="0" cy="-7" rx="8" ry="3" fill="#fff"/><path d="M-8-7v13c0 4 16 4 16 0V-7" fill="#fff"/><path d="M-8-1c0 4 16 4 16 0M-8 4c0 4 16 4 16 0" fill="none" stroke="#5b6b8a" stroke-width="1.4"/>']
+    ['Kontaktformular', '#4f8fff', '<rect x="-8" y="-10" width="16" height="20" rx="2" fill="#fff"/><path d="M-4-5h8M-4-1h8M-4 3h8" stroke="#4f8fff" stroke-width="1.6"/><rect x="-4" y="6" width="5" height="2" fill="#4f8fff"/>'],
+    ['Website-Chat', '#5aa0ff', '<path d="M-10-7h20v12H-2l-5 5v-5h-3z" fill="#fff"/><circle cx="-4" cy="-1" r="1.4" fill="#5aa0ff"/><circle cx="0" cy="-1" r="1.4" fill="#5aa0ff"/><circle cx="4" cy="-1" r="1.4" fill="#5aa0ff"/>'],
+    ['Kundenliste', '#4a7bd8', '<ellipse cx="0" cy="-7" rx="8" ry="3" fill="#fff"/><path d="M-8-7v13c0 4 16 4 16 0V-7" fill="#fff"/><path d="M-8-1c0 4 16 4 16 0M-8 4c0 4 16 4 16 0" fill="none" stroke="#4a7bd8" stroke-width="1.4"/>']
   ];
   var NS = 'http://www.w3.org/2000/svg';
   function drawGlow() {
@@ -1329,8 +1275,8 @@ main > section#buero, main > section#ki { height: auto !important; }
       '<text x="34" y="138" ' + f + ' font-size="12" font-weight="700" fill="#8fe3ff">Antwort</text>' +
       '<text x="34" y="160" ' + f + ' font-size="13" fill="#e6f2f7">Donnerstag sind 9:30 und 14:00 Uhr frei.</text><text x="34" y="178" ' + f + ' font-size="13" fill="#e6f2f7">Soll ich 9:30 für Sie vormerken?</text>' +
       '<text x="34" y="206" ' + f + ' font-size="11.5" fill="#9fc3d3">Quellen</text>' +
-      '<rect x="34" y="216" width="14" height="17" rx="2" fill="#e5484d"/><text x="56" y="229" ' + f + ' font-size="12" fill="#c5d6de">Leistungen-und-Preise.pdf</text>' +
-      '<rect x="34" y="244" width="14" height="14" rx="2" fill="#f08c2b"/><text x="56" y="256" ' + f + ' font-size="12" fill="#c5d6de">Werkstatt-Kalender</text>' +
+      '<rect x="34" y="216" width="14" height="17" rx="2" fill="#6ea8ff"/><text x="56" y="229" ' + f + ' font-size="12" fill="#c5d6de">Leistungen-und-Preise.pdf</text>' +
+      '<rect x="34" y="244" width="14" height="14" rx="2" fill="#8fe3ff"/><text x="56" y="256" ' + f + ' font-size="12" fill="#c5d6de">Werkstatt-Kalender</text>' +
       '<text x="22" y="312" ' + f + ' font-size="12" fill="#9fc3d3">War diese Antwort hilfreich?</text>' +
       '<path d="M' + (pw - 64) + ' 310v-8l4-6v6h6l-1 8z" fill="none" stroke="#9fc3d3" stroke-width="1.3"/><path d="M' + (pw - 36) + ' 300v8l4 6v-6h6l-1-8z" fill="none" stroke="#9fc3d3" stroke-width="1.3"/></g>';
     var ax = px + pw / 2, ay = py + ph + (narrow ? 70 : 74);
