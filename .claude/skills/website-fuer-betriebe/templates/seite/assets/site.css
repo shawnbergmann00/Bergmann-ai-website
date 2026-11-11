@@ -1,0 +1,142 @@
+/*
+ * Neutrale Basis. Die Tokens unter :root werden durch die Werte aus DESIGN.md ersetzt;
+ * Komponenten bekommen ihren Charakter erst dort (Formen, Bildsprache, Signatur-Element).
+ */
+
+/* Schriften aus DESIGN.md, selbst gehostet als WOFF2 (keine Verbindung zu Google Fonts):
+@font-face { font-family: "Titel"; src: url(fonts/titel-700.woff2) format("woff2"); font-weight: 700; font-display: swap; }
+@font-face { font-family: "Text"; src: url(fonts/text-400.woff2) format("woff2"); font-weight: 400; font-display: swap; }
+*/
+
+:root {
+  --grund: #ffffff;
+  --flaeche: #f4f2ee;
+  --text: #1b1d1f;
+  --leise: #575c61;
+  --linie: #dcd8d0;
+  --aktion: #0b5cad;
+  --aktion-text: #ffffff;
+  --schrift-titel: system-ui, -apple-system, "Segoe UI", sans-serif;
+  --schrift-text: system-ui, -apple-system, "Segoe UI", sans-serif;
+  --r-klein: 8px;
+  --r-mittel: 14px;
+  --breite: 1180px;
+  --rand: clamp(20px, 5vw, 64px);
+  --abstand-abschnitt: clamp(64px, 9vw, 120px);
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; scroll-padding-top: 88px; }
+body { margin: 0; background: var(--grund); color: var(--text); font: 400 17px/1.6 var(--schrift-text); }
+img, svg, video { display: block; max-width: 100%; height: auto; }
+h1, h2, h3 { font-family: var(--schrift-titel); line-height: 1.12; letter-spacing: -0.02em; text-wrap: balance; margin: 0 0 0.5em;
+  overflow-wrap: break-word; hyphens: auto; } /* lange deutsche Wörter brechen statt überlaufen */
+h1 { font-size: clamp(36px, 6vw, 68px); font-weight: 700; }
+h2 { font-size: clamp(28px, 3.6vw, 44px); font-weight: 700; }
+h3 { font-size: 21px; font-weight: 700; }
+p { margin: 0 0 1em; max-width: 65ch; }
+a { color: var(--aktion); text-underline-offset: 0.18em; }
+:focus-visible { outline: 3px solid var(--aktion); outline-offset: 3px; border-radius: 2px; }
+::selection { background: var(--aktion); color: var(--aktion-text); }
+
+.rahmen { width: min(100% - 2 * var(--rand), var(--breite)); margin-inline: auto; }
+.schmal { max-width: 760px; }
+.einleitung { font-size: clamp(18px, 1.6vw, 21px); color: var(--leise); }
+.hinweis, .fuss__klein, .formular__hinweis { font-size: 14px; color: var(--leise); }
+
+.sprung { position: absolute; left: 12px; top: -60px; z-index: 50; padding: 10px 16px; background: var(--text); color: var(--grund); border-radius: var(--r-klein); }
+.sprung:focus { top: 12px; }
+
+/* Knöpfe: genau eine Aktionsfarbe */
+.knopf { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 48px; padding: 0 22px;
+  border-radius: var(--r-klein); font: 600 16px/1 var(--schrift-text); text-decoration: none; border: 2px solid transparent;
+  cursor: pointer; transition: transform 160ms var(--ease-out), background-color 160ms var(--ease-out); }
+.knopf:active { transform: scale(0.98); }
+.knopf--aktion { background: var(--aktion); color: var(--aktion-text); }
+.knopf--zweit { background: transparent; color: var(--text); border-color: var(--linie); }
+.knopfreihe { display: flex; flex-wrap: wrap; gap: 12px; margin: 28px 0 16px; }
+
+/* Kopf */
+.kopf { position: sticky; top: 0; z-index: 20; background: color-mix(in srgb, var(--grund) 92%, transparent); backdrop-filter: blur(10px); border-bottom: 1px solid var(--linie); }
+.kopf__innen { display: flex; align-items: center; gap: 24px; min-height: 68px; }
+.kopf__marke { font: 700 19px/1 var(--schrift-titel); color: var(--text); text-decoration: none; margin-right: auto; padding-block: 12px; }
+.kopf__nav { display: flex; gap: 22px; }
+.kopf__nav a { color: var(--text); text-decoration: none; padding: 10px 0; }
+.kopf__nav a:hover { text-decoration: underline; }
+.kopf__menue { display: none; }
+
+/* Abschnitte */
+.held { padding-block: clamp(56px, 10vw, 128px) var(--abstand-abschnitt); }
+.held__ort { font-weight: 600; color: var(--leise); margin-bottom: 12px; }
+.held__zeiten { font-size: 15px; color: var(--leise); }
+.held__bild img { width: 100%; border-radius: var(--r-mittel); margin-top: 40px; }
+.abschnitt { padding-block: var(--abstand-abschnitt); }
+.abschnitt--flaeche { background: var(--flaeche); }
+.spalten { display: grid; gap: clamp(32px, 5vw, 72px); align-items: start; }
+@media (min-width: 900px) { .spalten { grid-template-columns: 1fr 1fr; } }
+
+.leistungen, .belege, .ablauf { list-style: none; margin: 32px 0 0; padding: 0; display: grid; gap: 0; }
+.leistungen li, .ablauf li { min-width: 0; padding: 24px 0; border-top: 1px solid var(--linie); display: grid; gap: 4px 32px; }
+@media (min-width: 900px) { .leistungen li { grid-template-columns: 1fr 2fr auto; align-items: baseline; } .preis { white-space: nowrap; } }
+.leistungen p, .ablauf p { margin: 0; }
+.preis { font-weight: 700; font-variant-numeric: tabular-nums; }
+.ablauf { counter-reset: schritt; }
+.ablauf li { counter-increment: schritt; grid-template-columns: 56px 1fr; }
+.ablauf li::before { content: counter(schritt); font: 700 28px/1 var(--schrift-titel); color: var(--aktion); grid-row: span 2; }
+.belege li { padding: 12px 0 12px 28px; position: relative; }
+.belege li::before { content: ""; position: absolute; left: 0; top: 22px; width: 12px; height: 2px; background: var(--aktion); }
+.stimme { margin: 40px 0 16px; padding-left: 24px; border-left: 3px solid var(--aktion); }
+.stimme blockquote { margin: 0; font-size: 20px; }
+.stimme figcaption { color: var(--leise); font-size: 15px; }
+
+.adresse { font-style: normal; margin-bottom: 16px; }
+.zeiten { display: grid; grid-template-columns: auto 1fr; gap: 6px 24px; margin: 0 0 16px; }
+.zeiten dd { margin: 0; font-variant-numeric: tabular-nums; }
+
+details { border-top: 1px solid var(--linie); padding: 4px 0; }
+details:last-of-type { border-bottom: 1px solid var(--linie); }
+summary { cursor: pointer; padding: 16px 0; font-weight: 600; list-style-position: outside; }
+details p { margin: 0 0 16px; }
+
+/* Externe Inhalte (Karte, Video, Buchung, Chat): erst nach Klick laden */
+.extern { display: grid; place-content: center; gap: 16px; min-height: 320px; padding: 32px; text-align: center;
+  background: var(--flaeche); border: 1px solid var(--linie); border-radius: var(--r-mittel); }
+.extern__text { font-size: 15px; color: var(--leise); margin-inline: auto; }
+.extern iframe { width: 100%; height: 100%; min-height: 320px; border: 0; border-radius: var(--r-mittel); }
+.extern.ist-geladen { padding: 0; display: block; }
+
+/* Formular */
+.formular { display: grid; gap: 16px; }
+.formular label { display: grid; gap: 6px; font-weight: 600; }
+.formular input, .formular textarea { font: inherit; font-weight: 400; padding: 12px 14px; border: 1px solid var(--leise); border-radius: var(--r-klein); background: var(--grund); color: var(--text); width: 100%; }
+.formular .falle { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+.formular__status:empty { display: none; }
+
+/* Fuß */
+.fuss { padding-block: 48px 96px; background: var(--flaeche); border-top: 1px solid var(--linie); }
+.fuss__innen { display: grid; gap: 24px; }
+@media (min-width: 900px) { .fuss__innen { grid-template-columns: 2fr 1fr 1fr; align-items: start; } .fuss { padding-bottom: 48px; } }
+.fuss nav { display: flex; gap: 20px; }
+.fuss nav a { padding: 10px 0; }
+
+/* Anrufleiste: Handy */
+.anrufleiste { position: fixed; inset: auto 0 0 0; z-index: 30; display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+  padding: 10px var(--rand) calc(10px + env(safe-area-inset-bottom)); background: var(--grund); border-top: 1px solid var(--linie); }
+@media (min-width: 900px) { .anrufleiste { display: none; } }
+
+/* Menü unter 900 px */
+@media (max-width: 899px) {
+  .kopf__anruf { display: none; }
+  .js .kopf__menue { display: inline-flex; align-items: center; min-height: 44px; padding: 0 14px; font: 600 16px/1 var(--schrift-text);
+    background: none; border: 1px solid var(--linie); border-radius: var(--r-klein); color: var(--text); }
+  .js .kopf__nav { display: none; }
+  .js .kopf__nav.ist-offen { display: grid; position: absolute; inset: 100% 0 auto 0; padding: 8px var(--rand) 20px; background: var(--grund); border-bottom: 1px solid var(--linie); gap: 0; }
+  .kopf__nav { flex-wrap: wrap; }
+  .kopf { position: relative; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; }
+}

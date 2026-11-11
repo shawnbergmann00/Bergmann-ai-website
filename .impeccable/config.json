@@ -1,0 +1,26 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "design-system-font",
+        "value": "titel",
+        "files": [
+          ".claude/skills/website-fuer-betriebe/templates/seite/assets/site.css"
+        ],
+        "createdAt": "2026-11-11T01:05:10.817Z",
+        "reason": "Claude: Platzhalter-Schriftnamen in auskommentierter Vorlage für Kundenseiten mit eigenem DESIGN.md, nicht Teil des Bergmann-AI-Designsystems"
+      },
+      {
+        "rule": "design-system-font",
+        "value": "text",
+        "files": [
+          ".claude/skills/website-fuer-betriebe/templates/seite/assets/site.css"
+        ],
+        "createdAt": "2026-11-11T01:05:10.829Z",
+        "reason": "Claude: Platzhalter-Schriftnamen in auskommentierter Vorlage für Kundenseiten mit eigenem DESIGN.md, nicht Teil des Bergmann-AI-Designsystems"
+      }
+    ]
+  }
+}

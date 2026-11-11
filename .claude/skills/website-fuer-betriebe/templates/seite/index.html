@@ -1,0 +1,208 @@
+<!doctype html>
+<!--
+  Startgerüst für eine Betriebs-Website. Technisch fertig, gestalterisch neutral.
+  Alle Stellen mit FEHLT-Marker in eckigen Klammern sind Platzhalter: echte Daten aus PRODUCT.md einsetzen
+  oder den Block streichen. Das Prüfskript meldet jeden übrig gebliebenen Marker als Fehler.
+  Farben, Schriften und Formen kommen aus DESIGN.md und ersetzen die Tokens in assets/site.css.
+-->
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>[FEHLT: Leistung in Ort | Firmenname, max. 60 Zeichen]</title>
+<meta name="description" content="[FEHLT: Ein Satz mit Leistung, Ort und Nutzen, max. 155 Zeichen]">
+<link rel="canonical" href="https://[FEHLT: domain.de]/">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="de_DE">
+<meta property="og:title" content="[FEHLT: wie title]">
+<meta property="og:description" content="[FEHLT: wie description]">
+<meta property="og:url" content="https://[FEHLT: domain.de]/">
+<meta property="og:image" content="https://[FEHLT: domain.de]/assets/img/teilen-1200x630.jpg">
+<meta name="theme-color" content="#ffffff">
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+<!-- Schrift aus DESIGN.md: WOFF2 nach assets/fonts legen und hier vorladen (nur die Schrift der H1). -->
+<!-- <link rel="preload" href="assets/fonts/titel-700.woff2" as="font" type="font/woff2" crossorigin> -->
+<link rel="stylesheet" href="assets/site.css">
+<script>document.documentElement.classList.add('js')</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "[FEHLT: genauer Typ, z. B. AutoRepair, HairSalon, Plumber]",
+  "name": "[FEHLT: Firmenname wie im Google-Unternehmensprofil]",
+  "url": "https://[FEHLT: domain.de]/",
+  "telephone": "[FEHLT: +49 …]",
+  "email": "[FEHLT: E-Mail]",
+  "image": "https://[FEHLT: domain.de]/assets/img/teilen-1200x630.jpg",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "[FEHLT: Straße Nr.]",
+    "postalCode": "[FEHLT: PLZ]",
+    "addressLocality": "[FEHLT: Ort]",
+    "addressCountry": "DE"
+  },
+  "areaServed": "[FEHLT: Einzugsgebiet]",
+  "openingHoursSpecification": [
+    { "@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"], "opens": "[FEHLT: 08:00]", "closes": "[FEHLT: 17:00]" }
+  ],
+  "sameAs": ["[FEHLT: Link Google-Unternehmensprofil oder Block entfernen]"]
+}
+</script>
+</head>
+<body>
+<a class="sprung" href="#inhalt">Zum Inhalt springen</a>
+
+<header class="kopf">
+  <div class="rahmen kopf__innen">
+    <a class="kopf__marke" href="#inhalt">[FEHLT: Firmenname]</a>
+    <button class="kopf__menue" type="button" aria-expanded="false" aria-controls="hauptmenue">Menü</button>
+    <nav id="hauptmenue" class="kopf__nav" aria-label="Hauptmenü">
+      <a href="#leistungen">Leistungen</a>
+      <a href="#ablauf">Ablauf</a>
+      <a href="#ueber-uns">Über uns</a>
+      <a href="#anfahrt">Anfahrt</a>
+      <a href="#kontakt">Kontakt</a>
+    </nav>
+    <a class="knopf knopf--aktion kopf__anruf" href="tel:[FEHLT: +49…]">Anrufen</a>
+  </div>
+</header>
+
+<main id="inhalt">
+  <!-- 1. Held: Was, wo, wie erreichbar. H1 = Leistung + Ort. -->
+  <section class="held" aria-labelledby="held-h">
+    <div class="rahmen held__innen">
+      <p class="held__ort">[FEHLT: Ort und Einzugsgebiet]</p>
+      <h1 id="held-h">[FEHLT: Leistung in Ort, als Versprechen formuliert]</h1>
+      <p class="einleitung">[FEHLT: Ein bis zwei Sätze: für wen, was genau, was den Betrieb unterscheidet. Nur Belegtes.]</p>
+      <div class="knopfreihe">
+        <a class="knopf knopf--aktion" href="tel:[FEHLT: +49…]">Jetzt anrufen: [FEHLT: Nummer lesbar]</a>
+        <a class="knopf knopf--zweit" href="#kontakt">Anfrage schreiben</a>
+      </div>
+      <p class="held__zeiten">[FEHLT: Heute erreichbar / Öffnungszeiten kurz]</p>
+    </div>
+    <!-- Echtes Foto aus dem Betrieb (nie Stockfoto als „unser Team“):
+    <picture class="held__bild">
+      <source type="image/avif" srcset="assets/img/held-800.avif 800w, assets/img/held-1600.avif 1600w" sizes="100vw">
+      <img src="assets/img/held-1600.webp" srcset="assets/img/held-800.webp 800w, assets/img/held-1600.webp 1600w" sizes="100vw"
+           width="1600" height="900" alt="Beschreibt, was zu sehen ist" fetchpriority="high">
+    </picture> -->
+  </section>
+
+  <!-- 2. Leistungen: konkret, mit Preisen oder ab-Preisen, wenn der Kunde sie nennt. -->
+  <section class="abschnitt" id="leistungen" aria-labelledby="leistungen-h">
+    <div class="rahmen">
+      <h2 id="leistungen-h">[FEHLT: Überschrift, die eine Kundenfrage beantwortet]</h2>
+      <ul class="leistungen">
+        <li><h3>[FEHLT: Leistung 1]</h3><p>[FEHLT: Nutzen in einem Satz]</p><p class="preis">[FEHLT: ab … € inkl. MwSt. oder Zeile entfernen]</p></li>
+        <li><h3>[FEHLT: Leistung 2]</h3><p>[FEHLT: Nutzen in einem Satz]</p></li>
+        <li><h3>[FEHLT: Leistung 3]</h3><p>[FEHLT: Nutzen in einem Satz]</p></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 3. Belege: nur Echtes. Bewertungen mit Quelle und Hinweis nach § 5b Abs. 3 UWG; sonst Block streichen. -->
+  <section class="abschnitt abschnitt--flaeche" id="belege" aria-labelledby="belege-h">
+    <div class="rahmen">
+      <h2 id="belege-h">[FEHLT: Warum Kunden diesem Betrieb vertrauen]</h2>
+      <ul class="belege">
+        <li>[FEHLT: Beleg, z. B. Meisterbetrieb seit Jahr, Innungsmitglied, Zertifikat]</li>
+        <li>[FEHLT: Beleg]</li>
+      </ul>
+      <figure class="stimme">
+        <blockquote><p>[FEHLT: Wörtliches Zitat aus einer echten Bewertung, mit Erlaubnis]</p></blockquote>
+        <figcaption>[FEHLT: Vorname oder Initiale], Bewertung auf [FEHLT: Plattform] vom [FEHLT: Datum]</figcaption>
+      </figure>
+      <p class="hinweis">[FEHLT: Hinweis, ob und wie geprüft wird, dass Bewertungen von echten Kunden stammen]</p>
+    </div>
+  </section>
+
+  <!-- 4. Ablauf: so läuft ein Auftrag. Nimmt Unsicherheit vor dem ersten Anruf. -->
+  <section class="abschnitt" id="ablauf" aria-labelledby="ablauf-h">
+    <div class="rahmen">
+      <h2 id="ablauf-h">So läuft es ab</h2>
+      <ol class="ablauf">
+        <li><h3>[FEHLT: Schritt 1]</h3><p>[FEHLT: Was passiert, wie lange]</p></li>
+        <li><h3>[FEHLT: Schritt 2]</h3><p>[FEHLT: Was passiert, wie lange]</p></li>
+        <li><h3>[FEHLT: Schritt 3]</h3><p>[FEHLT: Was passiert, wie lange]</p></li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- 5. Über uns: echte Menschen, echte Räume. -->
+  <section class="abschnitt abschnitt--flaeche" id="ueber-uns" aria-labelledby="ueber-h">
+    <div class="rahmen spalten">
+      <div>
+        <h2 id="ueber-h">[FEHLT: Wer hier arbeitet]</h2>
+        <p>[FEHLT: Kurze Geschichte, Inhaber, Team. Nur Fakten aus PRODUCT.md.]</p>
+      </div>
+      <!-- <img src="assets/img/team-800.webp" srcset="assets/img/team-800.webp 800w, assets/img/team-1400.webp 1400w"
+           sizes="(min-width: 900px) 50vw, 100vw" width="1400" height="1050" alt="…" loading="lazy" decoding="async"> -->
+    </div>
+  </section>
+
+  <!-- 6. Anfahrt und Zeiten. Karte erst nach Klick (Zwei-Klick), vorher keine Verbindung zu Google. -->
+  <section class="abschnitt" id="anfahrt" aria-labelledby="anfahrt-h">
+    <div class="rahmen spalten">
+      <div>
+        <h2 id="anfahrt-h">Öffnungszeiten und Anfahrt</h2>
+        <address class="adresse">[FEHLT: Firmenname]<br>[FEHLT: Straße Nr.]<br>[FEHLT: PLZ Ort]</address>
+        <dl class="zeiten">
+          <dt>Montag bis Freitag</dt><dd>[FEHLT: Zeiten]</dd>
+          <dt>Samstag</dt><dd>[FEHLT: Zeiten oder geschlossen]</dd>
+        </dl>
+        <p><a href="https://www.google.com/maps/search/?api=1&amp;query=[FEHLT: Adresse URL-kodiert]" target="_blank" rel="noopener">Route in Google Maps öffnen</a></p>
+      </div>
+      <div class="extern" data-extern-src="[FEHLT: Google-Maps-Einbettungs-URL]" data-extern-titel="Karte mit dem Standort">
+        <p class="extern__text">Die Karte wird von Google Maps geladen. Dabei erhält Google Daten wie Ihre IP-Adresse. Mehr in der <a href="datenschutz.html">Datenschutzerklärung</a>.</p>
+        <button class="knopf knopf--zweit" type="button" data-extern-laden>Karte laden</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7. Häufige Fragen: die fünf Fragen, die am Telefon am häufigsten kommen. -->
+  <section class="abschnitt abschnitt--flaeche" id="fragen" aria-labelledby="fragen-h">
+    <div class="rahmen schmal">
+      <h2 id="fragen-h">Häufige Fragen</h2>
+      <details><summary>[FEHLT: Frage 1]</summary><p>[FEHLT: Antwort]</p></details>
+      <details><summary>[FEHLT: Frage 2]</summary><p>[FEHLT: Antwort]</p></details>
+      <details><summary>[FEHLT: Frage 3]</summary><p>[FEHLT: Antwort]</p></details>
+    </div>
+  </section>
+
+  <!-- 8. Kontakt: Anruf zuerst, Formular als zweiter Weg. Formular schickt an einen n8n-Webhook. -->
+  <section class="abschnitt" id="kontakt" aria-labelledby="kontakt-h">
+    <div class="rahmen spalten">
+      <div>
+        <h2 id="kontakt-h">[FEHLT: Einladung zum Kontakt, z. B. Termin vereinbaren]</h2>
+        <p class="einleitung">Am schnellsten per Telefon: <a href="tel:[FEHLT: +49…]">[FEHLT: Nummer lesbar]</a></p>
+        <p>E-Mail: <a href="mailto:[FEHLT: E-Mail]">[FEHLT: E-Mail]</a></p>
+      </div>
+      <form class="formular" action="[FEHLT: n8n-Webhook-URL]" method="post" data-webhook novalidate>
+        <label><span>Ihr Name</span><input name="name" autocomplete="name" maxlength="200"></label>
+        <label><span>Telefon oder E-Mail <span aria-hidden="true">*</span></span><input name="kontakt" required autocomplete="email" maxlength="200"></label>
+        <label><span>Ihr Anliegen <span aria-hidden="true">*</span></span><textarea name="nachricht" required rows="5" maxlength="4000"></textarea></label>
+        <label class="falle" aria-hidden="true">Website <input name="website" tabindex="-1" autocomplete="off"></label>
+        <p class="formular__hinweis">* Pflichtfeld. Wir nutzen Ihre Angaben nur, um Ihre Anfrage zu beantworten. Mehr in der <a href="datenschutz.html">Datenschutzerklärung</a>.</p>
+        <button class="knopf knopf--aktion" type="submit">Anfrage senden</button>
+        <p class="formular__status" role="status" aria-live="polite"></p>
+      </form>
+    </div>
+  </section>
+</main>
+
+<footer class="fuss">
+  <div class="rahmen fuss__innen">
+    <p><strong>[FEHLT: Firmenname]</strong><br>[FEHLT: Straße Nr.], [FEHLT: PLZ Ort]<br><a href="tel:[FEHLT: +49…]">[FEHLT: Nummer lesbar]</a></p>
+    <nav aria-label="Rechtliches"><a href="impressum.html">Impressum</a> <a href="datenschutz.html">Datenschutz</a></nav>
+    <p class="fuss__klein">&copy; <span data-jahr>2026</span> [FEHLT: Firmenname]</p>
+  </div>
+</footer>
+
+<!-- Anrufleiste: nur auf dem Handy sichtbar, Daumen-Reichweite. -->
+<nav class="anrufleiste" aria-label="Schnellkontakt">
+  <a class="knopf knopf--aktion" href="tel:[FEHLT: +49…]">Anrufen</a>
+  <a class="knopf knopf--zweit" href="#kontakt">Anfrage</a>
+</nav>
+
+<script src="assets/site.js" defer></script>
+</body>
+</html>

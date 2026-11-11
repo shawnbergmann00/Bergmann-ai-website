@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://[FEHLT: domain.de]/sitemap.xml
