@@ -117,22 +117,17 @@ main > section#leistungen, main > section#jarvis { height: auto !important; }
 .demo-note { margin-top: var(--s-3); font-size: 13px; color: var(--muted); }
 /* ---------- tech background across the page ---------- */
 body { position: relative; }
-.photobg { position: fixed; inset: 0; z-index: 0; pointer-events: none; background: #05090c; will-change: transform; transform: translateZ(0); contain: strict; }
-.photobg__img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 70% 50%; opacity: 0; transition: opacity .9s var(--ease-out); will-change: opacity; }
-.photobg__img.is-on { opacity: 1; }
+
+
+
 main, footer.closing { position: relative; z-index: 1; }
 main > section.section:not(.hero), footer.closing { background: transparent; }
 main > section.ground-inverse { background: linear-gradient(180deg, rgb(7 18 25 / .55), rgb(7 18 25 / .85) 30%, rgb(7 18 25 / .85) 70%, rgb(7 18 25 / .55)); }
 .section-head h2, .t-lead, .ws-list, .faq { text-shadow: 0 1px 18px rgb(5 9 12 / .9); }
-@media (max-width: 639px) { .photobg__img[data-bg="brain"] { object-position: 82% 50%; } }
-@media (prefers-reduced-motion: reduce) { .photobg__img { transition: none; } }
 /* hero photo */
-.hero-photo { position: absolute; left: 0; right: 0; bottom: 0; width: 100%; height: auto; min-height: 300px; object-fit: cover; object-position: 72% 50%; display: block;
-  -webkit-mask-image: linear-gradient(180deg, transparent 0, #000 22%, #000 100%); mask-image: linear-gradient(180deg, transparent 0, #000 22%, #000 100%); }
+
 .hero--space::before { content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none; background: radial-gradient(ellipse 52% 46% at 50% 36%, rgb(5 9 12 / .7), transparent 72%); }
-.js .hero-photo { animation: rise-planet 1.6s var(--ease-out) both; }
-@media (max-width: 639px) { .hero-photo { height: 38svh; min-height: 0; object-position: 86% 50%; -webkit-mask-image: linear-gradient(180deg, transparent 0, #000 42%); mask-image: linear-gradient(180deg, transparent 0, #000 42%); } }
-@media (prefers-reduced-motion: reduce) { .js .hero-photo { animation: none; } }
+
 /* buero picture */
 .buero-intro { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); gap: var(--s-7); align-items: center; margin-bottom: var(--ly-head-gap, var(--s-8)); }
 .buero-intro > .section-head { margin-bottom: 0 !important; }
@@ -648,13 +643,22 @@ main > section#buero, main > section#ki { height: auto !important; }
 
 /* performance: animations rest while their section is off screen */
 .anim-off *, .anim-off *::before, .anim-off *::after { animation-play-state: paused !important; }
+
+/* ---------- 3D earth behind the whole page ---------- */
+.earth3d { position: fixed; inset: 0; width: 100vw; height: 100vh; height: 100lvh; z-index: 0; display: block; pointer-events: none; opacity: 0; transition: opacity 1.4s var(--ease-out); background: #02040b; }
+.earth3d.is-ready { opacity: 1; }
+.earth3d-veil { position: fixed; inset: 0; z-index: 0; pointer-events: none; background: linear-gradient(180deg, rgb(2 4 11 / .55), rgb(2 4 11 / 0) 22%, rgb(2 4 11 / 0) 70%, rgb(2 4 11 / .35)); }
+body { background: #02040b; }
+.no-3d .earth3d { display: none; }
+.no-3d body { background: #02040b url(assets/img/hero-ai-1600.webp) center bottom / 100% auto fixed no-repeat; }
+.hero--space { background: transparent !important; }
+.hero--space::after { display: none; }
+.hero--space::before { background: radial-gradient(ellipse 60% 42% at 50% 34%, rgb(2 4 11 / .62), transparent 72%) !important; }
 </style>
 </head>
 <body>
-<div class="photobg" aria-hidden="true">
-  <img class="photobg__img is-on" data-bg="brain" src="assets/img/bg-brain-1100.webp" srcset="assets/img/bg-brain-1100.webp 1100w, assets/img/bg-brain-1920.webp 1920w" sizes="100vw" width="1920" height="1063" alt="" decoding="async">
-  <img class="photobg__img" data-bg="network" src="assets/img/bg-network-1100.webp" srcset="assets/img/bg-network-1100.webp 1100w, assets/img/bg-network-1920.webp 1920w" sizes="100vw" width="1920" height="1052" alt="" loading="lazy" decoding="async">
-</div>
+<canvas id="earth3d" class="earth3d" aria-hidden="true"></canvas>
+<div class="earth3d-veil" aria-hidden="true"></div>
 <!-- type: software (AI service studio with its own software)
      deal: hero collage, nav nav-centre, close close-word, footer footer-columns, rhythm dark-band, buttons solid, mark: client logo
      moments: none; effect: none (the network map is the page's own diagram world) -->
@@ -681,12 +685,6 @@ main > section#buero, main > section#ki { height: auto !important; }
 
 <main id="top">
   <section class="hero hero--space" aria-labelledby="hero-h">
-    <div class="space" aria-hidden="true">
-      <svg class="space__svg" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMax slice">
-        <g class="stars" id="stars"></g>
-      </svg>
-      <img class="hero-photo" src="assets/img/hero-ai-1600.webp" srcset="assets/img/hero-ai-1600.webp 1600w, assets/img/hero-ai-3200.webp 3200w" sizes="(max-width: 639px) 300vw, 100vw" width="3288" height="988" alt="" fetchpriority="high" decoding="async">
-    </div>
     <div class="wrap hero-space__inner">
       <h1 id="hero-h">KI-Chatbots und <span class="hl">Automatisierungen</span> für Betriebe</h1>
       <p class="t-lead">Ich richte Ihnen einen KI-Chatbot, automatische Abläufe oder eine neue Website ein. Persönlich, verständlich und nur mit Werkzeugen, die Ihnen wirklich Arbeit abnehmen.</p>
@@ -1127,14 +1125,6 @@ main > section#buero, main > section#ki { height: auto !important; }
     document.querySelectorAll('main > section, footer.closing').forEach(function (el) { io.observe(el); });
   })();
 
-  /* photo background: the brain and the network picture take turns behind the sections */
-  (function () {
-    var imgs = document.querySelectorAll('.photobg__img'); if (!imgs.length || !('IntersectionObserver' in window)) return;
-    var map = { problem: 'brain', leistungen: 'brain', buero: 'network', ki: 'network', ablaeufe: 'network', websites: 'brain', branchen: 'brain', zusammenarbeit: 'brain', vertrauen: 'network', jarvis: 'network', preise: 'network', fragen: 'brain', contact: 'brain' };
-    function show(k) { imgs.forEach(function (im) { im.classList.toggle('is-on', im.getAttribute('data-bg') === k); }); }
-    var io = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) show(map[e.target.id]); }); }, { rootMargin: '-45% 0px -45% 0px' });
-    Object.keys(map).forEach(function (id) { var el = document.getElementById(id); if (el) io.observe(el); });
-  })();
 
   /* stars */
   var st = document.getElementById('stars');
@@ -1422,5 +1412,6 @@ main > section#buero, main > section#ki { height: auto !important; }
 <script type="module" src="assets/system.js"></script>
 <script type="module" src="assets/motion/motion.js"></script>
 <script type="module" src="assets/layout/layout.js"></script>
+<script type="module" src="assets/3d/scene.js"></script>
 </body>
 </html>
