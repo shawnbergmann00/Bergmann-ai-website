@@ -57,4 +57,10 @@ Texte, Preise und Angebote bleiben wörtlich, solange der Nutzer nichts anderes 
 
 ## Referenz
 
-`assets/3d/scene.js` in diesem Repository ist die Vorlage: Erde mit Stadtlichtern, Atmosphäre, Sternen, Lichtrouten und Kamerafahrt über sechs Wegpunkte.
+`assets/3d/scene.js` in diesem Repository ist die Vorlage: ein Scroll-Film vor der Seite (Gehirn, Partikel, Erde, Horizont, AI-Bühne) und danach eine Erde, die sich nur noch hinter dem Inhalt dreht.
+
+- Ein einziger Zeitwert `S` steuert alles: 0 bis 10 sind die Szenen (Scrollen durch den leeren Abschnitt `#intro`), 10 bis 11 die Übergabe an die Seite, 11 der Hintergrund. Kamera, Licht, Partikel und Objekte lesen nur `S`, deshalb laufen sie synchron.
+- `S` folgt der Scrollposition weich; ein Sprung (Anker-Link) spielt höchstens 1,6 Szenen ab.
+- Kamera-Wegpunkte als Catmull-Rom-Kurve; das Endbild ist ein Endpunkt auf beiden Seiten, sonst schießt die Kamera über.
+- Objekte, die nur im Endbild stehen (die AI-Bühne), werden relativ zur End-Kamera platziert und so gestellt, dass die Kamera auf dem Weg dorthin nie durch sie hindurchfliegt.
+- Prüfen mit `window.__scene.set(S)` und Screenshots je Szene, am Desktop und am Handy.

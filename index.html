@@ -98,8 +98,6 @@ h1, h2, h3 { text-wrap: balance; }
 .js .sp-st { opacity: 0; animation: fadein .8s var(--ease-out) 1.9s forwards; }
 .js .space__svg { animation: rise-planet 1.6s var(--ease-out) both; }
 @keyframes rise-planet { from { transform: translateY(40px); opacity: 0; } to { transform: none; opacity: 1; } }
-.js .hero-space__inner > * { opacity: 0; transform: translateY(14px); animation: rise .9s var(--ease-out) forwards; }
-.js .hero-space__inner > :nth-child(2) { animation-delay: .12s; } .js .hero-space__inner > :nth-child(3) { animation-delay: .24s; } .js .hero-space__inner > :nth-child(4) { animation-delay: .36s; }
 .btn--primary { box-shadow: 0 0 0 1px rgb(143 227 255 / .4), 0 10px 30px -8px rgb(143 227 255 / .55); }
 .btn--secondary { background: rgb(255 255 255 / .04); border-color: rgb(255 255 255 / .22); color: var(--p-ink); }
 @media (max-width: 639px) {
@@ -653,7 +651,32 @@ body { background: #02040b; }
 .no-3d body { background: #02040b url(assets/img/hero-ai-1600.webp) center bottom / 100% auto fixed no-repeat; }
 .hero--space { background: transparent !important; }
 .hero--space::after { display: none; }
-.hero--space::before { background: radial-gradient(ellipse 60% 42% at 50% 34%, rgb(2 4 11 / .62), transparent 72%) !important; }
+.hero--space::before { background: radial-gradient(ellipse 60% 42% at 50% 46%, rgb(2 4 11 / .62), transparent 72%) !important; }
+.hero--space { align-content: center; padding-bottom: clamp(48px, 9vh, 110px); }
+
+/* ---------- the scroll film before the page: an empty runway, the canvas behind it plays ---------- */
+#intro { display: none; position: relative; z-index: 1; height: 840vh; height: 840svh; min-height: 0; padding: 0; }
+.js #intro { display: block; }
+.no-3d #intro { display: none; }
+@media (max-width: 700px) { #intro { height: 760vh; height: 760svh; } }
+@media (prefers-reduced-motion: reduce) { .js #intro { display: none; } }
+.intro__view { position: sticky; top: 0; height: 100vh; height: 100svh; pointer-events: none; }
+.intro__hint { position: absolute; left: 50%; bottom: calc(36px + env(safe-area-inset-bottom)); transform: translateX(-50%); margin: 0; display: grid; justify-items: center; gap: 12px; font: 500 12px/1 var(--font-text); letter-spacing: .18em; text-transform: uppercase; color: #a9c2ce; text-shadow: 0 1px 12px rgb(2 4 11 / .9); transition: opacity .6s var(--ease-out); }
+.intro__hint i { display: block; width: 1px; height: 44px; background: linear-gradient(#8fe3ff, rgb(143 227 255 / 0)); transform-origin: top; animation: intro-hint 2.4s var(--ease-out) infinite; }
+@keyframes intro-hint { 0% { transform: scaleY(0); opacity: 1; } 55% { transform: scaleY(1); opacity: 1; } 100% { transform: scaleY(1); opacity: 0; } }
+.film-moved .intro__hint { opacity: 0; }
+.intro__skip { position: absolute; right: max(24px, calc((100vw - 1280px) / 2)); bottom: calc(26px + env(safe-area-inset-bottom)); pointer-events: auto; white-space: nowrap; display: inline-flex; align-items: center; height: 40px; padding: 0 16px; border-radius: 999px; font: 500 14px/1 var(--font-text); color: #dceaf1; background: linear-gradient(155deg, rgb(160 205 255 / .1), rgb(10 22 50 / .45)); border: 1px solid rgb(150 205 255 / .3); box-shadow: inset 0 1px 0 rgb(215 240 255 / .16); transition: opacity .4s var(--ease-out), border-color .16s var(--ease-out), transform .12s var(--ease-out); }
+.intro__skip:active { transform: scale(.97); }
+@media (hover: hover) and (pointer: fine) { .intro__skip:hover { border-color: rgb(150 215 255 / .7); } }
+.film-done .intro__skip { opacity: 0; pointer-events: none; }
+.intro__bar { position: absolute; left: 0; right: 0; bottom: 0; height: 2px; background: rgb(143 227 255 / .1); transition: opacity .4s var(--ease-out); }
+.intro__bar i { display: block; height: 100%; background: linear-gradient(90deg, rgb(143 227 255 / .4), #8fe3ff); transform-origin: left; transform: scaleX(var(--ip, 0)); }
+.film-done .intro__bar { opacity: 0; }
+@media (max-width: 700px) {
+  .intro__hint { bottom: calc(92px + env(safe-area-inset-bottom)); }
+  .intro__skip { right: 50%; transform: translateX(50%); }
+  .intro__skip:active { transform: translateX(50%) scale(.97); }
+}
 </style>
 </head>
 <body>
@@ -684,11 +707,19 @@ body { background: #02040b; }
 </header>
 
 <main id="top">
-  <section class="hero hero--space" aria-labelledby="hero-h">
+  <section class="intro" id="intro" aria-label="Animation: vom KI-Gehirn zur Erde">
+    <div class="intro__view">
+      <p class="intro__hint" aria-hidden="true">Scrollen<i></i></p>
+      <a class="intro__skip" href="#start">Animation überspringen</a>
+      <div class="intro__bar" aria-hidden="true"><i></i></div>
+    </div>
+  </section>
+
+  <section class="hero hero--space" id="start" aria-labelledby="hero-h">
     <div class="wrap hero-space__inner">
-      <h1 id="hero-h">KI-Chatbots und <span class="hl">Automatisierungen</span> für Betriebe</h1>
-      <p class="t-lead">Ich richte Ihnen einen KI-Chatbot, automatische Abläufe oder eine neue Website ein. Persönlich, verständlich und nur mit Werkzeugen, die Ihnen wirklich Arbeit abnehmen.</p>
-      <div class="btn-row">
+      <h1 id="hero-h" data-reveal>KI-Chatbots und <span class="hl">Automatisierungen</span> für Betriebe</h1>
+      <p class="t-lead" data-reveal style="--d: 120ms">Ich richte Ihnen einen KI-Chatbot, automatische Abläufe oder eine neue Website ein. Persönlich, verständlich und nur mit Werkzeugen, die Ihnen wirklich Arbeit abnehmen.</p>
+      <div class="btn-row" data-reveal style="--d: 240ms">
         <a class="btn btn--primary" href="#demo" data-demo>Chatbot-Demo testen<svg class="m-arrow" viewBox="0 0 12 12" aria-hidden="true"><path class="m-arrow__stem" d="M1 6h8"/><path class="m-arrow__head" d="M4.5 2.5 8 6l-3.5 3.5"/></svg></a>
         <a data-anfrage="Allgemeine Anfrage" class="btn btn--secondary" href="mailto:shawnbergmann00@gmail.com?subject=Anfrage%20Bergmann%20AI">Nachricht schreiben</a>
       </div>
