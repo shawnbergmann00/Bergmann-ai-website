@@ -8,18 +8,20 @@
 <meta name="site-kind" content="software">
 <meta name="page-type" content="software">
 <script>document.documentElement.classList.add('js')</script>
+<script>/* 3D vor dem ersten Zeichnen prüfen: Ohne WebGL2 gilt no-3d sofort, sonst springt die Seite, wenn der Einstieg nach dem Laden wegfällt. */
+(function () { try { var gl = document.createElement('canvas').getContext('webgl2'); if (gl) { var x = gl.getExtension('WEBGL_lose_context'); if (x) x.loseContext(); return; } } catch (e) {} document.documentElement.classList.add('no-3d'); })();</script>
 <link rel="icon" href="logo.webp" type="image/webp">
-<link rel="preload" href="fonts/BricolageGrotesque-Bold.ttf" as="font" type="font/ttf" crossorigin>
+<link rel="preload" href="fonts/BricolageGrotesque-Bold.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="assets/system.css">
 <link rel="stylesheet" href="assets/ui/cards.css">
 <link rel="stylesheet" href="assets/motion/motion.css">
 <link rel="stylesheet" href="assets/layout/layout.css">
 <style>
-@font-face { font-family: "Bricolage"; src: url(fonts/BricolageGrotesque-Regular.ttf) format("truetype"); font-weight: 400; font-display: swap; }
-@font-face { font-family: "Bricolage"; src: url(fonts/BricolageGrotesque-Bold.ttf) format("truetype"); font-weight: 700; font-display: swap; }
-@font-face { font-family: "Work"; src: url(fonts/WorkSans-Regular.ttf) format("truetype"); font-weight: 400; font-display: swap; }
-@font-face { font-family: "Work"; src: url(fonts/WorkSans-Bold.ttf) format("truetype"); font-weight: 700; font-display: swap; }
-@font-face { font-family: "GMono"; src: url(fonts/GeistMono-Regular.ttf) format("truetype"); font-weight: 400; font-display: swap; }
+@font-face { font-family: "Bricolage"; src: url(fonts/BricolageGrotesque-Regular.woff2) format("woff2"); font-weight: 400; font-display: swap; }
+@font-face { font-family: "Bricolage"; src: url(fonts/BricolageGrotesque-Bold.woff2) format("woff2"); font-weight: 700; font-display: swap; }
+@font-face { font-family: "Work"; src: url(fonts/WorkSans-Regular.woff2) format("woff2"); font-weight: 400; font-display: swap; }
+@font-face { font-family: "Work"; src: url(fonts/WorkSans-Bold.woff2) format("woff2"); font-weight: 700; font-display: swap; }
+@font-face { font-family: "GMono"; src: url(fonts/GeistMono-Regular.woff2) format("woff2"); font-weight: 400; font-display: swap; }
 :root {
   --p-bg: #05090c; --p-surface: #0c161c; --p-ink: #eef6fa; --p-muted: #9db4c0;
   --p-accent: #8fe3ff; --p-accent-ink: #04121a; --p-action: #8fe3ff; --p-action-ink: #04121a;
