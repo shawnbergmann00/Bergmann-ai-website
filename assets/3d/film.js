@@ -9,6 +9,7 @@
    One picture for every screen; phones see the part from the sunrise on the earth to the AI letters.
    Where a screen is wider or taller than the picture, its edge continues as a mirrored, blurred, darkening fade. */
 import * as THREE from './three.module.min.js';
+import { decode, canStream, compileAhead } from './gpu-upload.js';
 
 function clamp(x, a = 0, b = 1) { return Math.min(b, Math.max(a, x)); }
 function sstep(a, b, x) { const t = clamp((x - a) / (b - a)); return t * t * (3 - 2 * t); }
@@ -38,7 +39,7 @@ export function createFilm(renderer) {
       void main(){ vUv=uv; float y=mix(-1.,1.-2.*uTop,uv.y); gl_Position=vec4(position.x,y,0.,1.); }`,
     fragmentShader: `uniform sampler2D tImg, tWord; uniform vec4 fImg; uniform vec2 uP, uFocus, uTexSz; uniform float uAsp, uK, uBg, uLt, uAlpha, uT; varying vec2 vUv;
       // screen uv -> picture uv; window f = (width, height, centre x, centre y; picture y down)
-      vec2 toPic(vec2 s, vec4 f){ return vec2(f.z+(s.x-.5)*f.x, 1.-(f.w+(.5-s.y)*f.y)); }
+      vec2 toPic(vec2 s, vec4 f){ return vec2(f.z+(s.x-.5)*f.x, f.w+(.5-s.y)*f.y); }   // pictures are stored top row first
       vec3 pic(vec2 uv){
         vec2 m=1.-abs(mod(uv,2.)-1.);
         float e=max(max(-uv.x,uv.x-1.),max(-uv.y,uv.y-1.));
@@ -84,27 +85,28 @@ export function createFilm(renderer) {
 
   /* ---------- textures ---------- */
   const maxAniso = Math.min(8, renderer.capabilities.getMaxAnisotropy());
-  const img = new Image(), word = new Image();
-  let pic = null, name = '', imgOk = false, wordOk = false, tImg = null, tWord = null, aspect = 1.6;
-  word.decoding = 'async';
-  word.onload = () => { wordOk = true; };
-  word.src = new URL('./film/word-sdf.webp', import.meta.url).href;
+  // pictures are decoded off the main thread (ImageBitmap); without that, an <img> decoded ahead
+  const load = (file, cb) => {
+    const url = new URL(`./film/${file}.webp`, import.meta.url).href;
+    const viaImg = () => { const im = new Image(); im.decoding = 'async'; im.onload = () => (im.decode ? im.decode().catch(() => {}) : Promise.resolve()).then(() => cb(im)); im.src = url; };
+    if (canStream) decode(url).then(cb, viaImg); else viaImg();
+  };
+  let img = null, word = null, pic = null, name = '', file = '', tImg = null, tWord = null, aspect = 1.6, drawn = null;
+  load('word-sdf', b => { word = b; });
   function use(n) {
     if (n === name) return;
-    const same = pic && pic.file === PICS[n].file;
     name = n; pic = PICS[n];
-    if (same) return;
-    imgOk = false;
+    if (pic.file === file) return;
+    file = pic.file; img = null;
     if (tImg) { tImg.dispose(); tImg = null; }
-    img.decoding = 'async';
-    img.onload = () => { if (img.src.includes(pic.file)) imgOk = true; };
-    img.src = new URL(`./film/${pic.file}.webp`, import.meta.url).href;
+    const want = file;
+    load(want, b => { if (want === file) img = b; });
   }
   function textures() {
-    if (!imgOk || !wordOk) return false;
+    if (!img || !word) return false;
     if (!tImg) {
       tImg = new THREE.Texture(img);
-      tImg.colorSpace = THREE.NoColorSpace; tImg.generateMipmaps = true; tImg.minFilter = THREE.LinearMipmapLinearFilter; tImg.magFilter = THREE.LinearFilter;
+      tImg.colorSpace = THREE.NoColorSpace; tImg.flipY = false; tImg.generateMipmaps = true; tImg.minFilter = THREE.LinearMipmapLinearFilter; tImg.magFilter = THREE.LinearFilter;
       tImg.anisotropy = maxAniso; tImg.needsUpdate = true; renderer.initTexture(tImg); U.tImg.value = tImg;
     }
     if (!tWord) {
@@ -116,7 +118,7 @@ export function createFilm(renderer) {
   }
   // the window onto the picture for this screen: covers the screen if it can, always holds the safe box; z > 1 pushes in
   function framing(z, out) {
-    const ai = img.naturalWidth / img.naturalHeight;
+    const ai = (img.naturalWidth || img.width) / (img.naturalHeight || img.height);
     let ex, ey;
     if (aspect > ai) { ex = 1; ey = ai / aspect; } else { ey = 1; ex = aspect / ai; }
     const [x0, y0, x1, y1] = pic.safe;
@@ -129,12 +131,22 @@ export function createFilm(renderer) {
   }
 
   return {
-    use, get name() { return name; }, get ready() { return imgOk && wordOk; },
+    use, get name() { return name; }, get ready() { return !!(img && word); },
+    // compile the plate program in parallel before the pictures arrive
+    warm() {
+      return compileAhead(renderer, scene, cam)
+        .then(() => { const p = renderer.properties.get(mat).currentProgram; if (p) { p.getUniforms(); p.getAttributes(); } }).catch(() => {});
+    },
     setAspect(a, top) { aspect = a; U.uTop.value = top; U.uAsp.value = a; },
+    // true when the picture stands alone and would be drawn exactly as last time (the canvas keeps it)
+    unchanged(S, alpha) {
+      return drawn !== null && S >= FLIGHT[1] && drawn.u === 1 && drawn.alpha === alpha && drawn.aspect === aspect && drawn.top === U.uTop.value;
+    },
     // draws the intro for timeline value S at time t; alpha fades it (arrival and hand-over to the page)
     render(S, alpha, t) {
       if (!pic || !textures()) return false;
       const u = clamp((S - FLIGHT[0]) / (FLIGHT[1] - FLIGHT[0]));
+      drawn = { u, alpha, aspect, top: U.uTop.value };
       const e = 0.25 * u + 0.75 * sstep(0, 1, u);            // never quite still, so the first scroll answers at once
       // the word: 84 % of the width at rest (88 % on phones), its ink centred a touch above the middle
       const inkW = (WORD.box[2] - WORD.box[0]) * WORD.w, inkH = (WORD.box[3] - WORD.box[1]) * WORD.h;

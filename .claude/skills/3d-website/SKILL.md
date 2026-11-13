@@ -41,19 +41,24 @@ Texte, Preise und Angebote bleiben wörtlich, solange der Nutzer nichts anderes 
 
 ## 5. Leistung (Pflicht)
 
-- `devicePixelRatio` begrenzen: 1.75 am Desktop, 1.5 am Handy. Antialiasing am Handy aus.
+- `devicePixelRatio` begrenzen: Leinwand höchstens 2, die 3D-Szene dahinter intern 1.75 (Desktop) bzw. 1.5 (Handy) über ihren eigenen Render-Puffer. Die Leinwand ändert ihre Größe nie während des Scrollens (keine DPR-Umschaltung zwischen Abschnitten). MSAA nur bei Szenen-DPR unter 1.5.
 - Geometrie am Handy halbieren, kleinere Textur laden.
-- Rendern pausieren, wenn der Tab verborgen ist (`visibilitychange`).
-- Nur `transform` und `opacity` animieren. CSS-Animationen außerhalb des Sichtbereichs pausieren.
+- Rendern pausieren, wenn der Tab verborgen ist (`visibilitychange`). Sonst **jeden Frame** zeichnen (kein Halbtakt), im GSAP-Ticker nach den Tweens; nur ein unverändert stehendes Bild darf die Leinwand einfach behalten.
+- Kein Ruckler beim ersten Auftritt eines Objekts: Programme vorab kompilieren (`compileAhead`, parallel wo möglich) und ihren ersten Gebrauch vorziehen, Render-Targets mit `initRenderTarget` anlegen, einmal in ein 4×4-Ziel proben (Geometrie hochladen). Große Bilder mit `createImageBitmap` dekodieren und in Streifen hochladen (`assets/3d/gpu-upload.js`). `renderer.debug.checkShaderErrors` nur mit `?debug`.
+- Leinwand per CSS `100lvh` und Größe aus `canvas.clientWidth/Height`: Die Adressleiste am Handy löst dann keine Neuanlage aus. Scroll-Strecken mit einer stabilen Höhe rechnen (`100svh`-Element), nicht mit `innerHeight`.
+- Frame-Zeit-Regler: Kommen Frames zu spät, sinkt die interne Auflösung der 3D-Szene stufenweise. Prüfen auf dem Gerät mit `?fps`, Messen mit fester Auflösung mit `?gov=0`.
+- Nur `transform` und `opacity` animieren. CSS-Animationen außerhalb des Sichtbereichs pausieren, Timer (Slideshows, Wiederholungen) nur bei Sichtbarkeit laufen lassen.
+- Animationen **innerhalb** eines SVG (CSS-Rotation einer Gruppe, SMIL-Punkte) erzwingen jeden Frame Layout: Ein rotierendes Teil als eigenes SVG-Element drehen (Compositor), bewegte Punkte in eine versiegelte Box (`contain: strict`, feste Größe, `will-change: transform`) über das Bild legen.
 - `prefers-reduced-motion`: Zeit einfrieren, Kamera ohne Nachlauf setzen.
 - Ohne WebGL oder bei Kontextverlust: Klasse `no-3d` setzen und ein Standbild zeigen. Die Seite muss ohne 3D vollständig nutzbar sein.
 
 ## 6. Prüfen, bevor es fertig heißt
 
 1. Screenshots bei Scroll 0, 0.15, 0.35, 0.55, 0.8 und 1.0, je am Desktop (1440) und Handy (390). In Playwright braucht Chromium dafür `--use-angle=swiftshader --enable-unsafe-swiftshader`.
-2. An jedem Punkt: Ist der Text lesbar? Zeigt die Kamera etwas Sinnvolles, nicht nur Schwarz?
-3. Konsole ohne Fehler, `no-3d` nicht gesetzt.
-4. CSS nie mit Zeilen-Regex löschen. Nur ganze Regeln entfernen und danach die Klammerbilanz des Stylesheets prüfen.
+2. Leistung messen statt schätzen: einmal durchscrollen und je Frame JS-Zeit, GPU-Zeit (`EXT_disjoint_timer_query_webgl2`), blockierende GL-Aufrufe, Neuanlagen von Render-Targets, Long Animation Frames und Layouts pro Frame je Abschnitt (CDP `Performance.getMetrics`) erfassen. Ziel: nach dem Laden kein Frame über ca. 8 ms Hauptthread, kein Layout pro Frame außerhalb versiegelter Boxen.
+3. An jedem Punkt: Ist der Text lesbar? Zeigt die Kamera etwas Sinnvolles, nicht nur Schwarz?
+4. Konsole ohne Fehler, `no-3d` nicht gesetzt.
+5. CSS nie mit Zeilen-Regex löschen. Nur ganze Regeln entfernen und danach die Klammerbilanz des Stylesheets prüfen.
 
 ## Referenz
 

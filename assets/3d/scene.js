@@ -7,10 +7,16 @@
      11        the page: the earth only turns in the background
    Scroll: GSAP ScrollTrigger (assets/vendor) reads it, gsap.quickTo smooths S; without GSAP a plain
    scroll listener and an own easing do the same. The globe behind the page gets a light bloom (bloom.js).
-   Without WebGL the original AI picture (assets/img/hero-ai-1600.webp) stands in. */
+   Without WebGL the original AI picture (assets/img/hero-ai-1600.webp) stands in.
+   Smoothness: every frame is drawn, in the GSAP ticker right after the tweens (no frame skipping, no
+   one-frame lag); the canvas never changes size while scrolling (it is 100lvh, so a phone's address bar
+   does not resize it); programs are compiled in parallel and render targets allocated ahead; the earth
+   pictures are decoded off the main thread and uploaded in strips (gpu-upload.js); a governor lowers the
+   globe's internal resolution step by step when frames come late. ?fps shows the frame rate. */
 import * as THREE from './three.module.min.js';
 import { createFilm } from './film.js';
 import { createBloom } from './bloom.js';
+import { decode, canStream, stripUploader, compileAhead } from './gpu-upload.js';
 
 const canvas = document.getElementById('earth3d');
 const intro = document.getElementById('intro');
@@ -42,16 +48,21 @@ const ADD = { transparent: true, depthWrite: false, blending: THREE.AdditiveBlen
 
 let renderer;
 function start() {
-  // the intro gets the sharpest pixels (one picture quad); the globe behind the page less
+  // the canvas gets the sharpest pixels the intro needs (one picture quad) and keeps them: no resize on
+  // the way to the page. The globe behind the page is drawn at its own, lower resolution (bloom.js).
   const dev = window.devicePixelRatio || 1;
-  const FILM_DPR = Math.min(dev, 2), BG_DPR = Math.min(dev, small ? 1.5 : 1.75);
-  let dpr = FILM_DPR;
-  renderer.setPixelRatio(dpr);
+  const DPR = Math.min(dev, 2), BG_DPR = Math.min(dev, small ? 1.5 : 1.75);
+  renderer.setPixelRatio(DPR);
+  renderer.debug.checkShaderErrors = /[?&]debug\b/.test(location.search);   // the shaders are fixed; checking them costs a wait on the GPU
   renderer.setClearColor(0x02040b, 1);
   renderer.outputColorSpace = THREE.LinearSRGBColorSpace;   // shaders write display values directly
   renderer.autoClear = false;
-  const bloom = createBloom(renderer, small ? { levels: 3, scale: 0.34, msaa: 0, strength: 0.7, threshold: 0.6 } : { levels: 4, scale: 0.5, msaa: 4, strength: 0.85, threshold: 0.6 });
+  // multisampling only where pixels are big enough to show stair steps (a desktop screen at 1x)
+  const bloom = createBloom(renderer, small
+    ? { levels: 3, scale: 0.34, msaa: 0, strength: 0.7, threshold: 0.6, sceneScale: BG_DPR / DPR }
+    : { levels: 4, scale: 0.5, msaa: BG_DPR < 1.5 ? 4 : 0, strength: 0.85, threshold: 0.6, sceneScale: BG_DPR / DPR });
   const film = createFilm(renderer);
+  film.warm();
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(38, 1, 0.01, 400);
   const D2R = Math.PI / 180;
@@ -60,6 +71,7 @@ function start() {
   const EC = new THREE.Vector3(0, 0.1, 0);
   const rnd = rng(7);
 
+  const starDpr = { value: BG_DPR };
   /* ================= sky: black space, faint stars ================= */
   const sky = new THREE.Group(); scene.add(sky);
   {
@@ -71,7 +83,7 @@ function start() {
     }
     const g = new THREE.BufferGeometry(); g.setAttribute('position', new THREE.BufferAttribute(pos, 3)); g.setAttribute('aSize', new THREE.BufferAttribute(sz, 1));
     const st = new THREE.Points(g, new THREE.ShaderMaterial({
-      transparent: true, depthWrite: false, uniforms: { dpr: { value: BG_DPR } },
+      transparent: true, depthWrite: false, uniforms: { dpr: starDpr },
       vertexShader: `attribute float aSize; uniform float dpr; varying float vS;
         void main(){ vS=aSize; gl_PointSize=aSize*dpr; gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.); }`,
       fragmentShader: `varying float vS; void main(){ float d=length(gl_PointCoord-.5); float a=smoothstep(.5,.05,d); gl_FragColor=vec4(.86,.9,1.,a*(.16+.16*vS)); }`
@@ -94,11 +106,12 @@ function start() {
       void main(){
         vec3 N=normalize(vN), V=normalize(cameraPosition-vW), L=sunDir;
         float ndl=dot(N,L), mu=max(dot(N,V),0.);
-        vec3 ground=pow(texture2D(tDay,vUv).rgb,vec3(2.2));
+        vec2 uv=vec2(vUv.x,1.-vUv.y);   // the maps are stored top row first
+        vec3 ground=pow(texture2D(tDay,uv).rgb,vec3(2.2));
         float ocean=smoothstep(.03,.12,ground.b-max(ground.r,ground.g));
         ground=mix(ground,ground*vec3(.28,.45,.7),ocean*.75);                    // open ocean is darker than the map
-        float cl=smoothstep(.1,.9,texture2D(tClouds,vUv+vec2(uTime*.0009,0.)).r);  // clouds drift slowly
-        float sh=smoothstep(.1,.9,texture2D(tClouds,vUv+vec2(uTime*.0009+.0025,.0015)).r);
+        float cl=smoothstep(.1,.9,texture2D(tClouds,uv+vec2(uTime*.0009,0.)).r);  // clouds drift slowly
+        float sh=smoothstep(.1,.9,texture2D(tClouds,uv+vec2(uTime*.0009+.0025,-.0015)).r);
         // sunlight, reddened where it grazes through the air
         float tw=(1.-smoothstep(0.,.14,ndl))*smoothstep(-.08,.02,ndl);
         vec3 sun=mix(vec3(1.,.97,.93),vec3(1.,.5,.26),tw*.45);
@@ -110,7 +123,7 @@ function start() {
         col=mix(col,cloud,cl*.94);
         // night side: city lights, dimmed under clouds; cloud tops faintly lit by the moon
         float night=1.-smoothstep(-.16,.03,ndl);
-        vec3 lights=pow(max(texture2D(tNight,vUv).rgb-vec3(.055,.06,.11),0.)*1.15,vec3(2.2));   // the lights only, without the map's blue ground
+        vec3 lights=pow(max(texture2D(tNight,uv).rgb-vec3(.055,.06,.11),0.)*1.15,vec3(2.2));   // the lights only, without the map's blue ground
         col+=lights*vec3(1.,.92,.8)*2.6*uLights*night*(1.-cl*.8);
         col+=vec3(.003,.005,.009)*cl*night;
         // looking through the air: blue in-scatter toward the limb on the lit side, a warm band at dawn
@@ -193,9 +206,13 @@ function start() {
   /* ================= scroll -> timeline ================= */
   const HOLD = 1.3;   // the end frame stands for a longer stretch before the page arrives
   let introTop = 0, introLen = 1, S = reduce ? 11 : 0, target = S, auto = reduce ? 1 : 0, bgSpin = 0, lastY = scrollY, depth = 0, depthT = 0;
+  // the sticky view is 100svh: a stable height, unlike innerHeight while a phone's address bar moves
+  const view = intro && intro.querySelector('.intro__view');
+  let vh = innerHeight;
   function measure() {
     const on = intro && intro.offsetParent !== null && getComputedStyle(intro).display !== 'none';
-    if (on) { introTop = intro.getBoundingClientRect().top + scrollY; introLen = Math.max(1, intro.offsetHeight - innerHeight); }
+    vh = (on && view && view.offsetHeight) || innerHeight;
+    if (on) { introTop = intro.getBoundingClientRect().top + scrollY; introLen = Math.max(1, intro.offsetHeight - vh); }
     else { introTop = 0; introLen = 0; }
   }
   function readScroll() {
@@ -204,10 +221,10 @@ function start() {
     if (!introLen) target = 11;
     else {
       const f = (y - introTop) / introLen;
-      target = f <= 1 ? clamp(f * (10 + HOLD), 0, 10) : 10 + clamp((y - introTop - introLen) / (innerHeight * 0.8));
+      target = f <= 1 ? clamp(f * (10 + HOLD), 0, 10) : 10 + clamp((y - introTop - introLen) / (vh * 0.8));
     }
     // below the hero the page is text: the earth steps back a little
-    depthT = clamp((y - introTop - introLen - innerHeight * 1.2) / innerHeight);
+    depthT = clamp((y - introTop - introLen - vh * 1.2) / vh);
     bgSpin += (y - lastY) * 0.00025 * sstep(10.2, 11, S); lastY = y;
   }
   // GSAP ScrollTrigger reads the scroll (and re-measures on layout changes); quickTo smooths S
@@ -216,7 +233,7 @@ function start() {
   if (G && ST && intro && !reduce) {
     G.registerPlugin(ST);
     sTo = G.quickTo(prox, 's', { duration: 0.85, ease: 'power3.out' });
-    ST.create({ trigger: intro, start: 'top top', endTrigger: '#start', end: 'bottom top', onUpdate: onScroll, onRefresh: () => { measure(); onScroll(); } });
+    ST.create({ trigger: intro, start: 'top top', endTrigger: '#start', end: 'bottom top', onRefresh: () => { measure(); onScroll(); } });
   }
   function onScroll() {
     readScroll();
@@ -226,32 +243,72 @@ function start() {
   }
   addEventListener('scroll', onScroll, { passive: true });
 
+  // sized by the canvas box (100vw x 100lvh): a phone's address bar showing or hiding changes innerHeight,
+  // not the canvas, so nothing is reallocated while scrolling
+  let cw = 0, ch = 0;
   function resize() {
-    const w = innerWidth, h = innerHeight; renderer.setSize(w, h, false); bloom.setSize();
-    aspect = w / h; fovV = mix(58, 38, sstep(0.6, 1.4, aspect));
-    camera.aspect = aspect; camera.fov = fovV; camera.updateProjectionMatrix();
-    // the film fills the screen under the opaque header
-    const top = nav ? Math.min(nav.offsetHeight, h * 0.2) : 0;
-    film.use(aspect < 0.95 ? 'tall' : 'wide');
-    film.setAspect(w / (h - top), top / h);
-    measure(); evalShots(); readScroll();
+    const w = canvas.clientWidth || innerWidth, h = canvas.clientHeight || innerHeight;
+    if (w !== cw || h !== ch) {
+      cw = w; ch = h;
+      renderer.setSize(w, h, false); bloom.setSize();
+      if (warmed) bloom.warm().catch(() => {});
+      aspect = w / h; fovV = mix(58, 38, sstep(0.6, 1.4, aspect));
+      camera.aspect = aspect; camera.fov = fovV; camera.updateProjectionMatrix();
+      // the film fills the screen under the opaque header
+      const top = nav ? Math.min(nav.offsetHeight, h * 0.2) : 0;
+      film.use(aspect < 0.95 ? 'tall' : 'wide');
+      film.setAspect(w / (h - top), top / h);
+      evalShots();
+    }
+    measure(); readScroll();
   }
+  let warmed = false;
   addEventListener('resize', resize);
   resize();
   S = prox.s = target;
 
-  // the earth pictures are needed only behind the page: loaded once the intro stands
-  (window.requestIdleCallback || (f => setTimeout(f, 600)))(() => {
-    const k = small ? '2k' : '4k', aniso = Math.min(8, renderer.capabilities.getMaxAnisotropy());
-    let left = 3;
-    const load = (name, key) => {
-      const tex = new THREE.TextureLoader().load(new URL(`./earth-${name}-${k}.webp`, import.meta.url).href, () => { if (--left === 0) ready = true; });
-      tex.colorSpace = THREE.NoColorSpace; tex.anisotropy = aniso; tex.wrapS = THREE.RepeatWrapping;
-      EU[key].value = tex;
-    };
-    load('day', 'tDay'); load('night', 'tNight'); load('clouds', 'tClouds');
+  // ahead of the hand-over: compile every program in parallel and allocate the render targets, so the
+  // first frame of the globe does not stall
+  const idle = window.requestIdleCallback || (f => setTimeout(f, 400));
+  // a program's first use reads back its uniforms and attributes (a wait on the GPU): done here as well
+  const firstUse = list => list.forEach(m => { const p = renderer.properties.get(m).currentProgram; if (p) { p.getUniforms(); p.getAttributes(); } });
+  const mats = o => { const m = []; o.traverse(x => { if (x.material) m.push(x.material); }); return m; };
+  idle(() => {
+    update3d(10.6, 0);
+    compileAhead(renderer, scene, camera).then(() => {
+      firstUse(mats(scene));
+      // a dress rehearsal into a 4 x 4 target uploads the geometry and binds everything once
+      const rt = new THREE.WebGLRenderTarget(4, 4, { type: THREE.HalfFloatType });
+      renderer.setRenderTarget(rt); renderer.render(scene, camera); renderer.setRenderTarget(null); rt.dispose();
+    }).catch(() => {});
+    bloom.warm().then(() => firstUse(bloom.materials)).catch(() => {});
+    warmed = true;
+  }, { timeout: 1500 });
+  // the earth pictures are needed only behind the page: loaded once the intro stands, decoded off the
+  // main thread and uploaded a strip per frame (see frame())
+  const uploads = [], earthTex = [];
+  const maps = [['day', 'tDay'], ['night', 'tNight'], ['clouds', 'tClouds']];
+  const mapUrl = n => new URL(`./earth-${n}-${small ? '2k' : '4k'}.webp`, import.meta.url).href;
+  const aniso = Math.min(8, renderer.capabilities.getMaxAnisotropy());
+  let ready = false, readyAt = 0;
+  const isReady = () => { ready = true; readyAt = performance.now(); };
+  // older browsers, or when streaming fails: one upload per map, done as soon as it is loaded rather
+  // than on the first globe frame
+  function viaLoader() {
+    uploads.forEach(u => u.dispose()); uploads.length = 0;
+    let left = maps.length;
+    maps.forEach(([n, key]) => {
+      const tex = new THREE.TextureLoader().load(mapUrl(n), () => { renderer.initTexture(tex); if (--left === 0) isReady(); });
+      tex.colorSpace = THREE.NoColorSpace; tex.flipY = false; tex.anisotropy = aniso; tex.wrapS = THREE.RepeatWrapping;
+      EU[key].value = tex; earthTex.push(tex);
+    });
+  }
+  idle(() => {
+    if (!canStream) return viaLoader();
+    Promise.all(maps.map(([n]) => decode(mapUrl(n)))).then(bitmaps => {
+      bitmaps.forEach((b, i) => { const up = stripUploader(renderer, b, { rows: small ? 128 : 96, repeatS: true, aniso }); EU[maps[i][1]].value = up.texture; uploads.push(up); earthTex.push(up); });
+    }, viaLoader);
   }, { timeout: 2500 });
-  let ready = false;
 
   /* ================= per frame ================= */
   const sunAlpha = track([[10, -10], [11, -48]]), sunLight = track([[10, 20], [11, 34]]), burstK = track([[10, 0.7], [11, 0.38]]);   // the sun stands just behind the limb: a lit crescent, the rest night
@@ -280,7 +337,7 @@ function start() {
     EU.uDay.value = 1 - 0.35 * depth;
     if (s > 10.3) bgSpin += dt * 0.032 * (reduce ? 0 : 1) * sstep(10.3, 11, s);
     earth.rotation.y = 3.5 + bgSpin + T.value * 0.004;
-    if (ready && EU.uReady.value < 1) EU.uReady.value = Math.min(1, EU.uReady.value + dt * 1.5);
+    EU.uReady.value = readyAt ? sstep(0, 700, performance.now() - readyAt) : 0;   // fades in over real time once the maps are up
     shotAt(s - 10);
     camera.position.copy(camPos); camera.up.copy(camU); camera.lookAt(look.copy(camPos).add(camF));
     camera.updateMatrixWorld();
@@ -288,11 +345,51 @@ function start() {
     sun(sunAlpha(s), sunLight(s), burstK(s) * (1 - 0.5 * depth));
   }
 
-  let visible = !document.hidden, last = performance.now(), born = 0, frames = 0, odd = false;
-  document.addEventListener('visibilitychange', () => { visible = !document.hidden; if (visible) { last = performance.now(); requestAnimationFrame(frame); } });
+  /* ================= frame-time governor: the globe's resolution follows what the GPU manages =================
+     The display's frame time is what frames take when they come in time (a low percentile of recent
+     intervals; 60 Hz at most). When the median runs clearly above it while the globe is drawn, the
+     globe's internal resolution steps down; after a calm stretch it tries one step up again. */
+  const gov = { hist: [], last: 0, down: 0, min: small ? 0.6 : 0.55, off: /[?&]gov=0\b/.test(location.search) };   // ?gov=0: fixed resolution, for measuring
+  function governor(now, ms) {
+    if (S <= 10.02 || reduce || gov.off) { gov.hist.length = 0; return; }
+    gov.hist.push(ms); if (gov.hist.length > 90) gov.hist.shift();
+    if (gov.hist.length < 45 || now - gov.last < 1500) return;
+    const h = gov.hist.slice().sort((a, b) => a - b);
+    const vsync = clamp(h[Math.floor(h.length * 0.15)], 6.9, 16.9), med = h[h.length >> 1];
+    let q = bloom.quality;
+    if (med > vsync * 1.3 && q > gov.min) { q = Math.max(gov.min, q * 0.85); gov.down = now; }
+    else if (med < vsync * 1.08 && q < 1 && now - gov.down > 8000) q = Math.min(1, q / 0.85);
+    else return;
+    bloom.setQuality(q); starDpr.value = bloom.pixelRatio;
+    gov.last = now; gov.hist.length = 0;
+  }
+
+  /* ================= ?fps: frame rate overlay for checking on a real device ================= */
+  const meter = /[?&]fps\b/.test(location.search) ? (() => {
+    const el = document.createElement('div');
+    el.style.cssText = 'position:fixed;left:8px;top:84px;z-index:9999;padding:6px 9px;border-radius:8px;background:rgb(0 0 0 / .72);color:#8fe3ff;font:12px/1.35 ui-monospace,Menlo,monospace;pointer-events:none;white-space:pre';
+    document.body.append(el);
+    const ms = []; let t0 = performance.now(), n = 0;
+    return now => {
+      n++; ms.push(now - (ms.t || now)); ms.t = now; if (ms.length > 240) ms.shift();
+      if (now - t0 < 500) return;
+      const h = ms.slice(1).sort((a, b) => a - b), p = f => (h[Math.floor(h.length * f)] || 0).toFixed(1);
+      el.textContent = `${Math.round(n * 1000 / (now - t0))} fps\n${p(0.5)} ms · p95 ${p(0.95)} ms\nErde ${Math.round(bloom.pixelRatio * 100) / 100}x`;
+      t0 = now; n = 0;
+    };
+  })() : null;
+
+  let visible = !document.hidden, last = performance.now(), born = 0, frames = 0, filmOnly = false;
+  document.addEventListener('visibilitychange', () => { visible = !document.hidden; if (visible) last = performance.now(); });
   function frame(now) {
     if (!visible) return;
-    const dt = Math.min(0.05, (now - last) / 1000); last = now;
+    const ms = now - last;
+    const dt = Math.min(0.05, ms / 1000); last = now;
+    if (meter) meter(now);
+    governor(now, ms);
+    // the earth pictures go up a strip per frame, one picture after the other
+    if (uploads.length && uploads[0].step()) { uploads.shift(); if (!uploads.length) isReady(); }
+    else if (uploads.length && uploads[0].failed) viaLoader();
     if (!reduce) T.value += dt;
     if (!born && film.ready) born = now;   // the word arrives once its pictures are there
     auto = reduce || S > 10.02 ? 1 : born ? sstep(80, 1900, now - born) : 0;
@@ -302,20 +399,17 @@ function start() {
       S += (target - S) * (reduce ? 1 : 1 - Math.pow(0.006, dt));
       if (Math.abs(target - S) < 1e-4) S = target;
     }
-    // behind the page the globe only turns: half the frame rate is enough there
-    const resting = S > 10.98 && Math.abs(target - S) < 1e-3;
-    if (!(resting && (odd = !odd))) {
-      const want = S < 10.65 ? FILM_DPR : BG_DPR;
-      if (want !== dpr) { dpr = want; renderer.setPixelRatio(dpr); renderer.setSize(innerWidth, innerHeight, false); bloom.setSize(); }
-      renderer.setRenderTarget(null); renderer.clear();
-      const filmAlpha = Math.min(auto, 1 - sstep(10.04, 10.5, S));
-      if (S > 10.02) { update3d(S, resting ? dt * 2 : dt); bloom.fade.value = sstep(10.12, 10.6, S); bloom.render(scene, camera); }
-      let drawn = false;
-      if (filmAlpha > 0.002) drawn = film.render(S, filmAlpha, T.value);
-      if (drawn || S > 10.02) { if (++frames === 2) canvas.classList.add('is-ready'); }
-    }
+    // every frame is drawn (the globe turns and follows the scroll at the display's full rate), except
+    // while the intro picture stands complete and unchanged: then the canvas simply keeps it
+    const filmAlpha = Math.min(auto, 1 - sstep(10.04, 10.5, S));
+    if (filmOnly && S <= 10.02 && filmAlpha > 0.002 && film.unchanged(S, filmAlpha)) { syncUi(); return; }
+    renderer.setRenderTarget(null); renderer.clear();
+    if (S > 10.02) { update3d(S, dt); bloom.fade.value = sstep(10.12, 10.6, S); bloom.render(scene, camera); }
+    let drawn = false;
+    if (filmAlpha > 0.002) drawn = film.render(S, filmAlpha, T.value);
+    if (drawn || S > 10.02) { if (++frames === 2) canvas.classList.add('is-ready'); }
+    filmOnly = drawn && S <= 10.02;   // only a frame of the picture alone may be kept as it is
     syncUi();
-    requestAnimationFrame(frame);
   }
   let uiP = -1;
   function syncUi() {
@@ -327,18 +421,20 @@ function start() {
     root.classList.toggle('film-done', S > 9.6);
     root.classList.toggle('film-over', S > 10.3);
   }
-  requestAnimationFrame(frame);
+  // driven by the GSAP ticker when it is there: S (quickTo) is updated first, then drawn, in the same frame
+  if (G) G.ticker.add(() => frame(performance.now()));
+  else { const loop = t => { frame(t); requestAnimationFrame(loop); }; requestAnimationFrame(loop); }
   renderer.domElement.addEventListener('webglcontextlost', e => { e.preventDefault(); fail(); });
   // free the GPU when the page goes away (kept when it is only parked for back/forward)
   addEventListener('pagehide', e => {
     if (e.persisted) return;
     visible = false;
     scene.traverse(o => { if (o.geometry) o.geometry.dispose(); const m = o.material; if (m) (Array.isArray(m) ? m : [m]).forEach(x => { if (x.map) x.map.dispose(); x.dispose(); }); });
-    ['tDay', 'tNight', 'tClouds'].forEach(k => EU[k].value && EU[k].value.dispose());
+    earthTex.forEach(t => t.dispose());
     film.dispose(); bloom.dispose(); renderer.dispose();
   });
   window.__scene = {
-    get S() { return S; }, get target() { return target; },
+    get S() { return S; }, get target() { return target; }, get ready() { return ready; }, get uploading() { return uploads.length; }, get quality() { return bloom.quality; }, get fadeIn() { return EU.uReady.value; },
     set: s => { target = S = prox.s = s; if (sTo) sTo(s, s); },
     snap: () => { readScroll(); S = prox.s = target; if (sTo) sTo(target, target); }
   };

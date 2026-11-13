@@ -490,6 +490,18 @@ main > section#buero, main > section#ki { height: auto !important; }
   radial-gradient(60% 70% at 50% 50%, #12405a 0%, transparent 70%),
   radial-gradient(40% 50% at 85% 20%, #0f3348 0%, transparent 70%), var(--board); }
 .glow-board svg { display: block; width: 100%; height: auto; }
+/* performance: the moving parts sit on their own layers above the still picture (same viewBox, same
+   cell), so the light points and the turning rings never lay out or repaint the picture with its
+   filters and texts. The rings turn as whole elements, on the compositor. */
+.glow-board { position: relative; }
+.glow-board > .gl-ring { position: absolute; width: auto; pointer-events: none; animation: spin 24s linear infinite; will-change: transform; }
+.glow-board > .gl-ring--2 { animation-duration: 40s; animation-direction: reverse; }
+.gl-ring .gl-core-ring { animation: none; }
+/* the light points' layer: a sealed box of fixed size over its picture, so their movement is laid out
+   inside the box only (contain: strict makes it a layout boundary) and painted on its own layer */
+.fx-box { position: absolute; contain: strict; pointer-events: none; will-change: transform; }
+.fx-box > svg { display: block; width: 100%; height: 100%; max-width: none; margin: 0; }
+.flow--big { position: relative; }
 .gl-wire { fill: none; stroke-width: 2.2; stroke-linecap: round; opacity: .85; }
 .gl-wire-glow { fill: none; stroke-width: 8; opacity: .18; }
 .gl-src rect, .gl-out rect { fill: #0f2b3a; stroke: #2d5a70; stroke-width: 1.2; }
@@ -574,7 +586,7 @@ main > section#buero, main > section#ki { height: auto !important; }
 @media (prefers-reduced-motion: reduce) {
   .js [data-reveal], .js .route li, .js .route li .stop, .js .hero__text > *, .js .hero-map .stations, .js .hero-map .labels { opacity: 1 !important; transform: none !important; animation: none !important; transition: none !important; }
   .js .hero-map .ln { animation: none; stroke-dashoffset: 0; }
-  .dm-chat, .gl-core-ring, .gl-orbit, .demo.is-on .wf > *, .ck-live i, .ck-type i { animation: none !important; }
+  .dm-chat, .gl-core-ring, .gl-ring, .gl-orbit, .demo.is-on .wf > *, .ck-live i, .ck-type i { animation: none !important; }
 }
 @media (max-width: 1023px) {
   .stage-dev { min-height: 480px; margin-top: var(--s-7); }
@@ -667,6 +679,7 @@ body { background: #02040b; }
 .intro__hint i { display: block; width: 1px; height: 44px; background: linear-gradient(#8fe3ff, rgb(143 227 255 / 0)); transform-origin: top; animation: intro-hint 2.4s var(--ease-out) infinite; }
 @keyframes intro-hint { 0% { transform: scaleY(0); opacity: 1; } 55% { transform: scaleY(1); opacity: 1; } 100% { transform: scaleY(1); opacity: 0; } }
 .film-moved .intro__hint { opacity: 0; }
+.film-moved .intro__hint i { animation-play-state: paused; }
 .intro__skip { position: absolute; right: max(24px, calc((100vw - 1280px) / 2)); bottom: calc(26px + env(safe-area-inset-bottom)); pointer-events: auto; white-space: nowrap; display: inline-flex; align-items: center; height: 40px; padding: 0 16px; border-radius: 999px; font: 500 14px/1 var(--font-text); color: #dceaf1; background: linear-gradient(155deg, rgb(160 205 255 / .1), rgb(10 22 50 / .45)); border: 1px solid rgb(150 205 255 / .3); box-shadow: inset 0 1px 0 rgb(215 240 255 / .16); transition: opacity .4s var(--ease-out), border-color .16s var(--ease-out), transform .12s var(--ease-out); }
 .intro__skip:active { transform: scale(.97); }
 @media (hover: hover) and (pointer: fine) { .intro__skip:hover { border-color: rgb(150 215 255 / .7); } }
@@ -1158,6 +1171,40 @@ body { background: #02040b; }
     document.querySelectorAll('main > section, footer.closing').forEach(function (el) { io.observe(el); });
   })();
 
+  /* performance: in the flow diagrams the moving light points get their own layer (a sealed box exactly
+     over the picture), so their movement does not lay out the diagram with its texts, or the page, in
+     every frame */
+  function fxLayer(base, fx, fill) {
+    var box = document.createElement('div'), host = base.parentNode;
+    box.className = 'fx-box'; box.setAttribute('aria-hidden', 'true'); box.appendChild(fx); host.appendChild(box);
+    /* a point that starts later would wait in the corner until then: start it already under way, in the same phase */
+    Array.prototype.forEach.call(fx.querySelectorAll('animateMotion[begin]'), function (m) {
+      var bg = parseFloat(m.getAttribute('begin')), dur = parseFloat(m.getAttribute('dur'));
+      if (bg > 0 && dur > 0) m.setAttribute('begin', (bg - dur * Math.ceil(bg / dur)).toFixed(2) + 's');
+    });
+    if (fill) { box.style.inset = '0'; return; }
+    var place = function () {
+      var r = base.getBoundingClientRect(), h = host.getBoundingClientRect();
+      if (!r.width) { box.style.display = 'none'; return; }
+      box.style.display = '';
+      box.style.left = (r.left - h.left - host.clientLeft) + 'px'; box.style.top = (r.top - h.top - host.clientTop) + 'px';
+      box.style.width = r.width + 'px'; box.style.height = r.height + 'px';
+    };
+    place();
+    if (typeof ResizeObserver === 'function') { var ro = new ResizeObserver(place); ro.observe(base); ro.observe(host); }
+    else window.addEventListener('resize', place);
+  }
+  document.querySelectorAll('.flow svg').forEach(function (sv) {
+    var pts = sv.querySelectorAll('circle.pulse');
+    if (!pts.length) return;
+    if (reduce) { Array.prototype.forEach.call(pts, function (c) { c.remove(); }); return; }   /* reduced motion: no moving points */
+    var fx = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    fx.setAttribute('viewBox', sv.getAttribute('viewBox'));
+    fx.setAttribute('preserveAspectRatio', sv.getAttribute('preserveAspectRatio') || 'xMidYMid meet');
+    Array.prototype.forEach.call(pts, function (c) { fx.appendChild(c); });
+    fxLayer(sv, fx);
+  });
+
 
   /* stars */
   var st = document.getElementById('stars');
@@ -1187,7 +1234,9 @@ body { background: #02040b; }
       steps.forEach(function (s, i) { setTimeout(function () { s.classList.add('is-in'); }, 500 + i * 900); });
       setTimeout(function () { card.classList.remove('is-replaying'); }, 500 + steps.length * 900);
     };
-    setTimeout(play, 600); setInterval(play, 9000);
+    var chatTimer = 0, chatOn = function (on) { clearInterval(chatTimer); chatTimer = 0; if (on) { play(); chatTimer = setInterval(play, 9000); } };
+    if ('IntersectionObserver' in window) new IntersectionObserver(function (es) { chatOn(es[es.length - 1].isIntersecting); }).observe(card);   /* replays only while it can be seen */
+    else { setTimeout(play, 600); setInterval(play, 9000); }
   }
 
   /* line tabs (click only) */
@@ -1289,8 +1338,6 @@ body { background: #02040b; }
     var ticks = '';
     for (var t = 0; t < 60; t++) { var an = t / 60 * 6.283, r1 = R + 26, r2 = R + (t % 5 === 0 ? 36 : 31); ticks += '<line x1="' + (cx + r1 * Math.cos(an)).toFixed(1) + '" y1="' + (cy + r1 * Math.sin(an)).toFixed(1) + '" x2="' + (cx + r2 * Math.cos(an)).toFixed(1) + '" y2="' + (cy + r2 * Math.sin(an)).toFixed(1) + '"/>'; }
     var core = '<circle cx="' + cx + '" cy="' + cy + '" r="' + (R + 40) + '" fill="#2fa8e6" opacity=".35" filter="url(#gblur)"/>' +
-      '<g class="gl-core-ring" style="transform-box:view-box;transform-origin:' + cx + 'px ' + cy + 'px" stroke="#8fe3ff" stroke-width="1.2" opacity=".55">' + ticks + '</g>' +
-      '<circle class="gl-core-ring gl-core-ring--2" cx="' + cx + '" cy="' + cy + '" r="' + (R + 14) + '"/>' +
       '<circle cx="' + cx + '" cy="' + cy + '" r="' + R + '" fill="url(#core)"/>' +
       '<g clip-path="url(#coreclip)" stroke="#bff3ff" stroke-width=".7" opacity=".55">' + mesh + '</g><g clip-path="url(#coreclip)" opacity=".9">' + dots + '</g>' +
       '<circle cx="' + cx + '" cy="' + cy + '" r="' + R + '" fill="none" stroke="#c9f5ff" stroke-width="2" filter="url(#gline)"/>' +
@@ -1324,7 +1371,19 @@ body { background: #02040b; }
       '<circle cx="' + ax + '" cy="' + ay + '" r="30" fill="#0e2a3a" stroke="#8fe3ff" stroke-width="1.6" filter="url(#gline)"/>' +
       '<circle cx="' + ax + '" cy="' + (ay - 7) + '" r="9" fill="#8fe3ff"/><path d="M' + (ax - 16) + ' ' + (ay + 18) + 'c2-11 30-11 32 0" fill="#8fe3ff"/>' +
       '<text x="' + ax + '" y="' + (ay + 70) + '" text-anchor="middle" font-family="Bricolage, sans-serif" font-weight="700" font-size="14" fill="#fff">Ihr Kunde</text>';
-    host.innerHTML = '<svg viewBox="0 0 ' + W + ' ' + (narrow ? ay + 90 : H + 40) + '" aria-hidden="true">' + defs + o + wires + core + nodes + panel + person + (reduce ? '' : pulses) + '</svg>';
+    var VH = narrow ? ay + 90 : H + 40, vb = '0 0 ' + W + ' ' + VH;
+    /* the turning rings: each its own small svg over the core, turned as a whole element */
+    var rr = R + 40, ringBox = function (cls, inner) {
+      return '<svg class="gl-ring' + cls + '" viewBox="0 0 ' + 2 * rr + ' ' + 2 * rr + '" aria-hidden="true" style="left:' + ((cx - rr) / W * 100) + '%;top:' + ((cy - rr) / VH * 100) + '%;width:' + (2 * rr / W * 100) + '%;height:' + (2 * rr / VH * 100) + '%">' +
+        '<g transform="translate(' + (rr - cx) + ' ' + (rr - cy) + ')">' + inner + '</g></svg>';
+    };
+    var rings = ringBox('', '<g class="gl-core-ring" stroke="#8fe3ff" stroke-width="1.2" opacity=".55">' + ticks + '</g>') +
+      ringBox(' gl-ring--2', '<circle class="gl-core-ring gl-core-ring--2" cx="' + cx + '" cy="' + cy + '" r="' + (R + 14) + '"/>');
+    /* the light points: their own svg with copies of the paths they run along */
+    var paths = ''; (wires).replace(/<path id="(g[^"]+)" d="([^"]+)"/g, function (m, id, d) { paths += '<path id="fx-' + id + '" d="' + d + '"/>'; return m; });
+    var fx = reduce ? '' : '<svg class="glow-fx" viewBox="' + vb + '" aria-hidden="true"><defs>' + paths + '</defs>' + pulses.replace(/href="#g/g, 'href="#fx-g') + '</svg>';
+    host.innerHTML = '<svg viewBox="' + vb + '" aria-hidden="true">' + defs + o + wires + core + nodes + panel + person + '</svg>' + fx + rings;
+    var fxs = host.querySelector('.glow-fx'); if (fxs) fxLayer(host.firstChild, fxs, true);   /* the picture fills the board */
   }
   drawGlow(); window.addEventListener('resize', drawGlow);
 
@@ -1355,8 +1414,19 @@ body { background: #02040b; }
     document.querySelectorAll('[data-demos]').forEach(function (vp) { vp.querySelectorAll('.demo').forEach(function (d, j) { d.classList.toggle('is-on', i === j); }); });
     wsBtns.forEach(function (b, j) { b.setAttribute('aria-pressed', i === j); });
   }
-  function wsAuto() { clearInterval(wsTimer); if (!reduce) wsTimer = setInterval(function () { wsShow((wsI + 1) % DEMOS.length); }, 5500); }
+  var wsSeen = !('IntersectionObserver' in window);
+  function wsAuto() { clearInterval(wsTimer); wsTimer = 0; if (!reduce && wsSeen) wsTimer = setInterval(function () { wsShow((wsI + 1) % DEMOS.length); }, 5500); }
   wsBtns.forEach(function (b) { b.addEventListener('click', function () { wsShow(+b.dataset.ws); wsAuto(); }); });
+  /* the slideshow runs only while it can be seen */
+  if (!wsSeen) {
+    var wsVp = document.querySelectorAll('[data-demos]');
+    var wsIo = new IntersectionObserver(function (es) {
+      es.forEach(function (e) { e.target.__seen = e.isIntersecting; });
+      var seen = Array.prototype.some.call(wsVp, function (v) { return v.__seen; });
+      if (seen !== wsSeen) { wsSeen = seen; wsAuto(); }
+    });
+    Array.prototype.forEach.call(wsVp, function (v) { wsIo.observe(v); });
+  }
   wsAuto();
 
   /* reveal on scroll, once; route stations light up in order */
