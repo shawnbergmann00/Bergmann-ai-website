@@ -209,7 +209,7 @@ One cold accent on a blue-black ground, plus two line colors that exist only to 
 
 One 1280px container with 80px gutters at desktop (48px at 640 to 1023, 24px on phones). Spacing follows a 4/8 scale (s-1 to s-10). Sections are padded 120px above and 72px below (96/48 on phones) and grow with their content below 1024px.
 
-The hero fills the viewport: centered heading, lead and two buttons over a planet arc anchored to the bottom. Boards sit on a 12-column grid (for example chips at 5 columns beside a 7-column board). Routes run horizontally in four stops at desktop and turn into a vertical line with stops on the left below 900px; the riding train is hidden there. Price offers are rows with hairlines, reflowing at 1024 and 640px. Breakpoints in use: 480, 640, 900, 1024px.
+A scroll film comes first (#intro, no text): a glowing brain breaks into data particles, they form the earth, the camera flies to the horizon, and the glass AI letters on their pedestal close it as the end frame (the original AI picture). Then the hero fills the viewport: centered heading, lead and two buttons over the globe, which from here on only turns behind the page. Boards sit on a 12-column grid (for example chips at 5 columns beside a 7-column board). Routes run horizontally in four stops at desktop and turn into a vertical line with stops on the left below 900px; the riding train is hidden there. Price offers are rows with hairlines, reflowing at 1024 and 640px. Breakpoints in use: 480, 640, 900, 1024px.
 
 The tech line-art background starts below the hero, masked in at the top and out at the bottom, at 50% opacity (38% on phones).
 
