@@ -29,17 +29,17 @@ const SETS = {
     files: ['wide-1', 'wide-2', 'wide-3', 'wide-4', 'wide-5', 'wide-6'],
     shots: [
       // 1-2 the brain appears and lights up
-      { f: 0, a: -1, b: 2.6, safe: [0.1, 0, 0.9, 1], c: [0.51, 0.45, 0.42], zoom: [[0, 1], [0.95, 1.08], [1, 1.09]], exp: [[0, 1], [0.45, 1], [0.75, 1.2], [0.9, 1.28], [1, 1.22]] },
+      { f: 0, a: -1, b: 2.6, safe: [0.26, 0.04, 0.76, 1], c: [0.51, 0.45, 0.42], zoom: [[0, 1], [0.95, 1.08], [1, 1.09]], exp: [[0, 1], [0.45, 1], [0.75, 1.2], [0.9, 1.28], [1, 1.22]] },
       // 3 it breaks into data
-      { f: 1, a: 2.15, b: 3.65, safe: [0.1, 0.04, 0.92, 1], c: [0.42, 0.45, 0.4], zoom: [[0, 1.06], [1, 1.0]], panX: [[0, -0.02], [1, 0.04]], tr: { luma: 0.75, glow: 0.3 } },
+      { f: 1, a: 2.15, b: 3.65, safe: [0.2, 0.06, 0.86, 1], c: [0.42, 0.45, 0.4], zoom: [[0, 1.06], [1, 1.0]], panX: [[0, -0.02], [1, 0.04]], tr: { luma: 0.75, glow: 0.3 } },
       // 4 the data gathers into a sphere
-      { f: 2, a: 3.2, b: 4.95, safe: [0.12, 0.04, 0.86, 0.98], c: [0.56, 0.5, 0.45], zoom: [[0, 1.0], [1, 1.06]], panX: [[0, -0.05], [0.35, 0], [1, 0.01]], tr: { luma: 0.6, glow: 0.25 } },
+      { f: 2, a: 3.2, b: 4.95, safe: [0.25, 0.05, 0.75, 0.98], c: [0.56, 0.5, 0.45], zoom: [[0, 1.0], [1, 1.06]], panX: [[0, -0.05], [0.35, 0], [1, 0.01]], tr: { luma: 0.6, glow: 0.25 } },
       // 5-6 the earth appears and turns, then the camera flies at it
-      { f: 3, a: 4.45, b: 7.0, safe: [0.2, 0.04, 0.8, 0.97], c: [0.5, 0.5, 0.45], zoom: [[0, 0.98], [0.78, 1.1], [1, 2.4]], panY: [[0, 0], [0.78, 0], [1, -0.24]], tr: { luma: 0.65, glow: 0.25 } },
+      { f: 3, a: 4.45, b: 7.0, safe: [0.3, 0.04, 0.72, 0.97], c: [0.5, 0.5, 0.45], zoom: [[0, 0.98], [0.78, 1.1], [1, 2.4]], panY: [[0, 0], [0.78, 0], [1, -0.24]], tr: { luma: 0.65, glow: 0.25 } },
       // 7-8 the horizon, the camera eases back, then flies into the sun
-      { f: 4, a: 6.4, b: 8.85, safe: [0.08, 0.15, 0.92, 0.85], c: [0.5, 0.35, 0.3], zoom: [[0, 0.82], [0.28, 1.06], [0.755, 1.0], [1, 1.5]], panY: [[0, 0], [0.755, 0], [1, -0.15]], tr: { luma: 0.4, blur: 0.14, glow: 0.12 } },
+      { f: 4, a: 6.4, b: 8.85, safe: [0.15, 0.2, 0.85, 0.8], c: [0.5, 0.35, 0.3], zoom: [[0, 0.82], [0.28, 1.06], [0.755, 1.0], [1, 1.5]], panY: [[0, 0], [0.755, 0], [1, -0.15]], tr: { luma: 0.4, blur: 0.14, glow: 0.12 } },
       // 9-10 out of the sun the camera pulls back, AI forms: the end frame (the original picture)
-      { f: 5, a: 8.25, b: 10.7, safe: [0.05, 0.12, 0.95, 0.85], c: [0.66, 0.45, 0.3], zoom: [[0, 1.6], [0.24, 1.42], [0.72, 1.0], [1, 1.0]], panX: [[0, -0.24], [0.24, -0.19], [0.72, 0], [1, 0]], panY: [[0, -0.065], [0.72, 0], [1, 0]], tr: { luma: 0.55, glow: 0.3 } }
+      { f: 5, a: 8.25, b: 10.7, safe: [0.1, 0.12, 0.9, 0.85], c: [0.66, 0.45, 0.3], zoom: [[0, 1.6], [0.24, 1.42], [0.72, 1.0], [1, 1.0]], panX: [[0, -0.24], [0.24, -0.19], [0.72, 0], [1, 0]], panY: [[0, -0.065], [0.72, 0], [1, 0]], tr: { luma: 0.55, glow: 0.3 } }
     ]
   },
   tall: {
@@ -160,7 +160,7 @@ export function createFilm(renderer, { taps = 7, particles = 1800, dpr = 1 } = {
         vK=step(.93,aR.w);   // a few bigger star sparks
         float size=(vK>.5?.03:.007+.006*aR.z)*(1.+uW.w*2.5);
         gl_PointSize=clamp(size*uH*uDpr/-mv.z,1.,40.);
-        vA=tw*uAlpha*(.28*wd0+.9*uW.x+.8*uW.y+.85*uW.z+.9*uW.w+.9*uW2.y)*(vK>.5?1.3:1.);
+        vA=tw*uAlpha*(.12*wd0+.6*uW.x+.55*uW.y+.6*uW.z+.75*uW.w+.6*uW2.y)*(vK>.5?1.2:1.);
       }`,
     fragmentShader: `varying float vA; varying float vK;
       void main(){ vec2 q=gl_PointCoord-.5; float d=length(q); float a;
