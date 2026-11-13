@@ -83,7 +83,10 @@ export function createBloom(renderer, { levels = 4, scale = 0.5, msaa = 0, stren
       [bright, blur, up, comp].forEach(m => { const o = new THREE.Mesh(tri, m); o.frustumCulled = false; s.add(o); });
       return compileAhead(renderer, s, cam);
     },
-    render(scene, camera) {
+    // the light of the picture, blurred (the summed levels): what spills around bright parts
+    get glow() { return B[0].texture; },
+    // draws the scene with its bloom to the screen, or into target (for the intro's letters)
+    render(scene, camera, target = null) {
       renderer.setRenderTarget(rtScene); renderer.clear(); renderer.render(scene, camera);
       bright.uniforms.t.value = rtScene.texture; draw(bright, A[0]);
       for (let i = 0; i < levels; i++) {
@@ -99,7 +102,7 @@ export function createBloom(renderer, { levels = 4, scale = 0.5, msaa = 0, stren
         draw(up, B[i]); c = B[i];
       }
       comp.uniforms.tGlow.value = c.texture;
-      draw(comp, null);
+      draw(comp, target);
     },
     dispose() { rtScene.dispose(); A.concat(B).forEach(r => r.dispose()); [bright, blur, up, comp].forEach(m => m.dispose()); tri.dispose(); }
   };

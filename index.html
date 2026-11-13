@@ -662,17 +662,17 @@ main > section#buero, main > section#ki { height: auto !important; }
 @media (prefers-reduced-motion: reduce) { .earth3d-veil { opacity: 1; } }
 body { background: #02040b; }
 .no-3d .earth3d { display: none; }
-.no-3d body { background: #02040b url(assets/img/hero-ai-1600.webp) center bottom / 100% auto fixed no-repeat; }
+.no-3d body { background: #02040b url(assets/img/hero-earth-1600.webp) center top / cover fixed no-repeat; }
 .hero--space { background: transparent !important; }
 .hero--space::after { display: none; }
 .hero--space::before { background: radial-gradient(ellipse 60% 42% at 50% 46%, rgb(2 4 11 / .62), transparent 72%) !important; }
 .hero--space { align-content: center; padding-bottom: clamp(48px, 9vh, 110px); }
 
 /* ---------- the scroll film before the page: an empty runway, the canvas behind it plays ---------- */
-#intro { display: none; position: relative; z-index: 1; height: 420vh; height: 420svh; min-height: 0; padding: 0; }
+#intro { display: none; position: relative; z-index: 1; height: 300vh; height: 300svh; min-height: 0; padding: 0; }
 .js #intro { display: block; }
 .no-3d #intro { display: none; }
-@media (max-width: 700px) { #intro { height: 400vh; height: 400svh; } }
+@media (max-width: 700px) { #intro { height: 290vh; height: 290svh; } }
 @media (prefers-reduced-motion: reduce) { .js #intro { display: none; } }
 .intro__view { position: sticky; top: 0; height: 100vh; height: 100svh; pointer-events: none; }
 .intro__hint { position: absolute; left: 50%; bottom: calc(36px + env(safe-area-inset-bottom)); transform: translateX(-50%); margin: 0; display: grid; justify-items: center; gap: 12px; font: 500 12px/1 var(--font-text); letter-spacing: .18em; text-transform: uppercase; color: #a9c2ce; text-shadow: 0 1px 12px rgb(2 4 11 / .9); transition: opacity .6s var(--ease-out); }
@@ -722,7 +722,7 @@ body { background: #02040b; }
 </header>
 
 <main id="top">
-  <section class="intro" id="intro" aria-label="Animation: der Schriftzug Bergmann öffnet sich zum Bild mit AI und der Erde">
+  <section class="intro" id="intro" aria-label="Animation: der Schriftzug Bergmann AI öffnet sich zur drehenden Erde">
     <div class="intro__view">
       <p class="intro__hint" aria-hidden="true">Scrollen<i></i></p>
       <a class="intro__skip" href="#start">Animation überspringen</a>
