@@ -1,11 +1,9 @@
-/* Bergmann AI: the scroll film in front of the page, then the earth turning behind it.
+/* Bergmann AI: the intro in front of the page, then the earth turning behind it.
 
    One timeline value S follows the scroll position:
-     0 .. 10   the film (film.js): the client's storyboard pictures in 4K as the plate, real camera moves
-               and real 3D particles in front, played by scrolling through #intro
-               1 brain appears, 2 brain activates, 3 it breaks into particles, 4 the particles form a sphere,
-               5 the earth appears, 6 the earth turns, 7 camera flight, 8 the horizon, 9 AI forms, 10 end frame
-     10 .. 11  hand-over: the end frame fades, the 3D globe behind it pulls back into place
+     0 .. 10   the intro (film.js): the word "Bergmann", the end picture (AI and the earth) seen through
+               its letters; scrolling flies into the letters until the picture stands alone, then it holds
+     10 .. 11  hand-over: the picture fades, the 3D globe behind it pulls back into place
      11        the page: the earth only turns in the background
    Scroll: GSAP ScrollTrigger (assets/vendor) reads it, gsap.quickTo smooths S; without GSAP a plain
    scroll listener and an own easing do the same. The globe behind the page gets a light bloom (bloom.js).
@@ -40,35 +38,11 @@ function track(pts) { // [[S, value], ...] eased between the keys
 }
 function rng(seed) { let s = seed; return () => (s = (s * 16807) % 2147483647) / 2147483647; }
 
-const NOISE = `
-vec3 mod289(vec3 x){return x-floor(x*(1./289.))*289.;}
-vec4 mod289(vec4 x){return x-floor(x*(1./289.))*289.;}
-vec4 permute(vec4 x){return mod289(((x*34.)+1.)*x);}
-vec4 taylorInvSqrt(vec4 r){return 1.79284291400159-.85373472095314*r;}
-float snoise(vec3 v){
-  const vec2 C=vec2(1./6.,1./3.); const vec4 D=vec4(0.,.5,1.,2.);
-  vec3 i=floor(v+dot(v,C.yyy)); vec3 x0=v-i+dot(i,C.xxx);
-  vec3 g=step(x0.yzx,x0.xyz); vec3 l=1.-g; vec3 i1=min(g.xyz,l.zxy); vec3 i2=max(g.xyz,l.zxy);
-  vec3 x1=x0-i1+C.xxx; vec3 x2=x0-i2+C.yyy; vec3 x3=x0-D.yyy;
-  i=mod289(i);
-  vec4 p=permute(permute(permute(i.z+vec4(0.,i1.z,i2.z,1.))+i.y+vec4(0.,i1.y,i2.y,1.))+i.x+vec4(0.,i1.x,i2.x,1.));
-  float n_=.142857142857; vec3 ns=n_*D.wyz-D.xzx;
-  vec4 j=p-49.*floor(p*ns.z*ns.z); vec4 x_=floor(j*ns.z); vec4 y_=floor(j-7.*x_);
-  vec4 x=x_*ns.x+ns.yyyy; vec4 y=y_*ns.x+ns.yyyy; vec4 h=1.-abs(x)-abs(y);
-  vec4 b0=vec4(x.xy,y.xy); vec4 b1=vec4(x.zw,y.zw);
-  vec4 s0=floor(b0)*2.+1.; vec4 s1=floor(b1)*2.+1.; vec4 sh=-step(h,vec4(0.));
-  vec4 a0=b0.xzyw+s0.xzyw*sh.xxyy; vec4 a1=b1.xzyw+s1.xzyw*sh.zzww;
-  vec3 p0=vec3(a0.xy,h.x); vec3 p1=vec3(a0.zw,h.y); vec3 p2=vec3(a1.xy,h.z); vec3 p3=vec3(a1.zw,h.w);
-  vec4 norm=taylorInvSqrt(vec4(dot(p0,p0),dot(p1,p1),dot(p2,p2),dot(p3,p3)));
-  p0*=norm.x; p1*=norm.y; p2*=norm.z; p3*=norm.w;
-  vec4 m=max(.6-vec4(dot(x0,x0),dot(x1,x1),dot(x2,x2),dot(x3,x3)),0.); m=m*m;
-  return 42.*dot(m*m,vec4(dot(p0,x0),dot(p1,x1),dot(p2,x2),dot(p3,x3)));
-}`;
 const ADD = { transparent: true, depthWrite: false, blending: THREE.AdditiveBlending };
 
 let renderer;
 function start() {
-  // the film gets the sharpest pixels (one picture quad and a particle layer); the globe behind the page less
+  // the intro gets the sharpest pixels (one picture quad); the globe behind the page less
   const dev = window.devicePixelRatio || 1;
   const FILM_DPR = Math.min(dev, 2), BG_DPR = Math.min(dev, small ? 1.5 : 1.75);
   let dpr = FILM_DPR;
@@ -77,7 +51,7 @@ function start() {
   renderer.outputColorSpace = THREE.LinearSRGBColorSpace;   // shaders write display values directly
   renderer.autoClear = false;
   const bloom = createBloom(renderer, small ? { levels: 3, scale: 0.34, msaa: 0, strength: 0.7, threshold: 0.6 } : { levels: 4, scale: 0.5, msaa: 4, strength: 0.85, threshold: 0.6 });
-  const film = createFilm(renderer, { taps: small ? 4 : 7, particles: small ? 700 : 1800, dpr: FILM_DPR });
+  const film = createFilm(renderer);
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(38, 1, 0.01, 400);
   const D2R = Math.PI / 180;
@@ -86,98 +60,88 @@ function start() {
   const EC = new THREE.Vector3(0, 0.1, 0);
   const rnd = rng(7);
 
-  /* ================= sky: nebula and stars ================= */
+  /* ================= sky: black space, faint stars ================= */
   const sky = new THREE.Group(); scene.add(sky);
   {
-    const m = new THREE.Mesh(new THREE.SphereGeometry(160, 48, 32), new THREE.ShaderMaterial({
-      side: THREE.BackSide, depthWrite: false,
-      vertexShader: `varying vec3 vD; void main(){ vD=position; gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.); }`,
-      fragmentShader: `${NOISE} varying vec3 vD;
-        void main(){ vec3 d=normalize(vD);
-          float n=snoise(d*1.7)*.5+snoise(d*3.6+7.)*.3+snoise(d*7.4+3.)*.2;
-          float neb=smoothstep(.0,.8,n);
-          float band=exp(-pow(dot(d,normalize(vec3(.42,1.,.3)))*2.6,2.));
-          float low=smoothstep(.15,-.6,d.y);
-          float m=neb*(.25+.55*band+.45*low);
-          gl_FragColor=vec4(vec3(.006,.012,.034)+vec3(.03,.065,.17)*m+vec3(.025,.02,.07)*neb*band*.5,1.); }`
-    }));
-    m.renderOrder = -10; sky.add(m);
-    const n = small ? 1500 : 2800, pos = new Float32Array(n * 3), sz = new Float32Array(n);
+    const n = small ? 1200 : 2200, pos = new Float32Array(n * 3), sz = new Float32Array(n);
     for (let i = 0; i < n; i++) {
       const u = rnd() * 2 - 1, a = rnd() * Math.PI * 2, s = Math.sqrt(1 - u * u), R = 120;
       pos[i * 3] = R * s * Math.cos(a); pos[i * 3 + 1] = R * u; pos[i * 3 + 2] = R * s * Math.sin(a);
-      sz[i] = rnd() < 0.07 ? 2.5 : 0.7 + rnd() * 1.1;
+      sz[i] = rnd() < 0.05 ? 2 : 0.6 + rnd() * 0.9;
     }
     const g = new THREE.BufferGeometry(); g.setAttribute('position', new THREE.BufferAttribute(pos, 3)); g.setAttribute('aSize', new THREE.BufferAttribute(sz, 1));
     const st = new THREE.Points(g, new THREE.ShaderMaterial({
-      transparent: true, depthWrite: false, uniforms: { dpr: { value: BG_DPR }, uTime: T },
-      vertexShader: `attribute float aSize; uniform float dpr, uTime; varying float vS; varying float vT;
-        void main(){ vS=aSize; vT=.75+.25*sin(uTime*1.3+position.x*.7+position.y); gl_PointSize=aSize*dpr; gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.); }`,
-      fragmentShader: `varying float vS; varying float vT; void main(){ float d=length(gl_PointCoord-.5); float a=smoothstep(.5,.05,d); gl_FragColor=vec4(.82,.9,1.,a*(.32+.25*vS)*vT); }`
+      transparent: true, depthWrite: false, uniforms: { dpr: { value: BG_DPR } },
+      vertexShader: `attribute float aSize; uniform float dpr; varying float vS;
+        void main(){ vS=aSize; gl_PointSize=aSize*dpr; gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.); }`,
+      fragmentShader: `varying float vS; void main(){ float d=length(gl_PointCoord-.5); float a=smoothstep(.5,.05,d); gl_FragColor=vec4(.86,.9,1.,a*(.16+.16*vS)); }`
     }));
     st.renderOrder = -9; sky.add(st);
   }
 
-  /* ================= earth ================= */
+  /* ================= earth: real satellite pictures (4K on desktop, 2K on phones) =================
+     day surface, night lights and the cloud layer from NASA Blue Marble / Black Marble based maps
+     (Solar System Scope, CC BY 4.0). Lit in linear light: soft terminator, sunlight reddened where it
+     grazes, darker deep ocean with a sun glint, cloud shadows, city lights dimmed under clouds, and the
+     air seen through toward the limb. */
   const earthTilt = new THREE.Group(); earthTilt.position.copy(EC); earthTilt.rotation.z = 0.3; scene.add(earthTilt);
-  const EU = { map: { value: null }, sunDir: SUN, uTime: T, uLights: { value: 1 }, uDay: { value: 1 } };
-  const earth = new THREE.Mesh(new THREE.SphereGeometry(1, small ? 96 : 144, small ? 64 : 96), new THREE.ShaderMaterial({
+  const EU = { tDay: { value: null }, tNight: { value: null }, tClouds: { value: null }, sunDir: SUN, uTime: T, uLights: { value: 1 }, uDay: { value: 1 }, uReady: { value: 0 } };
+  const earth = new THREE.Mesh(new THREE.SphereGeometry(1, small ? 128 : 192, small ? 64 : 96), new THREE.ShaderMaterial({
     uniforms: EU,
-    vertexShader: `varying vec2 vUv; varying vec3 vN; varying vec3 vW; varying vec3 vP;
-      void main(){ vUv=uv; vP=position; vN=normalize(mat3(modelMatrix)*normal); vec4 w=modelMatrix*vec4(position,1.); vW=w.xyz; gl_Position=projectionMatrix*viewMatrix*w; }`,
-    fragmentShader: `${NOISE} uniform sampler2D map; uniform vec3 sunDir; uniform float uTime, uLights, uDay; varying vec2 vUv; varying vec3 vN; varying vec3 vW; varying vec3 vP;
+    vertexShader: `varying vec2 vUv; varying vec3 vN; varying vec3 vW;
+      void main(){ vUv=uv; vN=normalize(mat3(modelMatrix)*normal); vec4 w=modelMatrix*vec4(position,1.); vW=w.xyz; gl_Position=projectionMatrix*viewMatrix*w; }`,
+    fragmentShader: `uniform sampler2D tDay, tNight, tClouds; uniform vec3 sunDir; uniform float uTime, uLights, uDay, uReady; varying vec2 vUv; varying vec3 vN; varying vec3 vW;
       void main(){
-        vec3 t=texture2D(map,vUv).rgb; float land=t.r; float lights=pow(t.g,1.6)*1.3;
-        vec3 N=normalize(vN); vec3 V=normalize(cameraPosition-vW);
-        float ndl=dot(N,sunDir); float day=smoothstep(-.1,.3,ndl); float night=1.-smoothstep(-.22,.06,ndl);
-        vec3 q=vP*2.2+vec3(uTime*.004,0.,0.);
-        float c=snoise(q)*.55+snoise(q*2.1+3.)*.28+snoise(q*4.4+7.)*.15${small ? '' : '+snoise(q*9.+1.)*.07'};
-        float cloud=smoothstep(.1,.6,c);
-        vec3 dayCol=mix(vec3(.012,.05,.19),vec3(.12,.19,.34),land);
-        dayCol=mix(dayCol,vec3(.66,.77,.92),cloud*.82)*(.16+1.05*max(ndl,0.))*uDay;
-        vec3 nightCol=mix(vec3(.004,.012,.04),vec3(.014,.03,.08),land)+vec3(.012,.02,.045)*cloud;
-        vec3 col=mix(nightCol,dayCol,day);
-        float tw=.9+.1*sin(uTime*1.7+vUv.x*900.+vUv.y*700.);
-        col+=vec3(1.,.78,.5)*lights*night*(1.-cloud*.65)*1.55*tw*uLights;
-        vec3 H=normalize(sunDir+V); col+=vec3(.45,.65,1.)*pow(max(dot(N,H),0.),70.)*(1.-land)*(1.-cloud)*day*.55*uDay;
-        float fr=pow(1.-max(dot(N,V),0.),3.);
-        col+=vec3(.16,.42,1.)*fr*(.22+.95*smoothstep(-.45,.35,ndl));
-        col+=vec3(.25,.5,1.)*smoothstep(-.18,.02,ndl)*(1.-smoothstep(.02,.3,ndl))*.18;
-        gl_FragColor=vec4(col,1.);
+        vec3 N=normalize(vN), V=normalize(cameraPosition-vW), L=sunDir;
+        float ndl=dot(N,L), mu=max(dot(N,V),0.);
+        vec3 ground=pow(texture2D(tDay,vUv).rgb,vec3(2.2));
+        float ocean=smoothstep(.03,.12,ground.b-max(ground.r,ground.g));
+        ground=mix(ground,ground*vec3(.28,.45,.7),ocean*.75);                    // open ocean is darker than the map
+        float cl=smoothstep(.1,.9,texture2D(tClouds,vUv+vec2(uTime*.0009,0.)).r);  // clouds drift slowly
+        float sh=smoothstep(.1,.9,texture2D(tClouds,vUv+vec2(uTime*.0009+.0025,.0015)).r);
+        // sunlight, reddened where it grazes through the air
+        float tw=(1.-smoothstep(0.,.14,ndl))*smoothstep(-.08,.02,ndl);
+        vec3 sun=mix(vec3(1.,.97,.93),vec3(1.,.5,.26),tw*.45);
+        float dif=clamp((ndl+.03)/1.03,0.,1.);
+        vec3 col=ground*sun*dif*1.7*(1.-sh*.4);
+        vec3 H=normalize(L+V);
+        col+=sun*pow(max(dot(N,H),0.),110.)*ocean*(1.-cl)*smoothstep(0.,.2,ndl)*.55;  // glint on the sea
+        vec3 cloud=vec3(.9,.92,.95)*sun*clamp((ndl+.08)/1.08,0.,1.)*1.45;
+        col=mix(col,cloud,cl*.94);
+        // night side: city lights, dimmed under clouds; cloud tops faintly lit by the moon
+        float night=1.-smoothstep(-.16,.03,ndl);
+        vec3 lights=pow(max(texture2D(tNight,vUv).rgb-vec3(.055,.06,.11),0.)*1.15,vec3(2.2));   // the lights only, without the map's blue ground
+        col+=lights*vec3(1.,.92,.8)*2.6*uLights*night*(1.-cl*.8);
+        col+=vec3(.003,.005,.009)*cl*night;
+        // looking through the air: blue in-scatter toward the limb on the lit side, a warm band at dawn
+        float path=1./(mu*.88+.12);
+        float lit=smoothstep(-.25,.3,ndl);
+        vec3 air=vec3(.1,.27,.8)*(1.-exp(-path*.07))*lit*1.1+vec3(1.,.42,.16)*tw*(1.-exp(-path*.05))*.6;
+        col=col*exp(-path*.03*lit)+air;
+        col*=uDay*uReady;
+        gl_FragColor=vec4(pow(col,vec3(1./2.2)),1.);
       }`
   }));
   earthTilt.add(earth);
-  earthTilt.add(new THREE.Mesh(new THREE.SphereGeometry(1.11, 96, 64), new THREE.ShaderMaterial({
-    uniforms: { sunDir: SUN }, side: THREE.BackSide, ...ADD,
-    vertexShader: `varying vec3 vN; varying vec3 vW; void main(){ vN=normalize(mat3(modelMatrix)*normal); vec4 w=modelMatrix*vec4(position,1.); vW=w.xyz; gl_Position=projectionMatrix*viewMatrix*w; }`,
-    fragmentShader: `uniform vec3 sunDir; varying vec3 vN; varying vec3 vW;
-      void main(){ vec3 V=normalize(cameraPosition-vW); vec3 N=normalize(vN);
-        float rim=pow(clamp(abs(dot(N,V))/.45,0.,1.),2.4);
-        float lit=.2+1.2*smoothstep(-.6,.5,dot(N,sunDir));
-        gl_FragColor=vec4(vec3(.25,.55,1.)*rim*lit*1.3,rim*lit); }`
-  })));
-
-  // light routes between cities
-  const ll = (lon, lat, r = 1) => { const phi = (90 - lat) * D2R, th = (lon + 180) * D2R; return new THREE.Vector3(-r * Math.sin(phi) * Math.cos(th), r * Math.cos(phi), r * Math.sin(phi) * Math.sin(th)); };
-  const routeGain = { value: 0 };
-  {
-    const C = { hal: [8.36, 52.06], ber: [13.4, 52.52], par: [2.35, 48.86], lon: [-0.13, 51.5], mad: [-3.7, 40.4], rom: [12.5, 41.9], ist: [28.97, 41.0], mos: [37.6, 55.75], cai: [31.2, 30.0], dub: [55.3, 25.2], nyc: [-74, 40.7], sto: [18.07, 59.33], war: [21, 52.2], vie: [16.37, 48.2], lis: [-9.14, 38.72], del: [77.2, 28.6], lag: [3.4, 6.5] };
-    const pairs = [['hal', 'ber'], ['hal', 'par'], ['hal', 'lon'], ['hal', 'vie'], ['hal', 'sto'], ['hal', 'rom'], ['hal', 'mad'], ['ber', 'war'], ['war', 'mos'], ['vie', 'ist'], ['ist', 'dub'], ['rom', 'cai'], ['lon', 'nyc'], ['par', 'lis'], ['dub', 'del'], ['mad', 'lag'], ['mos', 'del'], ['cai', 'dub']];
-    const pos = [], aT = [], aO = [], idx = []; let base = 0;
-    pairs.forEach(([a, b], k) => {
-      const A = ll(...C[a]), B = ll(...C[b]), ang = A.angleTo(B), N = 64, h = 0.02 + ang * 0.16;
-      for (let i = 0; i <= N; i++) { const t = i / N, p = A.clone().lerp(B, t).normalize().multiplyScalar(1.004 + Math.sin(t * Math.PI) * h); pos.push(p.x, p.y, p.z); aT.push(t); aO.push((k * 0.37) % 1); if (i < N) idx.push(base + i, base + i + 1); }
-      base += N + 1;
-    });
-    const g = new THREE.BufferGeometry(); g.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3)); g.setAttribute('aT', new THREE.Float32BufferAttribute(aT, 1)); g.setAttribute('aO', new THREE.Float32BufferAttribute(aO, 1)); g.setIndex(idx);
-    earth.add(new THREE.LineSegments(g, new THREE.ShaderMaterial({
-      ...ADD, uniforms: { uTime: T, uGain: routeGain },
-      vertexShader: `attribute float aT; attribute float aO; varying float vT; varying float vO; void main(){ vT=aT; vO=aO; gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.); }`,
-      fragmentShader: `uniform float uTime, uGain; varying float vT; varying float vO;
-        void main(){ float p=fract(uTime*.11+vO); float d=vT-p; float head=smoothstep(.0,.012,d+.012)*(1.-smoothstep(.0,.012,d)); float tail=smoothstep(-.28,0.,d)*step(d,0.);
-          gl_FragColor=vec4(vec3(.56,.89,1.)*(.1+tail*.75+head*2.2)*sin(vT*3.14159)*uGain,1.); }`
-    })));
-  }
+  // the air around the limb: a thin glow, blue where the sun reaches it, warm at sunrise, brighter toward the sun
+  const atmo = new THREE.Mesh(new THREE.SphereGeometry(1.07, 128, 64), new THREE.ShaderMaterial({
+    uniforms: { sunDir: SUN, uC: { value: EC }, uReady: EU.uReady }, side: THREE.BackSide, ...ADD,
+    vertexShader: `varying vec3 vW; void main(){ vec4 w=modelMatrix*vec4(position,1.); vW=w.xyz; gl_Position=projectionMatrix*viewMatrix*w; }`,
+    fragmentShader: `uniform vec3 sunDir, uC; uniform float uReady; varying vec3 vW;
+      void main(){
+        vec3 rd=normalize(vW-cameraPosition); float t=dot(uC-cameraPosition,rd);
+        vec3 P=cameraPosition+rd*t; float b=length(P-uC);
+        float h=max(b-1.,0.);
+        float dens=exp(-h/.016)*(1.-smoothstep(.055,.07,h));
+        vec3 n=normalize(P-uC); float s=dot(n,sunDir);
+        vec3 blue=vec3(.22,.48,1.)*smoothstep(-.2,.4,s);
+        vec3 dawn=vec3(1.,.45,.18)*exp(-pow((s-.02)/.13,2.));
+        float fwd=pow(max(dot(rd,sunDir),0.),6.);
+        vec3 c=(blue+dawn*.6)*(.55+fwd*2.5)*dens*uReady;
+        gl_FragColor=vec4(c,1.);
+      }`
+  }));
+  earthTilt.add(atmo);
 
   /* ================= sun: soft glare beyond the limb and a star burst on it ================= */
   function spriteTex(draw) { const c = document.createElement('canvas'); c.width = c.height = 512; draw(c.getContext('2d'), 256); const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.NoColorSpace; return t; }
@@ -269,22 +233,28 @@ function start() {
     // the film fills the screen under the opaque header
     const top = nav ? Math.min(nav.offsetHeight, h * 0.2) : 0;
     film.use(aspect < 0.95 ? 'tall' : 'wide');
-    film.setAspect(w / (h - top), top / h, h - top);
+    film.setAspect(w / (h - top), top / h);
     measure(); evalShots(); readScroll();
   }
   addEventListener('resize', resize);
   resize();
   S = prox.s = target;
 
-  // the earth texture is needed only behind the page: loaded once the film stands
+  // the earth pictures are needed only behind the page: loaded once the intro stands
   (window.requestIdleCallback || (f => setTimeout(f, 600)))(() => {
-    const tex = new THREE.TextureLoader().load(new URL(small ? './earth-2k.webp' : './earth-4k.webp', import.meta.url).href);
-    tex.colorSpace = THREE.NoColorSpace; tex.anisotropy = Math.min(8, renderer.capabilities.getMaxAnisotropy());
-    EU.map.value = tex;
+    const k = small ? '2k' : '4k', aniso = Math.min(8, renderer.capabilities.getMaxAnisotropy());
+    let left = 3;
+    const load = (name, key) => {
+      const tex = new THREE.TextureLoader().load(new URL(`./earth-${name}-${k}.webp`, import.meta.url).href, () => { if (--left === 0) ready = true; });
+      tex.colorSpace = THREE.NoColorSpace; tex.anisotropy = aniso; tex.wrapS = THREE.RepeatWrapping;
+      EU[key].value = tex;
+    };
+    load('day', 'tDay'); load('night', 'tNight'); load('clouds', 'tClouds');
   }, { timeout: 2500 });
+  let ready = false;
 
   /* ================= per frame ================= */
-  const sunAlpha = track([[10, -10], [11, -48]]), sunLight = track([[10, 30], [11, 72]]), burstK = track([[10, 0.7], [11, 0.38]]);
+  const sunAlpha = track([[10, -10], [11, -48]]), sunLight = track([[10, 20], [11, 34]]), burstK = track([[10, 0.7], [11, 0.38]]);   // the sun stands just behind the limb: a lit crescent, the rest night
   const v = V3(), w = V3(), sdir = V3(), lim = V3(), look = V3();
   function sun(alphaDeg, lightOff, gain) {
     v.copy(EC).sub(camera.position); const d = v.length(); v.normalize();
@@ -300,17 +270,17 @@ function start() {
     sdir.copy(v).multiplyScalar(Math.cos(th + 0.035)).addScaledVector(w, Math.sin(th + 0.035));
     glare.position.copy(camera.position).addScaledVector(sdir, 80);
     glare.scale.setScalar(80 * 0.45);
-    glare.material.opacity = clamp(gain * 0.75);
+    glare.material.opacity = clamp(gain * 0.5);
     glare.visible = burst.visible = gain > 0.01;
   }
 
   function update3d(s, dt) {
     depth += (depthT - depth) * Math.min(1, dt * 3);
     EU.uLights.value = mix(1.1, 0.75, sstep(10, 11, s)) * (1 - 0.45 * depth);
-    EU.uDay.value = 0.7 * (1 - 0.3 * depth);
+    EU.uDay.value = 1 - 0.35 * depth;
     if (s > 10.3) bgSpin += dt * 0.032 * (reduce ? 0 : 1) * sstep(10.3, 11, s);
     earth.rotation.y = 3.5 + bgSpin + T.value * 0.004;
-    routeGain.value = sstep(10.4, 11, s);
+    if (ready && EU.uReady.value < 1) EU.uReady.value = Math.min(1, EU.uReady.value + dt * 1.5);
     shotAt(s - 10);
     camera.position.copy(camPos); camera.up.copy(camU); camera.lookAt(look.copy(camPos).add(camF));
     camera.updateMatrixWorld();
@@ -318,13 +288,14 @@ function start() {
     sun(sunAlpha(s), sunLight(s), burstK(s) * (1 - 0.5 * depth));
   }
 
-  let visible = !document.hidden, last = performance.now(), born = last, frames = 0, odd = false;
+  let visible = !document.hidden, last = performance.now(), born = 0, frames = 0, odd = false;
   document.addEventListener('visibilitychange', () => { visible = !document.hidden; if (visible) { last = performance.now(); requestAnimationFrame(frame); } });
   function frame(now) {
     if (!visible) return;
     const dt = Math.min(0.05, (now - last) / 1000); last = now;
     if (!reduce) T.value += dt;
-    auto = reduce ? 1 : sstep(150, 2400, now - born);
+    if (!born && film.ready) born = now;   // the word arrives once its pictures are there
+    auto = reduce || S > 10.02 ? 1 : born ? sstep(80, 1900, now - born) : 0;
     if (sTo) S = prox.s;
     else {
       if (Math.abs(target - S) > 1.6) S = target - Math.sign(target - S) * 1.6;   // a jump (anchor link) plays at most 1.6 scenes
@@ -363,7 +334,7 @@ function start() {
     if (e.persisted) return;
     visible = false;
     scene.traverse(o => { if (o.geometry) o.geometry.dispose(); const m = o.material; if (m) (Array.isArray(m) ? m : [m]).forEach(x => { if (x.map) x.map.dispose(); x.dispose(); }); });
-    if (EU.map.value) EU.map.value.dispose();
+    ['tDay', 'tNight', 'tClouds'].forEach(k => EU[k].value && EU[k].value.dispose());
     film.dispose(); bloom.dispose(); renderer.dispose();
   });
   window.__scene = {
