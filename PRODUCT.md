@@ -33,6 +33,8 @@ Ein Ansprechpartner, der Chatbot, Automatisierung und Website aus einer Hand bau
 
 Name Bergmann AI, Logo logo.webp. JARVIS-Cockpit: dunkel, Hellblau als Akzent. Ansprache per Sie.
 
+Glow- und Glas-Look bewusst gewählt: hellblaue Leucht-Schatten und Halos, Glas-Boxen mit feinem hellem Rand (Details in DESIGN.md). Er bleibt, auch wenn ein Design-Prüfer ihn als typisches KI-Muster meldet.
+
 ## Evidence on Hand
 
 Keine Kundenstimmen, keine Referenzen, keine Kennzahlen. Nichts davon erfinden. Später kommen Bilder fertiger Websites.
