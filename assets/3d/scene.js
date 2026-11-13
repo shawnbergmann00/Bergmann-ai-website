@@ -450,7 +450,10 @@ function start() {
   };
 }
 
-try {
-  renderer = new THREE.WebGLRenderer({ canvas, antialias: false, alpha: false, powerPreference: 'high-performance' });
-} catch (e) { fail(); }
+// no-3d steht schon, wenn die Prüfung im <head> kein WebGL2 fand: dann gar nicht erst versuchen
+if (!root.classList.contains('no-3d')) {
+  try {
+    renderer = new THREE.WebGLRenderer({ canvas, antialias: false, alpha: false, powerPreference: 'high-performance' });
+  } catch (e) { fail(); }
+}
 if (renderer) { try { start(); } catch (e) { console.error(e); fail(); } }
