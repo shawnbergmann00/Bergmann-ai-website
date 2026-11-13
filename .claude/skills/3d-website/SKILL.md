@@ -57,11 +57,12 @@ Texte, Preise und Angebote bleiben wörtlich, solange der Nutzer nichts anderes 
 
 ## Referenz
 
-`assets/3d/scene.js` und `assets/3d/film.js` in diesem Repository sind die Vorlage: ein Scroll-Film vor der Seite (Gehirn, Partikel, Erde, Horizont, AI-Endbild) und danach eine 3D-Erde, die sich nur noch hinter dem Inhalt dreht.
+`assets/3d/scene.js` und `assets/3d/film.js` in diesem Repository sind die Vorlage: ein Einstieg vor der Seite (das Wort „Bergmann“, durch dessen Buchstaben man das AI-Endbild sieht; Scrollen fliegt in die Buchstaben, bis das Bild allein steht) und danach eine 3D-Erde, die sich nur noch hinter dem Inhalt dreht.
 
-- Ein einziger Zeitwert `S` steuert alles: 0 bis 10 sind die Szenen (Scrollen durch den leeren Abschnitt `#intro`), 10 bis 11 die Übergabe an die Seite, 11 der Hintergrund.
-- Der Film nutzt die Bilder des Kunden als Bildebene (`assets/3d/film/`, per ESRGAN auf 4K hochgerechnet; `wide-*` für Querformat, `tall-*` für Handys) mit echten Kamerafahrten (Zoom, Schwenk, Durchflug mit Unschärfe) und lichtgeführten Überblendungen, davor eine Ebene echter 3D-Partikel (Energiering, Strom, Spirale, Warp, Formung). Ränder, wo das Bild nicht reicht, laufen gespiegelt, unscharf und dunkler aus.
-- Pro Einstellung: `safe` (muss sichtbar bleiben), `c` (Motiv für die Partikel), Spuren für Zoom, Schwenk, Belichtung. Nur die Bilder um die aktuelle Einstellung liegen auf der GPU.
+- Ein einziger Zeitwert `S` steuert alles: 0 bis 10 ist der Einstieg (Scrollen durch den leeren Abschnitt `#intro`; Flug 0,5 bis 6,8, danach steht das Bild), 10 bis 11 die Übergabe an die Seite, 11 der Hintergrund.
+- Das Wort ist ein Distanzfeld (`assets/3d/film/word-sdf.webp`, R fein ±8 Texel, G grob ±64 Texel), damit der Umriss bei jedem Zoom (bis 45-fach) scharf bleibt. Erzeugt aus der Schrift mit PIL und `scipy.ndimage.distance_transform_edt` bei 4-facher Abtastung; der Zoom fliegt in den dicksten Strich nahe der Wortmitte (im „m“).
+- Glas-Look der Buchstaben: Bild darin aufgehellt, Lichtkante innen, langsamer Lichtstreif, weiches Licht knapp außerhalb. Beim Flug blendet erst der dunkle Grund aus, dann normalisiert sich das Bild in den Buchstaben, sodass am Ende das Originalbild steht.
+- Bild: `wide-6` für Querformat, `tall-10` für Handys, mit `safe`-Box; wo das Bild nicht reicht, läuft der Rand gespiegelt, unscharf und dunkler aus.
 - `S` folgt der Scrollposition weich (GSAP ScrollTrigger + `quickTo`); ein Sprung (Anker-Link) spielt höchstens 1,6 Szenen ab.
-- Die prozedurale Variante (Gehirn, Partikel, AI-Bühne komplett aus Code) steht im Commit `bc98ffb`.
+- Frühere Varianten: der Bilder-Film aus dem Storyboard (Gehirn bis AI-Endbild, mit 3D-Partikeln) im Commit `59b672a`, die prozedurale Variante komplett aus Code im Commit `bc98ffb`.
 - Prüfen mit `window.__scene.set(S)` und Screenshots je Szene, am Desktop und am Handy, und mit Vor- und Zurückscrollen.

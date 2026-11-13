@@ -1,11 +1,9 @@
-/* Bergmann AI: the scroll film in front of the page, then the earth turning behind it.
+/* Bergmann AI: the intro in front of the page, then the earth turning behind it.
 
    One timeline value S follows the scroll position:
-     0 .. 10   the film (film.js): the client's storyboard pictures in 4K as the plate, real camera moves
-               and real 3D particles in front, played by scrolling through #intro
-               1 brain appears, 2 brain activates, 3 it breaks into particles, 4 the particles form a sphere,
-               5 the earth appears, 6 the earth turns, 7 camera flight, 8 the horizon, 9 AI forms, 10 end frame
-     10 .. 11  hand-over: the end frame fades, the 3D globe behind it pulls back into place
+     0 .. 10   the intro (film.js): the word "Bergmann", the end picture (AI and the earth) seen through
+               its letters; scrolling flies into the letters until the picture stands alone, then it holds
+     10 .. 11  hand-over: the picture fades, the 3D globe behind it pulls back into place
      11        the page: the earth only turns in the background
    Scroll: GSAP ScrollTrigger (assets/vendor) reads it, gsap.quickTo smooths S; without GSAP a plain
    scroll listener and an own easing do the same. The globe behind the page gets a light bloom (bloom.js).
@@ -68,7 +66,7 @@ const ADD = { transparent: true, depthWrite: false, blending: THREE.AdditiveBlen
 
 let renderer;
 function start() {
-  // the film gets the sharpest pixels (one picture quad and a particle layer); the globe behind the page less
+  // the intro gets the sharpest pixels (one picture quad); the globe behind the page less
   const dev = window.devicePixelRatio || 1;
   const FILM_DPR = Math.min(dev, 2), BG_DPR = Math.min(dev, small ? 1.5 : 1.75);
   let dpr = FILM_DPR;
@@ -77,7 +75,7 @@ function start() {
   renderer.outputColorSpace = THREE.LinearSRGBColorSpace;   // shaders write display values directly
   renderer.autoClear = false;
   const bloom = createBloom(renderer, small ? { levels: 3, scale: 0.34, msaa: 0, strength: 0.7, threshold: 0.6 } : { levels: 4, scale: 0.5, msaa: 4, strength: 0.85, threshold: 0.6 });
-  const film = createFilm(renderer, { taps: small ? 4 : 7, particles: small ? 700 : 1800, dpr: FILM_DPR });
+  const film = createFilm(renderer);
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(38, 1, 0.01, 400);
   const D2R = Math.PI / 180;
@@ -269,14 +267,14 @@ function start() {
     // the film fills the screen under the opaque header
     const top = nav ? Math.min(nav.offsetHeight, h * 0.2) : 0;
     film.use(aspect < 0.95 ? 'tall' : 'wide');
-    film.setAspect(w / (h - top), top / h, h - top);
+    film.setAspect(w / (h - top), top / h);
     measure(); evalShots(); readScroll();
   }
   addEventListener('resize', resize);
   resize();
   S = prox.s = target;
 
-  // the earth texture is needed only behind the page: loaded once the film stands
+  // the earth texture is needed only behind the page: loaded once the intro stands
   (window.requestIdleCallback || (f => setTimeout(f, 600)))(() => {
     const tex = new THREE.TextureLoader().load(new URL(small ? './earth-2k.webp' : './earth-4k.webp', import.meta.url).href);
     tex.colorSpace = THREE.NoColorSpace; tex.anisotropy = Math.min(8, renderer.capabilities.getMaxAnisotropy());
@@ -318,13 +316,14 @@ function start() {
     sun(sunAlpha(s), sunLight(s), burstK(s) * (1 - 0.5 * depth));
   }
 
-  let visible = !document.hidden, last = performance.now(), born = last, frames = 0, odd = false;
+  let visible = !document.hidden, last = performance.now(), born = 0, frames = 0, odd = false;
   document.addEventListener('visibilitychange', () => { visible = !document.hidden; if (visible) { last = performance.now(); requestAnimationFrame(frame); } });
   function frame(now) {
     if (!visible) return;
     const dt = Math.min(0.05, (now - last) / 1000); last = now;
     if (!reduce) T.value += dt;
-    auto = reduce ? 1 : sstep(150, 2400, now - born);
+    if (!born && film.ready) born = now;   // the word arrives once its pictures are there
+    auto = reduce || S > 10.02 ? 1 : born ? sstep(80, 1900, now - born) : 0;
     if (sTo) S = prox.s;
     else {
       if (Math.abs(target - S) > 1.6) S = target - Math.sign(target - S) * 1.6;   // a jump (anchor link) plays at most 1.6 scenes
