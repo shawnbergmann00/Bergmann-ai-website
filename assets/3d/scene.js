@@ -7,8 +7,11 @@
      10 .. 11  hand-over to the page: the AI stage fades, the camera pulls back to the globe
      11        the page: the earth only turns in the background
    The storyboard frames are references, not clips. Scene 10 rebuilds the original AI picture
-   (assets/img/hero-ai-1600.webp), which is also the still shown without WebGL. */
+   (assets/img/hero-ai-1600.webp), which is also the still shown without WebGL.
+   Scroll: GSAP ScrollTrigger (assets/vendor) feeds S, gsap.quickTo smooths it; without GSAP a plain
+   scroll listener and an own easing do the same. Glow: bloom.js, a light bloom pass. */
 import * as THREE from './three.module.min.js';
+import { createBloom } from './bloom.js';
 
 const canvas = document.getElementById('earth3d');
 const intro = document.getElementById('intro');
@@ -124,6 +127,8 @@ function start() {
   const DPR = Math.min(window.devicePixelRatio || 1, small ? 1.5 : 1.75);
   renderer.setPixelRatio(DPR);
   renderer.setClearColor(0x02040b, 1);
+  renderer.outputColorSpace = THREE.LinearSRGBColorSpace;   // shaders write display values directly
+  const bloom = createBloom(renderer, small ? { levels: 3, scale: 0.34, msaa: 0, strength: 0.75, threshold: 0.6 } : { levels: 4, scale: 0.5, msaa: 4, strength: 0.9, threshold: 0.6 });
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(38, 1, 0.004, 400);
   const D2R = Math.PI / 180;
@@ -147,7 +152,7 @@ function start() {
           float band=exp(-pow(dot(d,normalize(vec3(.42,1.,.3)))*2.6,2.));
           float low=smoothstep(.15,-.6,d.y);
           float m=neb*(.25+.55*band+.45*low);
-          vec3 col=vec3(.006,.012,.034)+vec3(.02,.045,.12)*m+vec3(.025,.02,.07)*neb*band*.5;
+          vec3 col=vec3(.006,.012,.034)+vec3(.03,.065,.17)*m+vec3(.025,.02,.07)*neb*band*.5+vec3(.02,.04,.1)*smoothstep(.35,.95,n)*low;
           gl_FragColor=vec4(col*uGain,1.); }`
     }));
     m.renderOrder = -10; sky.add(m);
@@ -304,12 +309,13 @@ function start() {
   }
 
   const brain = new THREE.Group(); brain.position.set(0, 0.12, 0); scene.add(brain);
-  const BU = { uFront: { value: -2 }, uDis: { value: 9 }, uAct: { value: 0 }, uTime: T, uGain: { value: 1 } };
+  const PHASE = { value: 0 };   // pulse clock: runs faster once the brain is active
+  const BU = { uFront: { value: -2 }, uDis: { value: 9 }, uAct: { value: 0 }, uTime: T, uGain: { value: 1 }, uPhase: PHASE };
   const brainMat = new THREE.ShaderMaterial({
     uniforms: BU,
     vertexShader: `attribute float aFold; attribute float aKa; attribute float aKd; varying float vFold; varying float vKa; varying float vKd; varying vec3 vN; varying vec3 vW; varying vec3 vL;
       void main(){ vFold=aFold; vKa=aKa; vKd=aKd; vL=position; vN=normalize(mat3(modelMatrix)*normal); vec4 w=modelMatrix*vec4(position,1.); vW=w.xyz; gl_Position=projectionMatrix*viewMatrix*w; }`,
-    fragmentShader: `uniform float uFront, uDis, uAct, uTime, uGain; varying float vFold; varying float vKa; varying float vKd; varying vec3 vN; varying vec3 vW; varying vec3 vL;
+    fragmentShader: `uniform float uFront, uDis, uAct, uTime, uGain, uPhase; varying float vFold; varying float vKa; varying float vKd; varying vec3 vN; varying vec3 vW; varying vec3 vL;
       void main(){
         if(vKa>uFront || vKd>uDis) discard;
         float scan=1.-smoothstep(0.,.07,uFront-vKa), burn=1.-smoothstep(0.,.045,uDis-vKd);
@@ -318,10 +324,13 @@ function start() {
         float key=max(dot(N,normalize(vec3(-.35,.75,.55))),0.);
         float crest=smoothstep(.1,.5,vFold), groove=1.-smoothstep(.0,.07,vFold);
         float outline=smoothstep(.07,.12,vFold)*(1.-smoothstep(.13,.27,vFold));
-        vec3 col=vec3(.006,.014,.042)+vec3(.02,.06,.19)*key*crest;
-        col+=vec3(.2,.48,1.)*fr*(.25+.9*crest);
-        col+=vec3(.32,.66,1.)*outline*(.1+.38*key+.35*fr)*(1.+uAct*.6);
-        float wave=.5+.5*sin(dot(vL,vec3(2.6,1.7,1.2))*3.2-uTime*2.4);
+        vec3 L=normalize(vec3(-.35,.75,.55)); vec3 H=normalize(L+V);
+        float spec=pow(max(dot(N,H),0.),28.)*crest, spec2=pow(max(dot(N,normalize(vec3(.6,.2,.8)+V)),0.),18.)*crest;
+        vec3 col=vec3(.008,.02,.06)+vec3(.03,.08,.24)*key*crest+vec3(.01,.03,.1)*(1.-key);
+        col+=vec3(.22,.5,1.)*fr*(.3+.9*crest);
+        col+=vec3(.55,.8,1.)*spec*.75+vec3(.3,.55,1.)*spec2*.3;
+        col+=vec3(.35,.7,1.)*outline*(.16+.45*key+.45*fr)*(1.+uAct*.9);
+        float wave=.5+.5*sin(dot(vL,vec3(2.6,1.7,1.2))*3.2-uPhase*6.);
         float flick=.6+.4*sin(uTime*7.+vL.x*13.+vL.z*9.);
         col+=vec3(.3,.62,1.)*groove*(.06+uAct*(.25+1.2*pow(wave,6.))*flick);
         col+=vec3(.55,.85,1.)*(scan*1.4+burn*1.1);
@@ -356,13 +365,13 @@ function start() {
     g.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3)); g.setAttribute('aT', new THREE.Float32BufferAttribute(aT, 1)); g.setAttribute('aO', new THREE.Float32BufferAttribute(aO, 1));
     g.setAttribute('aKa', new THREE.Float32BufferAttribute(ka, 1)); g.setAttribute('aKd', new THREE.Float32BufferAttribute(kd, 1)); g.setIndex(idx);
     brain.add(new THREE.LineSegments(g, new THREE.ShaderMaterial({
-      ...ADD, uniforms: { uGain: lineGain, uTime: T, uFront: BU.uFront, uDis: BU.uDis },
+      ...ADD, uniforms: { uGain: lineGain, uPhase: PHASE, uFront: BU.uFront, uDis: BU.uDis },
       vertexShader: `attribute float aT; attribute float aO; attribute float aKa; attribute float aKd; varying float vT; varying float vO; varying float vKa; varying float vKd;
         void main(){ vT=aT; vO=aO; vKa=aKa; vKd=aKd; gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.); }`,
-      fragmentShader: `uniform float uGain, uTime, uFront, uDis; varying float vT; varying float vO; varying float vKa; varying float vKd;
+      fragmentShader: `uniform float uGain, uPhase, uFront, uDis; varying float vT; varying float vO; varying float vKa; varying float vKd;
         void main(){ if(vKa>uFront || vKd>uDis) discard;
-          float d=vT-fract(uTime*.42+vO);
-          float b=.05+1.8*exp(-abs(d)*45.)+.55*step(d,0.)*exp(d*7.);
+          float d=vT-fract(uPhase+vO);
+          float b=.08+2.4*exp(-abs(d)*45.)+.7*step(d,0.)*exp(d*7.);
           gl_FragColor=vec4(vec3(.5,.85,1.)*b*uGain,1.); }`
     })));
   }
@@ -378,6 +387,22 @@ function start() {
         gl_FragColor=vec4(vec3(.35,.65,1.)*a*uGain*.5,1.); }`
   }));
   beam.position.set(0.1, -1.1 + 0.35, 0); scene.add(beam);
+  const streaks = (() => {
+    const n = small ? 46 : 90, pos = [], aT = [], aO = [];
+    for (let i = 0; i < n; i++) {
+      const a = rnd() * Math.PI * 2, r = 0.08 + Math.sqrt(rnd()) * 0.62, x = 0.1 + Math.cos(a) * r, z = Math.sin(a) * r * 0.8, top = -0.75 + rnd() * 0.75 - r * 0.35, o = rnd();
+      pos.push(x, -1.1, z, x, top, z); aT.push(0, 1, 0, 1); aO.push(o, o);
+    }
+    const g = new THREE.BufferGeometry(); g.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3)); g.setAttribute('aT', new THREE.Float32BufferAttribute(aT, 1)); g.setAttribute('aO', new THREE.Float32BufferAttribute(aO, 1));
+    const m = new THREE.LineSegments(g, new THREE.ShaderMaterial({
+      ...ADD, uniforms: { uGain: beamGain, uTime: T },
+      vertexShader: `attribute float aT; attribute float aO; varying float vT; varying float vO; void main(){ vT=aT; vO=aO; gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.); }`,
+      fragmentShader: `uniform float uGain, uTime; varying float vT; varying float vO;
+        void main(){ float fl=.55+.45*sin(uTime*(1.2+vO*2.)+vO*40.); float run=.6+.4*sin(vT*12.-uTime*2.5+vO*20.);
+          gl_FragColor=vec4(vec3(.4,.7,1.)*pow(1.-vT,1.6)*fl*run*uGain*.9,1.); }`
+    }));
+    scene.add(m); return m;
+  })();
 
   const ped1Gain = { value: 1 };
   const ped1 = makePedestal(1.0, ped1Gain, [[1.32, 0, 0, 0.9], [1.62, 3, 0.02, 0.7], [1.98, 5, -0.012, 0.45]]);
@@ -472,7 +497,7 @@ function start() {
       else { const n = stem(rnd() * Math.PI * 2, rnd(), P); nx = n[0]; ny = 0; nz = n[2]; }
       const l = Math.hypot(nx, ny, nz) || 1, off = 0.007;
       pA[i * 3] = P.x + nx / l * off; pA[i * 3 + 1] = P.y + ny / l * off; pA[i * 3 + 2] = P.z + nz / l * off;
-      const spark = i % 23 === 0 ? 1 : 0;
+      const spark = i % 61 === 0 ? 1 : 0;
       pR[i * 4] = rnd(); pR[i * 4 + 1] = rnd(); pR[i * 4 + 2] = spark ? 2 + rnd() : rnd(); pR[i * 4 + 3] = rnd();
       pK[i * 4] = keyA(P.x, P.y, P.z); pK[i * 4 + 1] = keyD(P.x, P.y, P.z); pK[i * 4 + 2] = spark ? 2.6 : 0.35 + 0.65 * sstep(0.08, 0.45, P.f); pK[i * 4 + 3] = 0;
       d.set(rnd() * 2 - 1, rnd() * 2 - 1, rnd() * 2 - 1).normalize(); pB[i * 3] = d.x; pB[i * 3 + 1] = d.y; pB[i * 3 + 2] = d.z;
@@ -483,16 +508,16 @@ function start() {
   partGeo.setAttribute('aB', new THREE.BufferAttribute(pB, 3));
   partGeo.setAttribute('aR', new THREE.BufferAttribute(pR, 4));
   partGeo.setAttribute('aK', new THREE.BufferAttribute(pK, 4));
-  const PU = { uS: { value: 0 }, uTime: T, uFront: BU.uFront, uAct: BU.uAct, uDpr: { value: DPR }, uProj: PROJ, uBrainM: { value: brain.matrixWorld }, uEarthR: { value: new THREE.Matrix3() }, uEC: { value: EC } };
+  const PU = { uS: { value: 0 }, uGrow: { value: 1 }, uTime: T, uFront: BU.uFront, uAct: BU.uAct, uDpr: { value: DPR }, uProj: PROJ, uBrainM: { value: brain.matrixWorld }, uEarthR: { value: new THREE.Matrix3() }, uEC: { value: EC } };
   const parts = new THREE.Points(partGeo, new THREE.ShaderMaterial({
     ...ADD, uniforms: PU,
     vertexShader: `attribute vec3 aB; attribute vec4 aR; attribute vec4 aK;
-      uniform float uS, uTime, uFront, uAct, uDpr, uProj; uniform mat4 uBrainM; uniform mat3 uEarthR; uniform vec3 uEC;
-      varying vec3 vC; varying float vA;
+      uniform float uS, uTime, uFront, uAct, uDpr, uProj, uGrow; uniform mat4 uBrainM; uniform mat3 uEarthR; uniform vec3 uEC;
+      varying vec3 vC; varying float vA; varying float vSp;
       float io(float t){ return t<.5?4.*t*t*t:1.-pow(-2.*t+2.,3.)/2.; }
       void main(){
         vec3 p0=(uBrainM*vec4(position,1.)).xyz;
-        vec3 dB=uEarthR*aB; vec3 p3=uEC+dB*(1.014+aR.w*.012);
+        vec3 dB=uEarthR*aB; vec3 p3=uEC+dB*(1.014+aR.w*.012)*uGrow;
         float rel=2.05+(1.4-aK.y)/2.8+aR.x*.07;
         float s=clamp((uS-rel)/(.95+aR.y*.45),0.,1.); float e=io(s);
         vec3 p1=p0+vec3(.7+aR.z*1.3,(aR.w-.5)*.7+.1,(aR.x-.5)*.9);
@@ -510,16 +535,20 @@ function start() {
         vC=mix(vC,mix(vec3(.3,.55,1.),aK.w>1.5?vec3(1.,.85,.6):vec3(.72,.88,1.),min(aK.w,1.)),onS);
         vec4 mv=viewMatrix*vec4(p,1.);
         gl_Position=projectionMatrix*mv;
-        float size=(spark>.5?.013:.0046+.0042*aR.z)*(1.+fl*.6+onS*.35);
-        gl_PointSize=clamp(size*uProj*uDpr/-mv.z,1.,24.);
+        float size=(spark>.5?.05*(1.-onS*.6):.0046+.0042*aR.z)*(1.+fl*.6+onS*.35); vSp=spark;
+        gl_PointSize=clamp(size*uProj*uDpr/-mv.z,1.,96.);
       }`,
-    fragmentShader: `varying vec3 vC; varying float vA; void main(){ float d=length(gl_PointCoord-.5); float a=smoothstep(.5,.0,d); a*=a; gl_FragColor=vec4(vC,a*vA); }`
+    fragmentShader: `varying vec3 vC; varying float vA; varying float vSp;
+      void main(){ vec2 q=gl_PointCoord-.5; float d=length(q); float a;
+        if(vSp>.5){ a=exp(-d*d*260.)*1.6+exp(-abs(q.x)*55.)*exp(-abs(q.y)*7.)*.9+exp(-abs(q.y)*55.)*exp(-abs(q.x)*7.)*.9+exp(-d*9.)*.25; a*=smoothstep(.5,.35,d); }
+        else { a=smoothstep(.5,.0,d); a*=a; }
+        gl_FragColor=vec4(vC,a*vA); }`
   }));
   parts.frustumCulled = false; scene.add(parts);
 
   // the sphere targets follow the real continents once the earth texture is decoded
   function placeOnLand(img) {
-    if (S > 1.8) return;
+    if (S > 2.0) return;
     const w = 512, h = 256, c = document.createElement('canvas'); c.width = w; c.height = h;
     const g = c.getContext('2d', { willReadFrequently: true }); g.drawImage(img, 0, 0, w, h);
     const px = g.getImageData(0, 0, w, h).data;
@@ -576,7 +605,7 @@ function start() {
   })();
 
   /* ================= sun: soft glare beyond the limb and a star burst on it ================= */
-  function spriteTex(draw) { const c = document.createElement('canvas'); c.width = c.height = 512; draw(c.getContext('2d'), 256); const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; return t; }
+  function spriteTex(draw) { const c = document.createElement('canvas'); c.width = c.height = 512; draw(c.getContext('2d'), 256); const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.NoColorSpace; return t; }
   const glareTex = spriteTex((g, h) => { const r = g.createRadialGradient(h, h, 0, h, h, h); r.addColorStop(0, 'rgba(255,255,255,1)'); r.addColorStop(0.05, 'rgba(220,238,255,.9)'); r.addColorStop(0.2, 'rgba(110,165,255,.42)'); r.addColorStop(0.5, 'rgba(50,100,255,.12)'); r.addColorStop(1, 'rgba(30,70,255,0)'); g.fillStyle = r; g.fillRect(0, 0, 2 * h, 2 * h); });
   const burstTex = spriteTex((g, h) => {
     const r = g.createRadialGradient(h, h, 0, h, h, h * 0.5); r.addColorStop(0, 'rgba(255,255,255,1)'); r.addColorStop(0.08, 'rgba(235,245,255,.95)'); r.addColorStop(0.3, 'rgba(140,190,255,.35)'); r.addColorStop(1, 'rgba(60,120,255,0)');
@@ -783,7 +812,7 @@ function start() {
   const dayK = track([[5, 1.35], [6.4, 1.3], [7.4, 0.75], [10, 0.75], [11, 0.7]]);
 
   /* ================= scroll -> timeline ================= */
-  const HOLD = 0.6;   // the end frame stays a moment before the page arrives
+  const HOLD = 1.3;   // the end frame stands for a longer stretch before the page arrives
   let introTop = 0, introLen = 1, S = reduce ? 11 : 0, target = S, auto = reduce ? 1 : 0, bgSpin = 0, lastY = scrollY, depth = 0, depthT = 0;
   function measure() {
     const on = intro && intro.offsetParent !== null && getComputedStyle(intro).display !== 'none';
@@ -802,10 +831,25 @@ function start() {
     depthT = clamp((y - introTop - introLen - innerHeight * 1.2) / innerHeight);
     bgSpin += (y - lastY) * 0.00025 * sstep(10.2, 11, S); lastY = y;
   }
-  addEventListener('scroll', readScroll, { passive: true });
+  // GSAP ScrollTrigger reads the scroll (and re-measures on layout changes); quickTo smooths S
+  const G = window.gsap, ST = window.ScrollTrigger, prox = { s: S };
+  let sTo = null;
+  if (G && ST && intro && !reduce) {
+    G.registerPlugin(ST);
+    sTo = G.quickTo(prox, 's', { duration: 0.85, ease: 'power3.out' });
+    ST.create({ trigger: intro, start: 'top top', endTrigger: '#start', end: 'bottom top', onUpdate: onScroll, onRefresh: () => { measure(); onScroll(); } });
+  }
+  function onScroll() {
+    readScroll();
+    if (!sTo) return;
+    // a jump (anchor link) plays at most 1.6 scenes
+    const d = target - prox.s;
+    if (Math.abs(d) > 1.6) sTo(target, target - Math.sign(d) * 1.6); else sTo(target);
+  }
+  addEventListener('scroll', onScroll, { passive: true });
 
   function resize() {
-    const w = innerWidth, h = innerHeight; renderer.setSize(w, h, false);
+    const w = innerWidth, h = innerHeight; renderer.setSize(w, h, false); bloom.setSize();
     aspect = w / h; fovV = mix(58, 38, sstep(0.6, 1.4, aspect));
     camera.aspect = aspect; camera.fov = fovV; camera.updateProjectionMatrix();
     PROJ.value = h / (2 * Math.tan(fovV * D2R / 2));
@@ -813,12 +857,16 @@ function start() {
   }
   addEventListener('resize', resize);
   resize();
-  S = target;
+  S = prox.s = target;
 
   // the earth texture: the planet's look and the shape the particles gather into
-  const tex = new THREE.TextureLoader().load(new URL(small ? './earth-2k.webp' : './earth-4k.webp', import.meta.url).href, t => { try { placeOnLand(t.image); } catch (e) { /* uniform targets stay */ } });
-  tex.colorSpace = THREE.NoColorSpace; tex.anisotropy = Math.min(8, renderer.capabilities.getMaxAnisotropy());
-  EU.map.value = tex;
+  // (loaded once the first frames stand, it is needed from scene 4 on)
+  function loadEarth() {
+    const tex = new THREE.TextureLoader().load(new URL(small ? './earth-2k.webp' : './earth-4k.webp', import.meta.url).href, t => { try { placeOnLand(t.image); } catch (e) { /* uniform targets stay */ } });
+    tex.colorSpace = THREE.NoColorSpace; tex.anisotropy = Math.min(8, renderer.capabilities.getMaxAnisotropy());
+    EU.map.value = tex;
+  }
+  (window.requestIdleCallback || (f => setTimeout(f, 300)))(loadEarth, { timeout: 1200 });
 
   /* ================= per frame ================= */
   const v = V3(), w = V3(), sdir = V3(), lim = V3(), m3 = new THREE.Matrix3();
@@ -846,11 +894,16 @@ function start() {
     const appear = Math.max(auto, sstep(0, 0.9, s));
     BU.uFront.value = mix(-1.35, 1.0, appear);
     BU.uAct.value = band(s, 0.7, 1.9, 2.5, 3.0);
+    PHASE.value += dt * (0.35 + 1.3 * BU.uAct.value) * (reduce ? 0 : 1);
+    // the brain turns slowly, faster once it is active; it holds still while it breaks apart
+    brain.rotation.y = -0.18 + 0.32 * sstep(0, 2, s) + 0.07 * Math.sin(T.value * 0.22) * (1 - sstep(1.7, 2.05, s));
+    PU.uGrow.value = mix(0.72, 1, sstep(3.2, 4.9, s));
+    earthTilt.scale.setScalar(PU.uGrow.value);
     BU.uDis.value = 1.4 - 2.8 * clamp((s - 2.05) / 1.0);
     lineGain.value = band(s, 0.8, 1.7, 2.2, 2.7) * 1.1;
     brain.visible = s < 3.1;
     beamGain.value = Math.max(0, appear - 0.1) * (1 - sstep(2.1, 3.0, s));
-    beam.visible = beamGain.value > 0.003;
+    beam.visible = streaks.visible = beamGain.value > 0.003;
     ped1Gain.value = 1 - sstep(4.3, 5.0, s); ped1.visible = beam.visible || ped1Gain.value > 0.003;
     orbAGain.value = band(s, 1.2, 2.0, 5.1, 5.9); orbA.visible = orbAGain.value > 0.003;
     orbBGain.value = band(s, 3.1, 3.9, 5.1, 5.9); orbB.visible = orbBGain.value > 0.003;
@@ -886,19 +939,26 @@ function start() {
     sun(sunAlpha(s), sunLight(s), burstK(s) * sstep(4.4, 5.3, s) * (1 - 0.5 * depth));
   }
 
-  let visible = !document.hidden, last = performance.now(), born = last, frames = 0;
+  let visible = !document.hidden, last = performance.now(), born = last, frames = 0, odd = false;
   document.addEventListener('visibilitychange', () => { visible = !document.hidden; if (visible) { last = performance.now(); requestAnimationFrame(frame); } });
   function frame(now) {
     if (!visible) return;
     const dt = Math.min(0.05, (now - last) / 1000); last = now;
     if (!reduce) T.value += dt;
     auto = reduce ? 1 : sstep(0, 2600, now - born);
-    if (Math.abs(target - S) > 1.6) S = target - Math.sign(target - S) * 1.6;   // a jump (anchor link) plays at most 1.6 scenes
-    S += (target - S) * (reduce ? 1 : 1 - Math.pow(0.006, dt));
-    if (Math.abs(target - S) < 1e-4) S = target;
-    update(S, dt);
-    renderer.render(scene, camera);
-    if (++frames === 2) canvas.classList.add('is-ready');
+    if (sTo) S = prox.s;
+    else {
+      if (Math.abs(target - S) > 1.6) S = target - Math.sign(target - S) * 1.6;   // a jump (anchor link) plays at most 1.6 scenes
+      S += (target - S) * (reduce ? 1 : 1 - Math.pow(0.006, dt));
+      if (Math.abs(target - S) < 1e-4) S = target;
+    }
+    // behind the page the globe only turns: half the frame rate is enough there
+    const resting = S > 10.98 && Math.abs(target - S) < 1e-3;
+    if (!(resting && (odd = !odd))) {
+      update(S, resting ? dt * 2 : dt);
+      bloom.render(scene, camera);
+      if (++frames === 2) canvas.classList.add('is-ready');
+    }
     syncUi();
     requestAnimationFrame(frame);
   }
@@ -910,10 +970,18 @@ function start() {
     intro.style.setProperty('--ip', p);
     root.classList.toggle('film-moved', S > 0.12);
     root.classList.toggle('film-done', S > 9.6);
+    root.classList.toggle('film-over', S > 10.3);
   }
   requestAnimationFrame(frame);
   renderer.domElement.addEventListener('webglcontextlost', e => { e.preventDefault(); fail(); });
-  window.__scene = { set: s => { target = S = s; }, snap: () => { readScroll(); S = target; }, get S() { return S; }, keys: () => keys };
+  addEventListener('pagehide', e => {
+    if (e.persisted) return;   // kept for back/forward: keep everything
+    visible = false;
+    scene.traverse(o => { if (o.geometry) o.geometry.dispose(); const m = o.material; if (m) (Array.isArray(m) ? m : [m]).forEach(x => { for (const k in x.uniforms || {}) { const v = x.uniforms[k].value; if (v && v.isTexture) v.dispose(); } if (x.map) x.map.dispose(); x.dispose(); }); });
+    if (EU.map.value) EU.map.value.dispose();
+    bloom.dispose(); renderer.dispose();
+  });
+  window.__scene = { get target() { return target; }, set: s => { target = S = prox.s = s; if (sTo) sTo(s, s); }, snap: () => { readScroll(); S = prox.s = target; if (sTo) sTo(target, target); }, get S() { return S; }, keys: () => keys };
 }
 
 try {

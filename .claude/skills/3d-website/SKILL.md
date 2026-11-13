@@ -23,7 +23,7 @@ Texte, Preise und Angebote bleiben wörtlich, solange der Nutzer nichts anderes 
 - Eine `<canvas>` mit `position: fixed; inset: 0; z-index: 0; pointer-events: none`. Der Inhalt liegt mit `position: relative; z-index: 1` darüber.
 - Three.js lokal ablegen (`assets/3d/three.module.min.js`), als `<script type="module">` am Seitenende laden. Kein CDN, kein Build-Schritt bei statischen Seiten.
 - Die Kamerafahrt ist eine Liste von Wegpunkten `[Scroll 0..1, Position, Blickziel]`. Zwischen den Punkten mit Smoothstep interpolieren.
-- Scroll-Wert nur im `scroll`-Listener lesen (passiv). Im Render-Loop der Zielposition weich folgen: `k = 1 - pow(0.0015, dt)`. So ruckelt nichts, auch wenn das Scrollen springt.
+- Scrollsteuerung mit GSAP ScrollTrigger (lokal in `assets/vendor`), Glättung mit `gsap.quickTo`. Ohne GSAP: Scroll-Wert im passiven `scroll`-Listener lesen und im Render-Loop weich folgen (`k = 1 - pow(0.0015, dt)`).
 - Jeder Seitenabschnitt bekommt einen eigenen Blick: Anfang nah und dramatisch, Mitte ruhig, Ende die Totale.
 
 ## 3. Qualität der Szene
@@ -31,7 +31,7 @@ Texte, Preise und Angebote bleiben wörtlich, solange der Nutzer nichts anderes 
 - Eigene Shader statt Standard-Material: Tag/Nacht-Grenze, Rand-Leuchten (Fresnel), Atmosphäre als zweite Kugel mit `BackSide` und additivem Blending.
 - Echte Daten statt Zufall, wo es geht (Küstenlinien, Städte). Zufällige Punkte sehen sofort künstlich aus.
 - Texturen als WebP in zwei Größen (4k Desktop, 2k Handy). Mehrere Masken in einen Farbkanal je Maske packen.
-- Eine Lichtquelle, eine Akzentfarbe. Leuchten kommt aus additivem Blending, nicht aus Bloom-Nachbearbeitung.
+- Eine Lichtquelle, eine Akzentfarbe. Leuchten kommt aus additivem Blending; für den fotorealistischen Glow einen leichten Bloom-Pass (`assets/3d/bloom.js`: Float-Ziel, Helligkeitsfilter, 3 bis 4 Unschärfe-Stufen, weiche Lichterschulter). Am Handy weniger und kleinere Stufen, kein MSAA.
 
 ## 4. Lesbarkeit
 
