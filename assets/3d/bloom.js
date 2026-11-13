@@ -33,15 +33,15 @@ export function createBloom(renderer, { levels = 4, scale = 0.5, msaa = 4, stren
   });
   const uLv = {}; for (let i = 0; i < 4; i++) uLv['b' + i] = { value: null };
   const comp = new THREE.ShaderMaterial({
-    ...base, uniforms: { tScene: { value: rtScene.texture }, strength: { value: strength }, ...uLv },
-    fragmentShader: `uniform sampler2D tScene, b0, b1, b2, b3; uniform float strength; varying vec2 vUv;
+    ...base, uniforms: { tScene: { value: rtScene.texture }, strength: { value: strength }, fade: { value: 1 }, ...uLv },
+    fragmentShader: `uniform sampler2D tScene, b0, b1, b2, b3; uniform float strength, fade; varying vec2 vUv;
       void main(){
         vec3 c=texture2D(tScene,vUv).rgb;
         vec3 g=texture2D(b0,vUv).rgb*.3+texture2D(b1,vUv).rgb*.3+texture2D(b2,vUv).rgb*${levels > 3 ? '.25+texture2D(b3,vUv).rgb*.15' : '.4'};
         c+=g*strength;
         vec3 x=max(c-.8,0.); c=c-x+.22*(1.-exp(-x/.22));
         vec2 q=vUv-.5; c*=1.-.28*dot(q,q);
-        gl_FragColor=vec4(c,1.);
+        gl_FragColor=vec4(mix(vec3(.008,.016,.043),c,fade),1.);
       }`
   });
   for (let i = 0; i < 4; i++) comp.uniforms['b' + i].value = A[Math.min(i, levels - 1)].texture;
@@ -57,7 +57,7 @@ export function createBloom(renderer, { levels = 4, scale = 0.5, msaa = 4, stren
 
   return {
     setSize,
-    strength: comp.uniforms.strength,
+    strength: comp.uniforms.strength, fade: comp.uniforms.fade,
     render(scene, camera) {
       renderer.setRenderTarget(rtScene); renderer.clear(); renderer.render(scene, camera);
       bright.uniforms.t.value = rtScene.texture; draw(bright, A[0]);

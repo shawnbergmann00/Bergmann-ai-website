@@ -57,10 +57,11 @@ Texte, Preise und Angebote bleiben wörtlich, solange der Nutzer nichts anderes 
 
 ## Referenz
 
-`assets/3d/scene.js` in diesem Repository ist die Vorlage: ein Scroll-Film vor der Seite (Gehirn, Partikel, Erde, Horizont, AI-Bühne) und danach eine Erde, die sich nur noch hinter dem Inhalt dreht.
+`assets/3d/scene.js` und `assets/3d/film.js` in diesem Repository sind die Vorlage: ein Scroll-Film vor der Seite (Gehirn, Partikel, Erde, Horizont, AI-Endbild) und danach eine 3D-Erde, die sich nur noch hinter dem Inhalt dreht.
 
-- Ein einziger Zeitwert `S` steuert alles: 0 bis 10 sind die Szenen (Scrollen durch den leeren Abschnitt `#intro`), 10 bis 11 die Übergabe an die Seite, 11 der Hintergrund. Kamera, Licht, Partikel und Objekte lesen nur `S`, deshalb laufen sie synchron.
-- `S` folgt der Scrollposition weich; ein Sprung (Anker-Link) spielt höchstens 1,6 Szenen ab.
-- Kamera-Wegpunkte als Catmull-Rom-Kurve; das Endbild ist ein Endpunkt auf beiden Seiten, sonst schießt die Kamera über.
-- Objekte, die nur im Endbild stehen (die AI-Bühne), werden relativ zur End-Kamera platziert und so gestellt, dass die Kamera auf dem Weg dorthin nie durch sie hindurchfliegt.
-- Prüfen mit `window.__scene.set(S)` und Screenshots je Szene, am Desktop und am Handy.
+- Ein einziger Zeitwert `S` steuert alles: 0 bis 10 sind die Szenen (Scrollen durch den leeren Abschnitt `#intro`), 10 bis 11 die Übergabe an die Seite, 11 der Hintergrund.
+- Der Film nutzt die Bilder des Kunden als Bildebene (`assets/3d/film/`, per ESRGAN auf 4K hochgerechnet; `wide-*` für Querformat, `tall-*` für Handys) mit echten Kamerafahrten (Zoom, Schwenk, Durchflug mit Unschärfe) und lichtgeführten Überblendungen, davor eine Ebene echter 3D-Partikel (Energiering, Strom, Spirale, Warp, Formung). Ränder, wo das Bild nicht reicht, laufen gespiegelt, unscharf und dunkler aus.
+- Pro Einstellung: `safe` (muss sichtbar bleiben), `c` (Motiv für die Partikel), Spuren für Zoom, Schwenk, Belichtung. Nur die Bilder um die aktuelle Einstellung liegen auf der GPU.
+- `S` folgt der Scrollposition weich (GSAP ScrollTrigger + `quickTo`); ein Sprung (Anker-Link) spielt höchstens 1,6 Szenen ab.
+- Die prozedurale Variante (Gehirn, Partikel, AI-Bühne komplett aus Code) steht im Commit `bc98ffb`.
+- Prüfen mit `window.__scene.set(S)` und Screenshots je Szene, am Desktop und am Handy, und mit Vor- und Zurückscrollen.
