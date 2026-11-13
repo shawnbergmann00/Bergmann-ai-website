@@ -1,20 +1,21 @@
 /* Bergmann AI: the intro in front of the page, then the earth turning behind it.
 
    One timeline value S follows the scroll position:
-     0 .. 10   the intro (film.js): the word "Bergmann", the end picture (AI and the earth) seen through
-               its letters; scrolling flies into the letters until the picture stands alone, then it holds
-     10 .. 11  hand-over: the picture fades, the 3D globe behind it pulls back into place
+     0 .. 10   the intro (film.js): the word "Bergmann AI", the turning earth seen through its letters;
+               scrolling flies into the letters while the camera pulls back from the horizon to the hero
+               picture, until the earth stands alone (S 8.6), then it holds briefly
+     10 .. 11  the hero ("KI-Chatbots und Automatisierungen für Betriebe") comes up over the earth
      11        the page: the earth only turns in the background
    Scroll: GSAP ScrollTrigger (assets/vendor) reads it, gsap.quickTo smooths S; without GSAP a plain
    scroll listener and an own easing do the same. The globe behind the page gets a light bloom (bloom.js).
-   Without WebGL the original AI picture (assets/img/hero-ai-1600.webp) stands in.
+   Without WebGL a still of the globe (assets/img/hero-earth-1600.webp) stands in.
    Smoothness: every frame is drawn, in the GSAP ticker right after the tweens (no frame skipping, no
    one-frame lag); the canvas never changes size while scrolling (it is 100lvh, so a phone's address bar
    does not resize it); programs are compiled in parallel and render targets allocated ahead; the earth
    pictures are decoded off the main thread and uploaded in strips (gpu-upload.js); a governor lowers the
    globe's internal resolution step by step when frames come late. ?fps shows the frame rate. */
 import * as THREE from './three.module.min.js';
-import { createFilm } from './film.js';
+import { createFilm, FLIGHT } from './film.js';
 import { createBloom } from './bloom.js';
 import { decode, canStream, stripUploader, compileAhead } from './gpu-upload.js';
 
@@ -191,7 +192,7 @@ function start() {
   const L = (p, l) => mix(p, l, sstep(0.75, 1.45, aspect));   // portrait value, landscape value
   let K0, K1;
   function evalShots() {
-    K0 = aim({ az: -95, el: 10, d: L(3.6, 3.2), ox: L(0, -4), oy: L(-8, -9) });   // under the end frame
+    K0 = aim({ az: -95, el: 10, d: L(2.4, 2.05), ox: L(2, 5), oy: L(-25.6, -28.5) });   // close: the lit limb and the sunrise run through the word, toward "AI"
     K1 = aim({ az: -110, el: 14, d: L(5.4, 4.6), ox: 0, oy: L(-7, -4.5) });       // behind the page
   }
   const camPos = V3(), camF = V3(), camU = V3(), _d = V3(), _l = V3();
@@ -204,7 +205,7 @@ function start() {
   }
 
   /* ================= scroll -> timeline ================= */
-  const HOLD = 1.3;   // the end frame stands for a longer stretch before the page arrives
+  const HOLD = 0.4;   // the earth stands a moment before the page comes up
   let introTop = 0, introLen = 1, S = reduce ? 11 : 0, target = S, auto = reduce ? 1 : 0, bgSpin = 0, lastY = scrollY, depth = 0, depthT = 0;
   // the sticky view is 100svh: a stable height, unlike innerHeight while a phone's address bar moves
   const view = intro && intro.querySelector('.intro__view');
@@ -225,7 +226,7 @@ function start() {
     }
     // below the hero the page is text: the earth steps back a little
     depthT = clamp((y - introTop - introLen - vh * 1.2) / vh);
-    bgSpin += (y - lastY) * 0.00025 * sstep(10.2, 11, S); lastY = y;
+    bgSpin += (y - lastY) * 0.00025 * sstep(FLIGHT[1] - 0.6, FLIGHT[1] + 0.8, S); lastY = y;
   }
   // GSAP ScrollTrigger reads the scroll (and re-measures on layout changes); quickTo smooths S
   const G = window.gsap, ST = window.ScrollTrigger, prox = { s: S };
@@ -246,17 +247,21 @@ function start() {
   // sized by the canvas box (100vw x 100lvh): a phone's address bar showing or hiding changes innerHeight,
   // not the canvas, so nothing is reallocated while scrolling
   let cw = 0, ch = 0;
+  // the globe with its bloom, drawn into this while the word lies over it
+  const live = new THREE.WebGLRenderTarget(1, 1, { depthBuffer: false, minFilter: THREE.LinearFilter, magFilter: THREE.LinearFilter });
+  const buf = new THREE.Vector2();
   function resize() {
     const w = canvas.clientWidth || innerWidth, h = canvas.clientHeight || innerHeight;
     if (w !== cw || h !== ch) {
       cw = w; ch = h;
       renderer.setSize(w, h, false); bloom.setSize();
-      if (warmed) bloom.warm().catch(() => {});
+      renderer.getDrawingBufferSize(buf); live.setSize(buf.x, buf.y);
+      if (warmed) { bloom.warm().catch(() => {}); renderer.initRenderTarget(live); }
       aspect = w / h; fovV = mix(58, 38, sstep(0.6, 1.4, aspect));
       camera.aspect = aspect; camera.fov = fovV; camera.updateProjectionMatrix();
       // the film fills the screen under the opaque header
       const top = nav ? Math.min(nav.offsetHeight, h * 0.2) : 0;
-      film.use(aspect < 0.95 ? 'tall' : 'wide');
+      film.use(aspect < 0.95 ? 'two' : 'one');
       film.setAspect(w / (h - top), top / h);
       evalShots();
     }
@@ -282,10 +287,11 @@ function start() {
       renderer.setRenderTarget(rt); renderer.render(scene, camera); renderer.setRenderTarget(null); rt.dispose();
     }).catch(() => {});
     bloom.warm().then(() => firstUse(bloom.materials)).catch(() => {});
+    renderer.initRenderTarget(live);
     warmed = true;
   }, { timeout: 1500 });
-  // the earth pictures are needed only behind the page: loaded once the intro stands, decoded off the
-  // main thread and uploaded a strip per frame (see frame())
+  // the earth pictures: seen through the letters from the start, so loaded at once, decoded off the main
+  // thread and uploaded a strip per frame (see frame()); until then the letters show their glass alone
   const uploads = [], earthTex = [];
   const maps = [['day', 'tDay'], ['night', 'tNight'], ['clouds', 'tClouds']];
   const mapUrl = n => new URL(`./earth-${n}-${small ? '2k' : '4k'}.webp`, import.meta.url).href;
@@ -303,15 +309,15 @@ function start() {
       EU[key].value = tex; earthTex.push(tex);
     });
   }
-  idle(() => {
-    if (!canStream) return viaLoader();
-    Promise.all(maps.map(([n]) => decode(mapUrl(n)))).then(bitmaps => {
-      bitmaps.forEach((b, i) => { const up = stripUploader(renderer, b, { rows: small ? 128 : 96, repeatS: true, aniso }); EU[maps[i][1]].value = up.texture; uploads.push(up); earthTex.push(up); });
-    }, viaLoader);
-  }, { timeout: 2500 });
+  if (!canStream) viaLoader();
+  else Promise.all(maps.map(([n]) => decode(mapUrl(n)))).then(bitmaps => {
+    bitmaps.forEach((b, i) => { const up = stripUploader(renderer, b, { rows: small ? 128 : 96, repeatS: true, aniso }); EU[maps[i][1]].value = up.texture; uploads.push(up); earthTex.push(up); });
+  }, viaLoader);
 
   /* ================= per frame ================= */
-  const sunAlpha = track([[10, -10], [11, -48]]), sunLight = track([[10, 20], [11, 34]]), burstK = track([[10, 0.7], [11, 0.38]]);   // the sun stands just behind the limb: a lit crescent, the rest night
+  // over the flight (0..1): the sun stands just behind the limb, a lit crescent, the rest night
+  const sunLight = track([[0, 20], [1, 34]]), burstK = track([[0, 0.7], [1, 0.38]]);
+  const sunAlpha = g => mix(L(-6, -24), -48, sstep(0, 1, g));   // phones: the sunrise sits between "Bergmann" and "AI"
   const v = V3(), w = V3(), sdir = V3(), lim = V3(), look = V3();
   function sun(alphaDeg, lightOff, gain) {
     v.copy(EC).sub(camera.position); const d = v.length(); v.normalize();
@@ -323,26 +329,27 @@ function start() {
     lim.copy(v).multiplyScalar(Math.cos(th)).addScaledVector(w, Math.sin(th));
     burst.position.copy(camera.position).addScaledVector(lim, limbDist * 0.985);
     burst.scale.setScalar(limbDist * 0.42 * Math.min(gain, 1.2));
-    burst.material.opacity = clamp(gain);
+    burst.material.opacity = clamp(gain) * EU.uReady.value;
     sdir.copy(v).multiplyScalar(Math.cos(th + 0.035)).addScaledVector(w, Math.sin(th + 0.035));
     glare.position.copy(camera.position).addScaledVector(sdir, 80);
     glare.scale.setScalar(80 * 0.45);
-    glare.material.opacity = clamp(gain * 0.5);
+    glare.material.opacity = clamp(gain * 0.5) * EU.uReady.value;
     glare.visible = burst.visible = gain > 0.01;
   }
 
   function update3d(s, dt) {
+    const g = film.progress(s);   // the camera follows the flight: from the horizon back to the hero picture
     depth += (depthT - depth) * Math.min(1, dt * 3);
-    EU.uLights.value = mix(1.1, 0.75, sstep(10, 11, s)) * (1 - 0.45 * depth);
+    EU.uLights.value = mix(1.1, 0.75, g) * (1 - 0.45 * depth);
     EU.uDay.value = 1 - 0.35 * depth;
-    if (s > 10.3) bgSpin += dt * 0.032 * (reduce ? 0 : 1) * sstep(10.3, 11, s);
+    bgSpin += dt * 0.032 * (reduce ? 0 : 1);   // the earth turns all the time
     earth.rotation.y = 3.5 + bgSpin + T.value * 0.004;
     EU.uReady.value = readyAt ? sstep(0, 700, performance.now() - readyAt) : 0;   // fades in over real time once the maps are up
-    shotAt(s - 10);
+    shotAt(g);
     camera.position.copy(camPos); camera.up.copy(camU); camera.lookAt(look.copy(camPos).add(camF));
     camera.updateMatrixWorld();
     sky.position.copy(camera.position);
-    sun(sunAlpha(s), sunLight(s), burstK(s) * (1 - 0.5 * depth));
+    sun(sunAlpha(g), sunLight(g), burstK(g) * (1 - 0.5 * depth));
   }
 
   /* ================= frame-time governor: the globe's resolution follows what the GPU manages =================
@@ -351,7 +358,7 @@ function start() {
      globe's internal resolution steps down; after a calm stretch it tries one step up again. */
   const gov = { hist: [], last: 0, down: 0, min: small ? 0.6 : 0.55, off: /[?&]gov=0\b/.test(location.search) };   // ?gov=0: fixed resolution, for measuring
   function governor(now, ms) {
-    if (S <= 10.02 || reduce || gov.off) { gov.hist.length = 0; return; }
+    if (reduce || gov.off) { gov.hist.length = 0; return; }
     gov.hist.push(ms); if (gov.hist.length > 90) gov.hist.shift();
     if (gov.hist.length < 45 || now - gov.last < 1500) return;
     const h = gov.hist.slice().sort((a, b) => a - b);
@@ -379,7 +386,7 @@ function start() {
     };
   })() : null;
 
-  let visible = !document.hidden, last = performance.now(), born = 0, frames = 0, filmOnly = false;
+  let visible = !document.hidden, last = performance.now(), born = 0, frames = 0;
   document.addEventListener('visibilitychange', () => { visible = !document.hidden; if (visible) last = performance.now(); });
   function frame(now) {
     if (!visible) return;
@@ -391,24 +398,27 @@ function start() {
     if (uploads.length && uploads[0].step()) { uploads.shift(); if (!uploads.length) isReady(); }
     else if (uploads.length && uploads[0].failed) viaLoader();
     if (!reduce) T.value += dt;
-    if (!born && film.ready) born = now;   // the word arrives once its pictures are there
-    auto = reduce || S > 10.02 ? 1 : born ? sstep(80, 1900, now - born) : 0;
+    if (!born && film.ready) born = now;   // the word arrives once it is loaded
+    auto = reduce ? 1 : born ? sstep(80, 1900, now - born) : 0;
     if (sTo) S = prox.s;
     else {
       if (Math.abs(target - S) > 1.6) S = target - Math.sign(target - S) * 1.6;   // a jump (anchor link) plays at most 1.6 scenes
       S += (target - S) * (reduce ? 1 : 1 - Math.pow(0.006, dt));
       if (Math.abs(target - S) < 1e-4) S = target;
     }
-    // every frame is drawn (the globe turns and follows the scroll at the display's full rate), except
-    // while the intro picture stands complete and unchanged: then the canvas simply keeps it
-    const filmAlpha = Math.min(auto, 1 - sstep(10.04, 10.5, S));
-    if (filmOnly && S <= 10.02 && filmAlpha > 0.002 && film.unchanged(S, filmAlpha)) { syncUi(); return; }
-    renderer.setRenderTarget(null); renderer.clear();
-    if (S > 10.02) { update3d(S, dt); bloom.fade.value = sstep(10.12, 10.6, S); bloom.render(scene, camera); }
-    let drawn = false;
-    if (filmAlpha > 0.002) drawn = film.render(S, filmAlpha, T.value);
-    if (drawn || S > 10.02) { if (++frames === 2) canvas.classList.add('is-ready'); }
-    filmOnly = drawn && S <= 10.02;   // only a frame of the picture alone may be kept as it is
+    // every frame is drawn: the globe turns and follows the scroll at the display's full rate. While
+    // the word shows, the globe goes into a texture first and the word is laid over it.
+    if (S < FLIGHT[1] && !film.ready && !reduce) { syncUi(); return; }   // the word comes first
+    update3d(S, dt);
+    if (film.ready && !reduce && film.showing(S, auto)) {
+      bloom.render(scene, camera, live);
+      renderer.setRenderTarget(null); renderer.clear();
+      film.render(S, auto, T.value, live.texture, bloom.glow, live.width, live.height);
+    } else {
+      renderer.setRenderTarget(null); renderer.clear();
+      bloom.render(scene, camera, null);
+    }
+    if (++frames === 2) canvas.classList.add('is-ready');
     syncUi();
   }
   let uiP = -1;
@@ -431,7 +441,7 @@ function start() {
     visible = false;
     scene.traverse(o => { if (o.geometry) o.geometry.dispose(); const m = o.material; if (m) (Array.isArray(m) ? m : [m]).forEach(x => { if (x.map) x.map.dispose(); x.dispose(); }); });
     earthTex.forEach(t => t.dispose());
-    film.dispose(); bloom.dispose(); renderer.dispose();
+    film.dispose(); bloom.dispose(); live.dispose(); renderer.dispose();
   });
   window.__scene = {
     get S() { return S; }, get target() { return target; }, get ready() { return ready; }, get uploading() { return uploads.length; }, get quality() { return bloom.quality; }, get fadeIn() { return EU.uReady.value; },
