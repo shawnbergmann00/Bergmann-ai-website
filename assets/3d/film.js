@@ -6,8 +6,8 @@
    The word is a signed distance field (film/word-sdf.webp, set in Playfair Display Italic, SIL OFL,
    3072 px wide), so the outline stays sharp at any zoom: R = fine distance (+-8 texels), G = coarse
    distance (+-64 texels), 0.5 on the outline, larger inside.
-   Two pictures: "wide" for screens wider than tall, "tall" (the portrait panel) for phones. Where a
-   screen is wider or taller than the picture, its edge continues as a mirrored, blurred, darkening fade. */
+   One picture for every screen; phones see the part from the sunrise on the earth to the AI letters.
+   Where a screen is wider or taller than the picture, its edge continues as a mirrored, blurred, darkening fade. */
 import * as THREE from './three.module.min.js';
 
 function clamp(x, a = 0, b = 1) { return Math.min(b, Math.max(a, x)); }
@@ -16,10 +16,11 @@ function mix(a, b, t) { return a + (b - a) * t; }
 
 // the word texture: size, ink box [x0, y0, x1, y1] and the zoom focus (the thickest stroke near the middle, in the m), uv y down
 const WORD = { w: 3072, h: 737, box: [0.02344, 0.09769, 0.96582, 0.90095], focus: [0.52816, 0.53528], fine: 8, coarse: 64 };
-// the end picture per screen shape; safe = the part that must stay in view [x0, y0, x1, y1] (picture uv, y down)
+// the end picture (the client's AI and earth picture) and per screen shape the part that must stay in view
+// [x0, y0, x1, y1] (picture uv, y down): on phones from the sunrise on the earth to the AI letters
 const PICS = {
   wide: { file: 'wide-6', safe: [0.1, 0.12, 0.9, 0.85] },
-  tall: { file: 'tall-10', safe: [0.1, 0.1, 0.96, 0.86] }
+  tall: { file: 'wide-6', safe: [0.19, 0.1, 0.8, 0.86] }
 };
 // timeline (film S 0..10): the word stands, the flight into the letters, the picture holds
 export const FLIGHT = [0.5, 6.8];
@@ -90,7 +91,10 @@ export function createFilm(renderer) {
   word.src = new URL('./film/word-sdf.webp', import.meta.url).href;
   function use(n) {
     if (n === name) return;
-    name = n; pic = PICS[n]; imgOk = false;
+    const same = pic && pic.file === PICS[n].file;
+    name = n; pic = PICS[n];
+    if (same) return;
+    imgOk = false;
     if (tImg) { tImg.dispose(); tImg = null; }
     img.decoding = 'async';
     img.onload = () => { if (img.src.includes(pic.file)) imgOk = true; };
